@@ -32,3 +32,9 @@ main {
     height: 3rem;
     border-radius: 3rem;
 }
+
+.fixed-bottom-right {
+    position: fixed;
+    right: 20px;
+    bottom: 50px;
+}

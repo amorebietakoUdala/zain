@@ -46,20 +46,20 @@ class RestAPIController extends FOSRestController
      *
      * @return array|View
      * @Annotations\View()
-     * @Get("/api/habitantes")
+     * @Get("/api/mevent")
      */
     public function listAction(Request $request)
     {
-	$query = $request->query->all();
-	$limit = 100;
-	if (array_key_exists('limit', $query)) {
-	    $limit = $query['limit'];
-	    unset($query['limit']);
-	}
-	
-	$order = ['numDocumento' => 'ASC'];
-	$habitantes = $this->getDoctrine()->getRepository(Habitante::class)
-		    ->findBy($query,$order,$limit);
+//	$query = $request->query->all();
+//	$limit = 100;
+//	if (array_key_exists('limit', $query)) {
+//	    $limit = $query['limit'];
+//	    unset($query['limit']);
+//	}
+//	
+//	$order = ['numDocumento' => 'ASC'];
+//	$habitantes = $this->getDoctrine()->getRepository(Habitante::class)
+//		    ->findBy($query,$order,$limit);
 	
 	$view = View::create();
         $view->setData($habitantes);
@@ -89,16 +89,16 @@ class RestAPIController extends FOSRestController
      * @Annotations\View()
      * @Get("/api/banakoa")
      */
-    public function erroldaBanakoaAction (Request $request, ErroldaService $erroldaService ){
-	$em = $this->getDoctrine()->getManager();
-	$numDocumento = $request->get('numDocumento');
-	$bilaketa = ['numDocumento' => $numDocumento];
-	$habitante = $em->getRepository('AppBundle:Habitante')->findOneBy($bilaketa);
-	if ($habitante == null ) {
-	    $this->addFlash('error', 'Ez da herritarra aurkitu',['dni' => $numDocumento]);
-	    return $this->render('erroldaTxartela/error.html.twig',['dni' => $numDocumento]);
-	}
-	$emaitza = $erroldaService->erroldaBanakoa($request, $habitante);
+    public function erroldaBanakoaAction (Request $request ){
+//	$em = $this->getDoctrine()->getManager();
+//	$numDocumento = $request->get('numDocumento');
+//	$bilaketa = ['numDocumento' => $numDocumento];
+//	$habitante = $em->getRepository('AppBundle:Habitante')->findOneBy($bilaketa);
+//	if ($habitante == null ) {
+//	    $this->addFlash('error', 'Ez da herritarra aurkitu',['dni' => $numDocumento]);
+//	    return $this->render('erroldaTxartela/error.html.twig',['dni' => $numDocumento]);
+//	}
+//	$emaitza = $erroldaService->erroldaBanakoa($request, $habitante);
 	$view = View::create();
         $view->setData($emaitza);
         header( 'content-type: txt/html; charset=UTF-8' );

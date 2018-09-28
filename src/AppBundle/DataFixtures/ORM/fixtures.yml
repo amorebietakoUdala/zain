@@ -1,0 +1,16 @@
+AppBundle\Entity\Unit:
+    unit1:
+        name: horas
+        duration: 1
+    unit2:
+        name: días
+        duration: 24
+    unit3:
+        name: semanas
+        duration: 168
+    unit4:
+        name: meses
+        duration: 720
+    unit5:
+        name: años
+        duration: 8640

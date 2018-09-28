@@ -37,6 +37,9 @@
         "wiz/pdodblib-bundle": "dev-master"
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^3.0@dev",
+        "hautelook/alice-bundle": "^2.0@beta",
+        "nelmio/alice": "^3.1",
         "sensio/generator-bundle": "^3.0",
         "symfony/phpunit-bridge": "^4.1@dev"
     },

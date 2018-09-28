@@ -6,9 +6,8 @@ security:
 
     role_hierarchy:
         ROLE_API:         ROLE_API
-        ROLE_KONSULTA:    ROLE_KONTSULTA
-        ROLE_ADMIN:       ROLE_KONTSULTA, ROLE_ADMIN
-        ROLE_SUPER_ADMIN: [ROLE_API, ROLE_USER, ROLE_KONTSULTA, ROLE_ADMIN]
+        ROLE_ADMIN:       ROLE_ADMIN
+        ROLE_SUPER_ADMIN: [ROLE_API, ROLE_USER, ROLE_ADMIN]
 
     providers:
         fos_userbundle:
@@ -22,7 +21,7 @@ security:
                 path: fos_user_security_logout
                 target: fos_user_security_login
             form_login:
-                login_path: /%locale%/login
+                login_path: fos_user_security_login
                 check_path: fos_user_security_check
                 provider: fos_userbundle
                 csrf_token_generator: security.csrf.token_manager
@@ -31,8 +30,6 @@ security:
                 secret: '%secret%'
 
     access_control:
-        - { path: ^/errolda-txartela, role: ROLE_API }
-        - { path: ^/[a-z]+/biztanleak, role: ROLE_KONTSULTA }
         - { path: ^/[a-z]+/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin/, role: ROLE_ADMIN }
+        - { path: ^/[(es)|(eu)]/admin, role: ROLE_ADMIN }

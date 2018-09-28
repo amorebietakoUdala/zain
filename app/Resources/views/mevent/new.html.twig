@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{"mevent.new.izenburua" | trans | capitalize}}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('bower_components/jquery-ui/themes/base/jquery-ui.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('bower_components/fontawesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+	<div class="row">
+	    <div class="border border-l rounded col-6">
+		<div class="col">
+			<div class="text-center">
+			    <h2 class="text-primary">{{"mevent.new.izenburua" | trans | capitalize}} {{ "text.new" | trans | capitalize}}</h2>
+			    <hr class="mt-1 mb-1">
+			</div>
+			<div>
+{#			    {{ include('mevent/_form.html.twig',{'gordeBotoia': true }) }}
+#}
+			    {{ include('mevent/_form.html.twig',{'showSaveButton': true }) }}
+    			</div>
+			
+		</div>
+	    </div>
+	</div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" language="javascript">
+	$(document).ready(function(){
+	    
+	    $("#atzera").click(function() {
+		window.location.href=Routing.generate('admin_mevent_list',{'_locale': $("html").attr("lang") });
+	    });
+	});    
+    </script>
+{% endblock%}

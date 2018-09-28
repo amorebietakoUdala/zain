@@ -19,12 +19,17 @@ class AppKernel extends Kernel
 	    new FOS\RestBundle\FOSRestBundle(),
 	    new FOS\UserBundle\FOSUserBundle(),
 	    new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
-	    new WhiteOctober\TCPDFBundle\WhiteOctoberTCPDFBundle(),
+        new WhiteOctober\TCPDFBundle\WhiteOctoberTCPDFBundle(),
+        new SecIT\ImapBundle\ImapBundle(),
             new AppBundle\AppBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
-            $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
+	    $bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
+	    $bundles[] = new Nelmio\Alice\Bridge\Symfony\NelmioAliceBundle();
+	    $bundles[] = new Fidry\AliceDataFixtures\Bridge\Symfony\FidryAliceDataFixturesBundle();
+	    $bundles[] = new Hautelook\AliceBundle\HautelookAliceBundle();
+	    $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
 

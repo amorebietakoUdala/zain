@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{"mevent.new.izenburua" | trans | capitalize}}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('bower_components/jquery-ui/themes/base/jquery-ui.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('bower_components/fontawesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+
+{% block body %}
+
+   <div class="container-fluid">
+       {{ include('mevent/_form.html.twig',{'showSaveButton': true }) }}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" language="javascript">
+	$(document).ready(function(){
+	    $(".js-atzera-botoia").click(function() {
+		window.location.href=Routing.generate('admin_mevent_list',{'_locale': $("html").attr("lang") });
+	    });
+	});    
+    </script>
+{% endblock%}

@@ -1,12 +1,7 @@
-"messages.aplikazioa": Errolda kontsulta zerbitzua
-"Ez da herritarra aurkitu": "Ez da NAN {{ dni }} daukan herritarrik aurkitu."
+"messages.aplikazioa": ZAIN
+"mails.list.izenburua": "Alerten zerrenda"
+"messages.results0": "Ez da mezurik aurkitu"
 
-
-"search.izenburua": Erroldan bilaketa
-"button.bidali": Bidali
-"messages.results0": Ez da emaitzarik aurkitu
-"label.nombre": Izena
-"label.apellido1": Lehen Abizena
-"label.apellido2": Bigarren Abizena
-"label.direccion": Helbidea
-"link.irten": Irten
+"label.from": "Nork"
+"label.date": "Noiz"
+"label.subject": "Gaia"

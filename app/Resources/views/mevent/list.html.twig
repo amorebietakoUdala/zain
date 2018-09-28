@@ -1,0 +1,106 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{'mevent.list.izenburua' | trans }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('bower_components/bootstrap-table/dist/bootstrap-table.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('bower_components/jquery-ui/themes/base/jquery-ui.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('bower_components/fontawesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block message %}
+    {% for msg in app.session.flashBag.get('success') %}
+	<div class="alert alert-success margin-top-13">
+	    {{ msg | trans}}
+	</div>
+    {% endfor %}
+    {% for msg in app.session.flashBag.get('error') %}
+	<div class="alert alert-danger margin-top-13">
+	    {{ msg | trans}}
+	</div>
+    {% endfor %}
+{% endblock %}
+
+
+{% block body %}
+    <main>
+	<div class="container">
+	    <table id="taula" class="bootstrap-table mt-3">
+		<thead>
+		    <tr>
+			<th data-sortable="true">{{"label.name" | trans | capitalize}}</th>
+			<th data-sortable="true">{{"label.successCondition" | trans | capitalize}}</th>
+			<th data-sortable="true">{{"label.failureCondition" | trans | capitalize}}</th>
+			<th data-sortable="true">{{"label.frecuency" | trans | capitalize}}</th>
+			<th data-sortable="true">{{"label.unit" | trans | capitalize}}</th>
+			<th>{{ "tableheader.options" | trans | capitalize}}</th>
+		    </tr>
+		</thead>
+		<tbody>
+		    {% if mevents is defined and mevents | length > 0 %}
+			{% for mevent in mevents %}
+			<tr>
+			    <td>{{ mevent.name }}</td>
+			    <td>{{ mevent.successCondition }}</td>
+			    <td>{{ mevent.failureCondition }}</td>
+			    <td>{{ mevent.frecuency }}</td>
+			    <td>{{ mevent.unit }}</td>
+			    <td class="white-space-nowrap">
+				<a href="{{ path ('admin_mevent_show', {'id': mevent.id }) }}"><i class="fa fa-eye prefix" title="{{"icon.show" | trans | capitalize }}"></i></a>
+				    &nbsp;<a href="{{ path ('admin_mevent_edit', {'id': mevent.id }) }}"><i class="fa fa-edit prefix" title="{{"icon.edit" | trans | capitalize}}"></i></a>
+				    &nbsp;<a class="js-ezabatu_botoia" data-url="{{ path ('admin_mevent_delete', {'id': mevent.id }) }}" href="#"><i class="fa fa-trash prefix" title="{{"icon.delete" | trans | capitalize}}"></i></a>
+			    </td>
+			</tr>
+			{% endfor %}
+		    {% else %}
+			<tr><td colspan="6">{{"messages.results0" | trans }}</td></tr>
+		    {% endif %}
+		</tbody>
+	    </table>
+	    <span id="btn-berria" class="pull-right"><a href="{{ path('admin_mevent_new') }}" class="btn btn-primary fixed-bottom-right rounded-circle"><i class="fa fa-plus"></i></a></span>
+	</div>
+    </main>
+{% endblock %}
+
+{% block javascripts %}
+    {{  parent() }}
+    <script type="text/javascript" src="{{ asset('bower_components/bootstrap-table/dist/bootstrap-table.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bower_components/bootstrap-table/dist/extensions/export/bootstrap-table-export.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bower_components/bootstrap-table/dist/locale/bootstrap-table-es-ES.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bower_components/bootstrap-table/dist/locale/bootstrap-table-eu-EU.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bower_components/tableexport.jquery.plugin/tableExport.min.js') }}"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+	$('#taula').bootstrapTable({
+	        cache : false,
+		showExport: false,
+		exportTypes: {exportTypes:['excel']},
+		exportDataType: 'all',
+		exportOptions: {
+{#		    fileName: "eskakizunak",
+		    worksheetName: "test1",
+		    ignoreColumn: ['aukerak']
+#}		},
+		showColumns: false,
+		pagination: true,
+		search: true,
+		striped: true,
+		sortStable: true,
+		pageSize: 10,
+		pageList: [10,25,50,100],
+		sortable: true,
+		locale: 'es_{{ app.request.getLocale() | upper }}'
+	});
+	var $table = $('#taula');
+	$(function () {
+	    $('#toolbar').find('select').change(function () {
+		$table.bootstrapTable('destroy').bootstrapTable({
+		    exportDataType: $(this).val(),
+		});
+	    });
+	});
+    });
+    </script>
+    
+{% endblock javascripts %}
