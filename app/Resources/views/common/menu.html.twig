@@ -3,23 +3,32 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="{{ path("languageHome",{'_locale': app.request.locale })}}">{{ 'menu.home' | trans }}<span class="sr-only">(current)</span></a>
       </li>
 {#
       <li class="nav-item">
         <a class="nav-link" href="#">Link</a>
       </li>
 #}
-      <li class="nav-item dropdown">
+{% if is_granted('ROLE_ADMIN') %}
+{#    <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	    {{ "menu.administration" | trans | capitalize }}
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 	    <a class="dropdown-item" href="{{ path("admin_mevent_list")}}">{{ "menu.mevent" | trans | capitalize }}</a>
-          <a class="dropdown-item" href="#">{{ "menu.unit" | trans | capitalize }}</a>
+	    <a class="dropdown-item" href="{{ path("admin_event_list")}}">{{ "menu.event" | trans | capitalize }}</a>
         </div>
-      </li>
-{#
+    </li>
+#}
+    <li class="nav-item">
+	<a class="nav-link" href="{{ path("admin_mevent_list")}}">{{ "menu.mevents" | trans | capitalize }}</a>
+    </li>
+    <li class="nav-item">
+	<a class="nav-link" href="{{ path("admin_event_list")}}">{{ "menu.events" | trans | capitalize }}</a>
+    </li>
+{% endif %}
+      {#
       <li class="nav-item">
         <a class="nav-link disabled" href="#">Disabled</a>
       </li>

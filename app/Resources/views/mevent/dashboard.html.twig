@@ -1,0 +1,184 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{'mevent.list.izenburua' | trans }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('bower_components/bootstrap-table/dist/bootstrap-table.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('bower_components/jquery-ui/themes/base/jquery-ui.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('bower_components/fontawesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{#
+{% block message %}
+     {{ include('common/messages.html.twig') }}
+{% endblock %}
+#}
+{% block body %}
+    <main>
+	<div class="container">
+	    <div class="card">
+	      <h5 class="card-title text-center mt-1 border-bottom">{{ 'label.contadores' | trans }}:</h5>
+	      <div class="card-body p-1">
+		<ul class="d-flex justify-content-around list-unstyled">
+		    {% for key,value in counters %}
+			{% set status = key~'.color' %}
+			<a class="btnStatusSelection" href="#"><li><span><i class="fa fa-circle color-{{ status | trans }}" title="{{ key | trans }}"></i></span>&nbsp;{{ key | trans }}: {{ value }}</li></a>
+		    {% endfor %}
+		    <a id="btnResetFilter" href="#"><li><span><i class="fa fa-eraser" title="{{ 'button.reset' | trans | capitalize }}"></i></span>&nbsp;{{ 'button.reset' | trans | capitalize }}</li></a>
+		</ul>
+	      </div>
+	    </div>
+	</div>
+	<div class="container">
+	    <table id="taula" class="bootstrap-table mt-3">
+		<thead>
+		    <tr class="d-flex">
+			<th data-sortable="true">{{"label.name" | trans | capitalize}}</th>
+			<th data-sortable="true">{{"label.lastEventDate" | trans | capitalize}}</th>
+			<th data-sortable="true">{{"label.nextExpectedDate" | trans | capitalize}}</th>
+			<th data-sortable="true">{{"label.status" | trans | capitalize}}</th>
+			<th class="col-1">{{ "tableheader.options" | trans | capitalize}}</th>
+		    </tr>
+		</thead>
+		<tbody>
+		    {% if mevents is defined and mevents | length > 0 %}
+			{% for mevent in mevents %}
+			<tr>
+			    <td>{{ mevent.name }}</td>
+			    <td>
+				{% if mevent.lastEvent is defined and mevent.lastEvent != null %}
+				    {{ mevent.lastEvent.date | date('Y-m-d H:i:s') }}
+				{% else %}
+				    {{ 'No last event' | trans }}
+				{% endif %}
+			    </td>
+			    <td>
+				{{ mevent.expirationDate | date('Y-m-d H:i:s') }}
+			    </td>
+			    <td>
+				{% set status = mevent.testLastStatus() %}
+				{% set statusMessage = (constant('AppBundle\\Entity\\MonitorizableEvent::STATUS_MESSAGES')[status]) %}
+				{% if ( status == constant('AppBundle\\Entity\\MonitorizableEvent::STATUS_UNDEFINED') ) %}
+				    <i class="fa fa-circle color-blue" title="{{statusMessage | trans }}"></i>
+				{% elseif ( status == constant('AppBundle\\Entity\\MonitorizableEvent::STATUS_EXPIRED') ) %}
+				    <i class="fa fa-circle color-yellow" title="{{statusMessage | trans }}"></i>
+				{% elseif ( status == constant('AppBundle\\Entity\\MonitorizableEvent::STATUS_SUCCESS') ) %}
+				    <i class="fa fa-circle color-green" title="{{statusMessage | trans }}"></i>
+				{% elseif ( status == constant('AppBundle\\Entity\\MonitorizableEvent::STATUS_FAILURE') ) %}
+				    <i class="fa fa-circle color-red" title="{{statusMessage | trans }}"></i>
+				{% endif %}
+			    </td>
+			    <td class="white-space-nowrap">
+				    {% if (mevent.lastEvent != null ) %}
+					<a id="tr{{loop.index}}" class="trigger" onclick="showDialog('ov{{loop.index}}');" href="#"><i class="fa fa-eye prefix" title="{{"icon.show" | trans | capitalize }}"></i></a>
+					&nbsp;<a href="{{ path ('admin_mevent_try', {'id': mevent.id, event: mevent.lastEvent.id }) }}"><i class="fa fa-edit prefix" title="{{"icon.edit" | trans | capitalize}}"></i></a>
+				    {% endif %}
+{#				    &nbsp;<a class="js-ezabatu_botoia" data-url="{{ path ('admin_mevent_delete', {'id': mevent.id }) }}" href="#"><i class="fa fa-trash prefix" title="{{"icon.delete" | trans | capitalize}}"></i></a>
+				    &nbsp;<a class="js-bilatu_botoia" href="{{ path ('admin_mevent_search', {'id': mevent.id }) }}"><i class="fa fa-search prefix" title="{{"icon.search" | trans | capitalize}}"></i></a>
+#}			    </td>
+			</tr>
+			{% endfor %}
+		    {% else %}
+			<tr><td class="text-center" colspan="7">{{"messages.results0" | trans }}</td></tr>
+		    {% endif %}
+	    </tbody>
+	    </table>
+	{% if mevents is defined and mevents | length > 0 %}
+	    {% for mevent in mevents %}
+	    <div id="ov{{loop.index}}" class="overlay" style="display:none">
+		<div id="pp{{loop.index}}" class="popup">
+		     <div id="cl{{loop.index}}" class="close">X</div>
+		     {% if mevent.lastEvent != null %}
+			{% if mevent.lastEvent.details != null %}
+			    <div id="event-subject" class="container mt-5">
+				<b>{{ "label.subject" | trans }}:</b> {{mevent.lastEvent.subject | replace({(mevent.successCondition):'<span class="highlight">'~(mevent.successCondition)~'</span>'}) | raw }}
+			    </div>
+			    <div id="event-details" class="container">
+				{%set event = mevent.lastEvent %}
+				{% set body = ( event.details ) | striptags('<table><th><tr><td><p><b><span><a><br><blockguote>') | raw %}
+				{% set highlighted = body | replace ({(mevent.successCondition):'<span class="highlight">'~(mevent.successCondition)~'</span>'}) %}
+				{% if failureCondition is defined and failureCondition != null %}
+				    {% set highlighted = highlighted | replace ({(mevent.failureCondition):'<span class="highlight-danger">'~(mevent.failureCondition)~'</span>'}) %}
+				{% endif %}
+				{% if ( event.type == "text") %}
+				    <pre>
+					{{ highlighted | raw }}
+				    </pre>
+				{% else %}
+				    {{ highlighted | raw }}
+				{% endif %}
+			    </div>
+			{% else %}
+			    <p style="text-align: center">{{ 'messages.nodetails' | trans }}</p>
+		       {% endif%}
+		    {% endif%}
+		</div>
+	    </div>
+	    {% endfor %}
+	{% endif %}
+{#	    <span id="btn-berria" class="pull-right"><a href="{{ path('admin_mevent_new') }}" class="btn btn-primary fixed-bottom-right rounded-circle"><i class="fa fa-plus"></i></a></span>
+#}	</div>
+    </main>
+{% endblock %}
+
+{% block javascripts %}
+    {{  parent() }}
+    <script type="text/javascript" src="{{ asset('bower_components/bootstrap-table/dist/bootstrap-table.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bower_components/bootstrap-table/dist/extensions/export/bootstrap-table-export.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bower_components/bootstrap-table/dist/locale/bootstrap-table-es-ES.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bower_components/bootstrap-table/dist/locale/bootstrap-table-eu-EU.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bower_components/tableexport.jquery.plugin/tableExport.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/dashboard.js') }}"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+	$('#taula').bootstrapTable({
+	        cache : false,
+		showExport: false,
+		exportTypes: {exportTypes:['excel']},
+		exportDataType: 'all',
+		exportOptions: {
+{#		    fileName: "eskakizunak",
+		    worksheetName: "test1",
+		    ignoreColumn: ['aukerak']
+#}		},
+		showColumns: false,
+		pagination: true,
+		search: true,
+		striped: true,
+		sortStable: true,
+		pageSize: 100,
+		pageList: [10,25,50,100],
+		sortable: true,
+		locale: 'es_{{ app.request.getLocale() | upper }}'
+	});
+	var $table = $('#taula');
+	$(function () {
+	    $('#toolbar').find('select').change(function () {
+		$table.bootstrapTable('destroy').bootstrapTable({
+		    exportDataType: $(this).val(),
+		});
+	    });
+	});
+	$('.overlay').hide();
+	$('.close').click(function(e) {
+	    hideDialog(e);
+	});
+	var view = View();
+	view.btnStatusSelectionClick();
+	view.btnResetFilterClick();
+    });
+    function showDialog (id) {
+	$('#'+id).fadeIn(300);
+	$('.bootstrap-table').hide();
+    }
+    function hideDialog (e) {
+	e.preventDefault();
+	number = e.target.id.slice(2);
+	$('#ov'+number).fadeOut(300);
+	$('.bootstrap-table').show();
+    }
+    
+    </script>
+    
+{% endblock javascripts %}

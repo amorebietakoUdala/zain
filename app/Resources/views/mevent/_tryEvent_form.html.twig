@@ -1,0 +1,24 @@
+	{{ form_start(form, {'attr': {'class': 'container form-group',
+						 'novalidate': 'novalidate'
+						} 
+				       }) }}
+	{{ form_errors(form) }}
+		<div class="row">
+		    <div class="col-lg-4 col-md-2 flex-row-nowrap flex-align-items-baseline">
+			{{ form_label(form.successCondition) }}
+			{{ form_widget(form.successCondition, { 'attr': { 'class' : '' } }) }}
+			{{ form_errors(form.successCondition) }}
+		    </div>
+		    <div class="col-lg-4 col-md-2 flex-row-nowrap flex-align-items-baseline">
+			{{ form_label(form.failureCondition) }}
+			{{ form_widget(form.failureCondition, { 'attr': { 'class' : '' } }) }}
+			{{ form_errors(form.failureCondition) }}
+		    </div>
+		    <div class="col-lg-2 col-md-2 flex-row-nowrap flex-align-items-baseline">
+			{{ form_label(form.save) }}
+			{{ form_widget(form.save, { 'attr': { 'class' : '' } }) }}&nbsp;
+			{{ form_label(form.test) }}
+			{{ form_widget(form.test, { 'attr': { 'class' : '' } }) }}
+		    </div>
+		</div>
+	{{ form_end(form) }}

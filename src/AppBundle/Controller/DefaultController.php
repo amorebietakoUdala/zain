@@ -25,36 +25,33 @@ use PhpImap\IncomingMailHeader;
 
 class DefaultController extends Controller {
 
-     /**
-     * @Route("/", name="homepage", options={"expose" = true})
-     */
+    /**
+    * @Route("/", name="homepage", options={"expose" = true})
+    */
     public function homeAction (Request $request){
-        try {
-//            $isConnectable = $this->get('secit.imap')->testConnection('office365');
-            $mailbox = $this->get('secit.imap')->get('office365');
-            $mailsIds = $mailbox->searchMailbox('ALL');
-
-	    $mail1 = new IncomingMailHeader();
-	    $mail1->date = '2018-09-24';
-	    $mail1->fromName = 'Iker Bilbao';
-	    $mail1->subject = 'Prueba!!!!';
-	    $mail = new IncomingMail();
-	    $mail->setHeader($mail1);
-	    
-            // Get the first message and save its attachment(s) to disk:
-	    $mails = [];
-	    $mails[] = $mail;
-	    
-//            foreach ($mailsIds as $mailId) {
-//                $mails[] = $mailbox->getMail($mailId);
-//            }
-            return $this->render('/mails/list.html.twig', [
-                'mails' => $mails
-            ]);
-        } catch (\Exception $exception) {
-            dump($exception);die;
-            }
+	return $this->redirectToRoute('admin_mevent_dashboard',['_locale' => 'eu']);
     }
 
+//    /**
+//    * @Route("/{url}", name="remove_trailing_slash",
+//    *     requirements={"url" = ".+\/$"})
+//    */
+//    public function removeTrailingSlashAction(Request $request)
+//    {
+//        $pathInfo = $request->getPathInfo();
+//        $requestUri = $request->getRequestUri();
+//
+//        $url = str_replace($pathInfo, rtrim($pathInfo, ' /'), $requestUri);
+//
+//        // 308 (Permanent Redirect) is similar to 301 (Moved Permanently) except
+//        // that it does not allow changing the request method (e.g. from POST to GET)
+//        return $this->redirect($url, 308);
+//    }
 
+    /**
+    * @Route("/{_locale}", name="languageHome", options={"expose" = true})
+    */
+    public function languageHomeAction (Request $request){
+	return $this->redirectToRoute('admin_mevent_dashboard',['_locale' => $request->getLocale()]);
+    }
 }

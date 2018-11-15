@@ -13,7 +13,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use \Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use AppBundle\Entity\MonitorizableEvent;
 
 
@@ -22,56 +22,27 @@ use AppBundle\Entity\MonitorizableEvent;
  *
  * @author ibilbao
  */
-class MonitorizableEventForm extends AbstractType {
+
+class EventTryForm extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
 	$builder
-	    ->add('name', null, [
-		'constraints' => [new NotBlank(),],
-		'label' => 'label.name',
-		'translation_domain' => 'messages'
-	    ])
 	    ->add('successCondition', null, [
-		'constraints' => [],
 		'label' => 'label.successCondition',
 		'translation_domain' => 'messages'
 	    ])
-	    ->add('failureCondition',null, [
-		'required' => false,
+	    ->add('failureCondition', null, [
 		'label' => 'label.failureCondition',
 		'translation_domain' => 'messages'
 	    ])
-	    ->add('filterCondition',null, [
-		'required' => false,
-		'label' => 'label.filterCondition',
+	    ->add('save', ButtonType::class, [
+		'label' => 'button.save',
 		'translation_domain' => 'messages'
 	    ])
-	    ->add('frecuency',null, [
-		'required' => false,
-		'attr' => ['min' => 1, 
-			   'max' =>5], 
-		'label' => 'label.frecuency',
+	    ->add('test', ButtonType::class, [
+		'label' => 'button.test',
 		'translation_domain' => 'messages'
 	    ])
-	    ->add('unit', ChoiceType::class, [
-		'required' => true,
-		'expanded'=> false,
-		'label' => 'label.unit',
-		'choices' => [
-		    'label.hours' => 1,
-		    'label.days' => 2,
-		    'label.weeks' => 3,
-		    'label.months' => 4,
-		    'label.years' => 5,
-		],
-		'translation_domain' => 'messages'
-	    ])
-//
-//	    ->add('save', SubmitType::class, [
-//		'label' => 'label.save',
-//		'attr' => ['class' => 'btn btn-primary'],
-//		'translation_domain' => 'messages'
-//	    ])
 	;
     }
 

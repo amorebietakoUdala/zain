@@ -20,7 +20,8 @@
     "jspdf": "^1.0.1",
     "bootstrap4": "bootstrap#4.1.3",
     "popper.js": "1.14.3",
-    "tableexport.jquery.plugin": "1.9.4"
+    "tableexport.jquery.plugin": "1.9.4",
+    "gijgo": "^1.9.10"
   },
   "devDependencies": {},
   "description": "Prototipo Zerbitzuak",

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{"mevent.new.izenburua" | trans | capitalize}}{% endblock %}
+{% block title %}{{"event.show.izenburua" | trans | capitalize}}{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -10,19 +10,19 @@
 
 
 {% block body %}
-
    <div class="container-fluid">
-       {{ include('mevent/_form.html.twig',{'showSaveButton': true }) }}
-    </div>
-{% endblock %}
+       {{ include('event/_form.html.twig',{'showSaveButton': false }) }}
+    </div>{% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ asset('js/mevent_new.js') }}"></script>
-    <script>
-    $(document).ready(function(){
-    	var view = View();
-	view.onBtnCancelClick();
-    });
+    <script type="text/javascript" language="javascript">
+	$(document).ready(function(){
+	    $(".js-btn_cancel").click(function(e) {
+		e.preventDefault();
+		var url = $(e.currentTarget).data('url');
+		document.location.href= url;
+	    });
+	});    
     </script>
 {% endblock%}

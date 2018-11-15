@@ -1,11 +1,10 @@
-{{ form_start(form, {'attr': {'class': 'container form-group',
+{{ form_start(form, {'attr': {'class': 'container form-group form-inline',
 					 'novalidate': 'novalidate'
 					} 
 			       }) }}
 	<div class="row">
-	    <div class="container">
-	    {{ form_widget(form, {'attr': {'class': ''}
-			    }) }}
+	    {{ form_widget(form, {'attr': {'class': 'container form-row'}
+			    })) }}
 {#
 	    
 	    <div class="col-lg-3">
@@ -21,12 +20,11 @@
 		{{ form_widget(bilatzaileaForm.apellido2, { 'attr': { 'class' : 'form-control' } }) }}
 	    </div>
 #}
-	    </div>
 	</div>
 	<div class="row">
 	    {% if ( showSaveButton == true ) %}
 		<button class="btn btn-primary mt-1" type="submit">{{'button.save' | trans}}</button>&nbsp;
 	    {% endif %}
-	    <button type="button" class="btn btn-secondary mt-1 js-btn_cancel" data-url="{{ path("admin_mevent_list")}}">{{ "button.cancel" | trans | capitalize }}</button>
+	    <button class="btn btn-secondary mt-1 js-btn_cancel" data-url="{{ path ('admin_event_list',{'_locale': app.request.locale}) }}">{{ "button.cancel" | trans | capitalize }}</button>
 	<div>
 {{ form_end(form) }}

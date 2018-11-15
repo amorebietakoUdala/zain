@@ -18,3 +18,9 @@
 /var
 /nbproject/private/
 /app/var/
+/sh/zain.cnf
+/sh/backup-zain-garapenak.sh
+/sh/import-zain.sh
+/app/DoctrineMigrations/
+/sh/zain.sql.gz
+/sh/zain.20181106_105031.sql

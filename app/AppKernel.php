@@ -18,9 +18,12 @@ class AppKernel extends Kernel
 	    new JMS\SerializerBundle\JMSSerializerBundle(),
 	    new FOS\RestBundle\FOSRestBundle(),
 	    new FOS\UserBundle\FOSUserBundle(),
+	    new FR3D\LdapBundle\FR3DLdapBundle(),
+//	    new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
 	    new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
-        new WhiteOctober\TCPDFBundle\WhiteOctoberTCPDFBundle(),
-        new SecIT\ImapBundle\ImapBundle(),
+	    new WhiteOctober\TCPDFBundle\WhiteOctoberTCPDFBundle(),
+	    new SecIT\ImapBundle\ImapBundle(),
+	    new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new AppBundle\AppBundle(),
         ];
 

@@ -18,11 +18,11 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript" language="javascript">
-	$(document).ready(function(){
-	    $(".js-atzera-botoia").click(function() {
-		window.location.href=Routing.generate('admin_mevent_list',{'_locale': $("html").attr("lang") });
-	    });
-	});    
+    <script type="text/javascript" src="{{ asset('js/mevent_new.js') }}"></script>
+    <script>
+    $(document).ready(function(){
+    	var view = View();
+	view.onBtnCancelClick();
+    });
     </script>
 {% endblock%}

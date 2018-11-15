@@ -51,8 +51,10 @@ doctrine:
         dbname: "%database_name%"
         user: "%database_user%"
         password: "%database_password%"
-        charset: UTF8
-
+        charset: utf8mb4
+        default_table_options:
+            charset: utf8mb4
+            collate: utf8mb4_unicode_ci
   orm:
     auto_generate_proxy_classes: "%kernel.debug%"
     naming_strategy: doctrine.orm.naming_strategy.underscore
@@ -115,5 +117,27 @@ imap:
       mailbox: "%imap_mailbox%"
       username: "%mailer_user%"
       password: "%mailer_password%"
-      attachments_dir: "%kernel.root_dir%/var/attachments"
-#      server_encoding: "UTF-8"
+      attachments_dir: "%kernel.root_dir%/../var/attachments"
+      server_encoding: "UTF-8"
+
+fr3d_ldap:
+   driver:
+      host: '%ldap_host%'
+      username: '%ldap_user%'
+      password: '%ldap_password%'
+      accountDomainName: '%ldap_accountDomainName%'
+   user:
+      usernameAttribute: samaccountname
+      baseDn: '%ldap_users_dn%'
+      filter: (&(ObjectClass=Person))
+      attributes:
+         - { ldap_attr: samaccountname,  user_method: setUsername }
+         - { ldap_attr: mail, user_method: setEmail }
+         - { ldap_attr: cn, user_method: setName }
+         
+doctrine_migrations:
+    dir_name: "%kernel.root_dir%/DoctrineMigrations"
+    namespace: Application\Migrations
+    table_name: migration_versions
+    name: Application Migrations
+    organize_migrations: false # Version >=1.2 Possible values are: "BY_YEAR", "BY_YEAR_AND_MONTH", false

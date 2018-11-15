@@ -19,3 +19,9 @@ parameters:
     secret: ThisTokenIsNotSoSecretChangeIt
 
     imap_mailbox: "{outlook.office365.com:993/imap/ssl/novalidate-cert}INBOX"
+
+    ldap_host: ldap.local.com
+    ldap_user: ldap_user
+    ldap_password: ldap_password
+    ldap_users_dn: OU=Users,DC=COMPANY,DC=com
+    ldap_accountDomainName: COMPANY

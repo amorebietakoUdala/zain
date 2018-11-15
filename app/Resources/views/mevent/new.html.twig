@@ -11,15 +11,13 @@
 {% block body %}
     <div class="container">
 	<div class="row">
-	    <div class="border border-l rounded col-6">
+	    <div class="border border-l rounded col">
 		<div class="col">
 			<div class="text-center">
-			    <h2 class="text-primary">{{"mevent.new.izenburua" | trans | capitalize}} {{ "text.new" | trans | capitalize}}</h2>
+			    <h2 class="text-primary">{{"mevent.new.title" | trans | capitalize}}</h2>
 			    <hr class="mt-1 mb-1">
 			</div>
 			<div>
-{#			    {{ include('mevent/_form.html.twig',{'gordeBotoia': true }) }}
-#}
 			    {{ include('mevent/_form.html.twig',{'showSaveButton': true }) }}
     			</div>
 			
@@ -31,12 +29,11 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript" language="javascript">
-	$(document).ready(function(){
-	    
-	    $("#atzera").click(function() {
-		window.location.href=Routing.generate('admin_mevent_list',{'_locale': $("html").attr("lang") });
-	    });
-	});    
+    <script type="text/javascript" src="{{ asset('js/mevent_new.js') }}"></script>
+    <script>
+    $(document).ready(function(){
+    	var view = View();
+	view.onBtnCancelClick();
+    });
     </script>
 {% endblock%}
