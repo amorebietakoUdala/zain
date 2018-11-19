@@ -90,7 +90,7 @@
         private $unit;
 	
 	/**
-	* @ORM\OneToMany (targetEntity="Event", mappedBy="monitorizableEvent", cascade={"persist", "remove"})
+	* @ORM\OneToMany (targetEntity="Event", mappedBy="monitorizableEvent", cascade={"persist"})
 	* @ORM\JoinColumn(nullable=true);
 	*/
 	private $events;
@@ -223,24 +223,12 @@
 		$date = $lastEvent->getDate();
 		$interval = date_interval_create_from_date_string($frecuency);
 		$estimated_date = new DateTime($date->format(\DateTime::ISO8601));
-//		$estimated_date->setTimezone(new \DateTimeZone ('Europe/Madrid'));
 		$estimated_date->add($interval);
-//		dump($interval,$date,$estimated_date);die;
 		return $estimated_date;
 	    } else {
 		return date_add(new \DateTime(), date_interval_create_from_date_string($frecuency));
 	    }
 	}
-	
-//	public function testFilter (Event $event) {
-//	    parse_str($this->getFilterCondition(),$criteria);
-//	    dump($criteria);die;
-//	    $patternFilter=$this->__buildRexEpr($this->getFilterCondition());
-//	    $target = strip_tags ( $event->getSubject().$event->getDetails() );
-//	    $test = preg_match($criteria, $target, $matchFilter);
-////	    dump($this->getSuccessCondition(),$test,$matchFilter);die;
-//	    return $test;
-//	}
 	
 	public function testStatus (Event $event = null) {
 	    if ($event == null ) {

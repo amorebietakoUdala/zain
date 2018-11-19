@@ -195,15 +195,12 @@ class MonitorizableEventController extends Controller {
      * @Route("/{id}/match/{event}", name="admin_mevent_match", options={"expose" = true})
      */
     public function matchAction (Request $request, MonitorizableEvent $mevent, Event $event){
-	$form = $this->createForm(EventSearchForm::class);
-	
 	$em = $this->getDoctrine()->getManager();
-	$event->setMEvent($mevent);
+	$event->setMonitorizableEvent($mevent);
 	$em->persist($event);
 	$em->flush();
 
 	$this->addFlash('success', 'messages.eventMatched');
-
 	return $this->redirectToRoute('admin_mevent_search',[
 	    'id' => $mevent->getId()
 	]);
