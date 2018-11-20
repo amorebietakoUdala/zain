@@ -138,7 +138,7 @@
 	    return $this->monitorizableEvent;
 	}
 
-	public function setMonitorizableEvent(MonitorizableEvent $monitorizableEvent) {
+	public function setMonitorizableEvent(MonitorizableEvent $monitorizableEvent = null) {
 	    $this->monitorizableEvent = $monitorizableEvent;
 	}
 	
