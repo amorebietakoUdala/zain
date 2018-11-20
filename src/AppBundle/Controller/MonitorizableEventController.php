@@ -113,6 +113,11 @@ class MonitorizableEventController extends Controller {
      */
     public function deleteAction (Request $request, MonitorizableEvent $mevent){
 	    $em = $this->getDoctrine()->getManager();
+	    $events = $mevent->getEvents();
+	    foreach ($events as $event) {
+		$event->setMonitorizableEvent(null);
+		$em->persist($event);
+	    }
 	    $em->remove($mevent);
 	    $em->flush();
 	    $this->addFlash('success', 'messages.deleted');

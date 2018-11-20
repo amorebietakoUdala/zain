@@ -90,7 +90,7 @@
         private $unit;
 	
 	/**
-	* @ORM\OneToMany (targetEntity="Event", mappedBy="monitorizableEvent", cascade={"persist"})
+	* @ORM\OneToMany (targetEntity="Event", mappedBy="monitorizableEvent", cascade={"persist", "detach"})
 	* @ORM\JoinColumn(nullable=true);
 	*/
 	private $events;
@@ -170,7 +170,7 @@
 
 	public function removeEvents(Event $event)
 	{
-	    $this->eevents->removeElement($event);
+	    $this->events->removeElement($event);
 	}
 	
 	/**
