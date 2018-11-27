@@ -30,7 +30,12 @@ class CheckMailCommand extends ContainerAwareCommand
 	$mailId = $input->getArgument('mailId');
 	$mailbox = $this->getContainer()->get('secit.imap')->get('office365');
 	$mail = $mailbox->getMail($mailId);
+	dump($mail);
+	$output->writeln(mb_detect_encoding($mail->textHtml));
 	$event = Event::__parseEvent($mail);
+	$em = $this->getContainer()->get('doctrine.orm.entity_manager');
+//	$em->persist($event);
+//	$em->flush();
 	dump($event);
 	$output->writeln($mailId);
     }
