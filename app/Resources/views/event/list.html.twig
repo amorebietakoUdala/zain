@@ -25,6 +25,7 @@
 			<th data-sortable="true">{{"label.fromAddress" | trans | capitalize}}</th>
 			<th data-sortable="true">{{"label.subject" | trans | capitalize}}</th>
 			<th data-sortable="true">{{"label.mailId" | trans | capitalize}}</th>
+			<th data-sortable="true">{{"label.monitorized" | trans | capitalize}}</th>
 			<th>{{ "tableheader.options" | trans | capitalize}}</th>
 		    </tr>
 		</thead>
@@ -37,6 +38,11 @@
 			    <td>{{ event.fromAddress }}</td>
 			    <td>{{ event.subject }}</td>
 			    <td>{{ event.mailId }}</td>
+			    <td>
+				{% if event.monitorizableEvent is not null %}
+				    <i class="fa fa-check color-green" title="{{"icon.monitor" | trans | capitalize}}"></i>
+				{% endif %}
+			    </td>
 			    <td class="white-space-nowrap">
 {#				<a href="{{ path ('admin_mevent_show', {'id': mevent.id }) }}"><i class="fa fa-eye prefix" title="{{"icon.show" | trans | capitalize }}"></i></a>
 				    &nbsp;<a href="{{ path ('admin_mevent_edit', {'id': mevent.id }) }}"><i class="fa fa-edit prefix" title="{{"icon.edit" | trans | capitalize}}"></i></a>

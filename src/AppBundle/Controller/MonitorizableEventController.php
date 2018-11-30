@@ -182,7 +182,7 @@ class MonitorizableEventController extends Controller {
 //	    dump($mevent,$event,$findSuccess, $findFailure);die;
 	    return $this->render('mevent/_tryEvent.html.twig', [
 		'form' => $form->createView(),
-		'mevent' => $mevent,
+		'mevent' => $criteria,
 		'event' => $event,
 		'findSuccess' => $findSuccess,
 		'findFailure' => $findFailure,

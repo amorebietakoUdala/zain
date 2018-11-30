@@ -40,14 +40,12 @@
 	{% endif %}
 	{% if event is defined %}
 	<div id="event-subject" class="container mt-5">
-	    <b>{{ "label.subject" | trans }}:</b> {{event.subject | replace({(mevent.successCondition):'<span class="highlight">'~(mevent.successCondition)~'</span>'}) | raw }}
+	    {% set highlighted_subject = event.subject | highlight ({(mevent.successCondition): 'highlight',(mevent.failureCondition): 'highlight-danger'}) %}
+	    <b>{{ "label.subject" | trans }}:</b> {{ highlighted_subject | raw }}
 	</div>
 	<div id="event-details" class="container">
 	    {% set body = ( event.details ) | striptags('<table><th><tr><td><p><b><span><a><br><blockguote>') | raw %}
-	    {% set highlighted = body | replace ({(mevent.successCondition):'<span class="highlight">'~(mevent.successCondition)~'</span>'}) %}
-	    {% if failureCondition is defined and failureCondition != null %}
-		{% set highlighted = highlighted | replace ({(mevent.failureCondition):'<span class="highlight-danger">'~(mevent.failureCondition)~'</span>'}) %}
-	    {% endif %}
+	    {% set highlighted = body | highlight ({(mevent.successCondition): 'highlight',(mevent.failureCondition): 'highlight-danger'}) %}
 	    {% if ( event.type == "text") %}
 		<pre>
 		    {{ highlighted | raw }}
