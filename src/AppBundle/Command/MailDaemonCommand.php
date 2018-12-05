@@ -36,6 +36,7 @@ class MailDaemonCommand extends ContainerAwareCommand
 	}
 	$matchEventsService = new MatchEventsService($em,$output);
 	while (true) {
+	    $isConnectable = false;
 	    try {
 		$isConnectable = $this->getContainer()->get('secit.imap')->testConnection('office365', true);
 	    } catch (\Exception $exception) {
