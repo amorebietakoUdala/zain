@@ -34,9 +34,29 @@ class MailDaemonCommand extends ContainerAwareCommand
 	} else {
 	    $lastMaxMailId = 0;
 	}
-	$mailbox = $this->getContainer()->get('secit.imap')->get('office365');
 	$matchEventsService = new MatchEventsService($em,$output);
 	while (true) {
+	    try {
+		$isConnectable = $this->getContainer()->get('secit.imap')->testConnection('office365', true);
+	    } catch (\Exception $exception) {
+		$output->writeln("EXCEPTION: Can't connect to Mail server!!!");
+		$output->writeln("EXCEPTION: ".$exception->getMessage());
+		$output->writeln("Retrying in one minute...");
+		sleep(1*60); // Itxoin minutu bat eta berriro saiatu.
+	    }
+	    while (!$isConnectable) {
+		try {
+		    $isConnectable = $this->getContainer()->get('secit.imap')->testConnection('office365', true);
+		} catch (\Exception $exception) {
+		    $output->writeln("EXCEPTION: Can't connect to Mail server!!!");
+		    $output->writeln("EXCEPTION: ".$exception->getMessage());
+		    $output->writeln("Retrying in one minute...");
+		    sleep(1*60); // Itxoin minutu bat eta berriro saiatu.
+		}
+	    }
+	    $output->writeln("Test Connection Successfull.");
+	    $mailbox = $this->getContainer()->get('secit.imap')->get('office365');
+	    $output->writeln("Connected.");
 	    $mailsIds = $mailbox->searchMailbox('ALL');
 	    $eventsAdded = 0;
 	    foreach ($mailsIds as $mailId) {
