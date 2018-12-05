@@ -56,32 +56,38 @@ class MailDaemonCommand extends ContainerAwareCommand
 		}
 	    }
 	    $output->writeln("Test Connection Successfull.");
-	    $mailbox = $this->getContainer()->get('secit.imap')->get('office365');
-	    $output->writeln("Connected.");
-	    $mailsIds = $mailbox->searchMailbox('ALL');
-	    $eventsAdded = 0;
-	    foreach ($mailsIds as $mailId) {
-		if ($mailId > $lastMaxMailId ) {
-		    $mail = $mailbox->getMail($mailId);
-		    $mailbox->markMailAsUnread($mailId);
-		    $output->writeln($mailId);
-		    $output->writeln($mail->date);
-		    $event = Event::__parseEvent($mail);
-		    $em->persist($event);
-		    $em->flush();
-		    $eventsAdded++;
+	    try {
+		$mailbox = $this->getContainer()->get('secit.imap')->get('office365');
+		$output->writeln("Connected.");
+		$mailsIds = $mailbox->searchMailbox('ALL');
+		$eventsAdded = 0;
+		foreach ($mailsIds as $mailId) {
+		    if ($mailId > $lastMaxMailId ) {
+			$mail = $mailbox->getMail($mailId);
+			$mailbox->markMailAsUnread($mailId);
+			$output->writeln($mailId);
+			$output->writeln($mail->date);
+			$event = Event::__parseEvent($mail);
+			$em->persist($event);
+			$em->flush();
+			$eventsAdded++;
+		    }
 		}
+		if ( count($mailsIds) > 0 ) {
+		    $lastMaxMailId = max($mailsIds);
+		}
+		$output->writeln('New Events:'.$eventsAdded);
+		$output->writeln('Matching Events...');
+		$matchEventsService->execute();
+		$output->writeln('Events Matched.');
+		$output->writeln('Going To Sleep...');
+
+		sleep(5*60); // Bost minuturo
+	    } catch (\Exception $exception) {
+		$output->writeln("EXCEPTION: ".$exception->getMessage());
+		$output->writeln("Retrying in one minute...");
+		sleep(1*60); // Itxoin minutu bat eta berriro saiatu.
 	    }
-	    if ( count($mailsIds) > 0 ) {
-		$lastMaxMailId = max($mailsIds);
-	    }
-	    $output->writeln('New Events:'.$eventsAdded);
-	    $output->writeln('Matching Events...');
-	    $matchEventsService->execute();
-	    $output->writeln('Events Matched.');
-	    $output->writeln('Going To Sleep...');
-	    
-	    sleep(5*60); // Bost minuturo
 	}
 	$output->writeln("Daemon's End");
     }
