@@ -24,6 +24,16 @@ class MailDaemonCommand extends ContainerAwareCommand
         ;
     }
 
+    private static function getEntityManager() {
+      if (!self::$entityManager->isOpen()) {
+	self::$entityManager = self::$entityManager->create(
+	  self::$entityManager->getConnection(), self::$entityManager->getConfiguration());
+      }
+
+      return self::$entityManager;
+    }
+
+    
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 	$output->writeln("Daemon's Start");
@@ -34,7 +44,6 @@ class MailDaemonCommand extends ContainerAwareCommand
 	} else {
 	    $lastMaxMailId = 0;
 	}
-	$matchEventsService = new MatchEventsService($em,$output);
 	while (true) {
 	    $isConnectable = false;
 	    try {
@@ -61,7 +70,9 @@ class MailDaemonCommand extends ContainerAwareCommand
 		$output->writeln("Connected.");
 		$mailsIds = $mailbox->searchMailbox('ALL');
 		$eventsAdded = 0;
+		$em = $this->getContainer()->get('doctrine.orm.entity_manager');
 		foreach ($mailsIds as $mailId) {
+		    $output->writeln("MailId: ".$mailId." LastMaxMailId: ".$lastMaxMailId);
 		    if ($mailId > $lastMaxMailId ) {
 			$mail = $mailbox->getMail($mailId);
 			$mailbox->markMailAsUnread($mailId);
@@ -69,15 +80,16 @@ class MailDaemonCommand extends ContainerAwareCommand
 			$output->writeln($mail->date);
 			$event = Event::__parseEvent($mail);
 			$em->persist($event);
-			$em->flush();
 			$eventsAdded++;
 		    }
 		}
+		$em->flush();
 		if ( count($mailsIds) > 0 ) {
 		    $lastMaxMailId = max($mailsIds);
 		}
 		$output->writeln('New Events:'.$eventsAdded);
 		$output->writeln('Matching Events...');
+		$matchEventsService = new MatchEventsService($em,$output);
 		$matchEventsService->execute();
 		$output->writeln('Events Matched.');
 		$output->writeln('Going To Sleep...');
@@ -85,8 +97,14 @@ class MailDaemonCommand extends ContainerAwareCommand
 		sleep(5*60); // Bost minuturo
 	    } catch (\Exception $exception) {
 		$output->writeln("EXCEPTION: ".$exception->getMessage());
+		$output->writeln("Resetting EntityManager...");
+		// Birsortu EntityManager badaezpada, 
+		$this->getContainer()->get('doctrine')->resetManager();
+		$em = $this->getContainer()->get('doctrine')->getManager();
+		$output->writeln("Reset Done...");
 		$output->writeln("Retrying in one minute...");
 		sleep(1*60); // Itxoin minutu bat eta berriro saiatu.
+
 	    }
 	}
 	$output->writeln("Daemon's End");
