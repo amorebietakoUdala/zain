@@ -79,8 +79,13 @@ class MailDaemonCommand extends ContainerAwareCommand
 			$output->writeln($mailId);
 			$output->writeln($mail->date);
 			$event = Event::__parseEvent($mail);
-			$em->persist($event);
-			$eventsAdded++;
+			try {
+			    $em->persist($event);
+			    $eventsAdded++;
+			} catch (\Exception $exception) {
+			    $output->writeln("EXCEPTION: ".$exception->getMessage());
+			    $output->writeln("Message: ". $mailId. " skipped." );
+			}
 		    }
 		}
 		$em->flush();
