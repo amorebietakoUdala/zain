@@ -45,7 +45,8 @@
         "hautelook/alice-bundle": "^2.0@beta",
         "nelmio/alice": "^3.1",
         "sensio/generator-bundle": "^3.0",
-        "symfony/phpunit-bridge": "^4.1@dev"
+        "symfony/phpunit-bridge": "^4.1@dev",
+        "theofidry/alice-data-fixtures": "^1.0@beta"
     },
     "scripts": {
         "symfony-scripts": [
