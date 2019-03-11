@@ -27,5 +27,8 @@
   "description": "Prototipo Zerbitzuak",
   "license": "MIT",
   "homepage": "public_html/index.html",
-  "private": true
+  "private": true,
+  "resolutions": {
+    "jquery": ">=1.9.1"
+  }
 }
