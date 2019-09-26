@@ -15,29 +15,27 @@ class AppKernel extends Kernel
             new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-	    new JMS\SerializerBundle\JMSSerializerBundle(),
-	    new FOS\RestBundle\FOSRestBundle(),
-	    new FOS\UserBundle\FOSUserBundle(),
-	    new FR3D\LdapBundle\FR3DLdapBundle(),
+        new JMS\SerializerBundle\JMSSerializerBundle(),
+        new FOS\RestBundle\FOSRestBundle(),
+        new FOS\UserBundle\FOSUserBundle(),
+        new FR3D\LdapBundle\FR3DLdapBundle(),
 //	    new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
-	    new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
-	    new WhiteOctober\TCPDFBundle\WhiteOctoberTCPDFBundle(),
-	    new SecIT\ImapBundle\ImapBundle(),
-	    new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
+        new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
+        new WhiteOctober\TCPDFBundle\WhiteOctoberTCPDFBundle(),
+        new SecIT\ImapBundle\ImapBundle(),
+        new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new AppBundle\AppBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
-	    $bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
-	    $bundles[] = new Nelmio\Alice\Bridge\Symfony\NelmioAliceBundle();
-	    $bundles[] = new Fidry\AliceDataFixtures\Bridge\Symfony\FidryAliceDataFixturesBundle();
-	    $bundles[] = new Hautelook\AliceBundle\HautelookAliceBundle();
-	    $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
+            $bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
+            $bundles[] = new Nelmio\Alice\Bridge\Symfony\NelmioAliceBundle();
+            $bundles[] = new Fidry\AliceDataFixtures\Bridge\Symfony\FidryAliceDataFixturesBundle();
+            $bundles[] = new Hautelook\AliceBundle\HautelookAliceBundle();
+            $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
-            $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
 
             if ('dev' === $this->getEnvironment()) {
-                $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
                 $bundles[] = new Symfony\Bundle\WebServerBundle\WebServerBundle();
             }
         }

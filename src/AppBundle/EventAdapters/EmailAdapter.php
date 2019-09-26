@@ -8,20 +8,12 @@
 
 namespace AppBundle\EventAdapters;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use SecIT\ImapBundle\Service\Imap;
-use PhpImap\Mailbox;
-use PhpImap\IncomingMail;
-use PhpImap\IncomingMailHeader;
-
 /**
- * Description of EmailAdapter
+ * Description of EmailAdapter.
  *
  * @author ibilbao
  */
-class EmailAdapter {
+class EmailAdapter
+{
     //put your code here
 }
