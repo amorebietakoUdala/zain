@@ -1,0 +1,130 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{'mevent.list.izenburua' | trans }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('bower_components/bootstrap-table/dist/bootstrap-table.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('bower_components/jquery-ui/themes/base/jquery-ui.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('bower_components/fontawesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block message %}
+       {{ include('common/messages.html.twig') }}
+{% endblock %}
+
+
+{% block body %}
+    <main>
+	<div class="container">
+	    <table id="taula" class="bootstrap-table mt-3">
+		<thead>
+		    <tr class="d-flex">
+			<th data-sortable="true">{{"label.name" | trans | capitalize}}</th>
+			<th data-sortable="true">{{"label.successCondition" | trans | capitalize}}</th>
+			<th data-sortable="true">{{"label.failureCondition" | trans | capitalize}}</th>
+			<th data-sortable="true">{{"label.filterCondition" | trans | capitalize}}</th>
+			<th data-sortable="true">{{"label.frecuency" | trans | capitalize}}</th>
+			<th data-sortable="true">{{"label.unit" | trans | capitalize}}</th>
+			<th class="col-1">{{ "tableheader.options" | trans | capitalize}}</th>
+		    </tr>
+		</thead>
+		<tbody>
+		    {% if mevents is defined and mevents | length > 0 %}
+			{% for mevent in mevents %}
+			<tr>
+			    <td>{{ mevent.name }}</td>
+			    <td>{{ mevent.successCondition }}</td>
+			    <td>{{ mevent.failureCondition }}</td>
+			    <td>{{ mevent.filterCondition|length > 50 ? mevent.filterCondition|slice(0, 50) ~ '...' : mevent.filterCondition }}</td>
+			    <td>{{ mevent.frecuency }}</td>
+			    <td>{{ (constant('App\\Entity\\MonitorizableEvent::UNITS')[mevent.unit]) | trans }}</td>
+			    <td class="white-space-nowrap">
+				<a href="{{ path ('admin_mevent_show', {'id': mevent.id }) }}"><i class="fa fa-eye prefix" title="{{'icon.show' | trans | capitalize }}"></i></a>
+				    &nbsp;<a href="{{ path ('admin_mevent_edit', {'id': mevent.id }) }}"><i class="fa fa-edit prefix" title="{{'icon.edit' | trans | capitalize}}"></i></a>
+				    &nbsp;<a class="js-ezabatu_botoia" data-url="{{ path ('admin_mevent_delete', {'id': mevent.id }) }}" href="#"><i class="fa fa-trash prefix" title="{{'icon.delete' | trans | capitalize}}"></i></a>
+				    &nbsp;<a class="js-bilatu_botoia" href="{{ path ('admin_mevent_search', {'id': mevent.id }) }}"><i class="fa fa-search prefix" title="{{'icon.search' | trans | capitalize}}"></i></a>
+			    </td>
+			</tr>
+			{% endfor %}
+		    {% else %}
+			<tr><td class="text-center" colspan="7">{{"messages.results0" | trans }}</td></tr>
+		    {% endif %}
+		</tbody>
+	    </table>
+	</div>
+    </main>
+{% endblock %}
+
+{% block javascripts %}
+    {{  parent() }}
+    <script type="text/javascript" src="{{ asset('bower_components/bootstrap-table/dist/bootstrap-table.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bower_components/bootstrap-table/dist/extensions/export/bootstrap-table-export.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bower_components/bootstrap-table/dist/locale/bootstrap-table-es-ES.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bower_components/bootstrap-table/dist/locale/bootstrap-table-eu-EU.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bower_components/tableexport.jquery.plugin/tableExport.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bower_components/sweetalert2/dist/sweetalert2.all.min.js') }}"></script>
+    <!-- Optional: include a polyfill for ES6 Promises for IE11 and Android browser -->
+    <script type="text/javascript" src="{{asset('bower_components/promise-polyfill/dist/polyfill.min.js')}}"></script>
+    <script type="text/javascript" src="{{ asset('bower_components/urijs/src/URI.min.js') }}"></script>
+    <script>
+    $(document).ready(function(){
+	$('#taula').bootstrapTable({
+	        cache : false,
+		showExport: false,
+		exportTypes: {exportTypes:['excel']},
+		exportDataType: 'all',
+		exportOptions: {
+{#		    fileName: "eskakizunak",
+		    worksheetName: "test1",
+		    ignoreColumn: ['aukerak']
+#}		},
+		showColumns: false,
+		pagination: true,
+		search: true,
+		striped: true,
+		sortStable: true,
+		pageSize: 10,
+		pageList: [10,25,50,100],
+		sortable: true,
+		locale: 'es_{{ app.request.getLocale() | upper }}'
+	});
+	var $table = $('#taula');
+	$(function () {
+	    $('#toolbar').find('select').change(function () {
+		$table.bootstrapTable('destroy').bootstrapTable({
+		    exportDataType: $(this).val(),
+		});
+	    });
+	});
+	$(document).on('click','.js-ezabatu_botoia' ,function (e) {
+	    var locale = $('html').attr('lang');
+	    e.preventDefault();
+	    var url = $(e.currentTarget).data('url');
+	    swal({
+		title: locale === 'eu' ? 'Ezabatu?' : 'Borrar?',
+		text: locale === 'eu' ? 'Konfirmatu mesedez' : 'Confirme por favor',
+		confirmButtonText: locale === 'eu' ? 'Bai' : 'Sí',
+		cancelButtonText: locale === 'eu' ? 'Ez' : 'No',
+		showCancelButton: true,
+		showLoaderOnConfirm: true,
+		preConfirm: function () {
+		    var table = $('#taula');
+		    if ( ( typeof table.bootstrapTable ) != 'undefined' ) {
+			var options = table.bootstrapTable('getOptions');
+			var pageNumber = options.pageNumber;
+			uri = new URI(url);
+			var uri = new URI(url);
+			uri.addQuery("returnPage",pageNumber);
+			url = uri.toString();
+		    }
+		    window.location.href=url;
+		}
+	    }).catch(function (arg) {
+		    console.log('Cancelado!');
+	    });
+	});
+    });
+    </script>
+    
+{% endblock javascripts %}
