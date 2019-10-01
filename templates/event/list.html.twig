@@ -2,17 +2,19 @@
 
 {% block title %}{{'event.list.title' | trans }}{% endblock %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <link href="{{ asset('bower_components/bootstrap-table/dist/bootstrap-table.min.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('bower_components/jquery-ui/themes/base/jquery-ui.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('bower_components/fontawesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
-{% endblock %}
-
 {% block message %}
-       {{ include('common/messages.html.twig') }}
+    {{ include('common/messages.html.twig') }}
 {% endblock %}
 
+{% block stylesheets %}
+	{{  parent() }}
+	{{ encore_entry_link_tags('event_list') }}
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{{ encore_entry_script_tags('event_list') }}
+{% endblock %}
 
 {% block body %}
     <main>
@@ -44,11 +46,12 @@
 				{% endif %}
 			    </td>
 			    <td class="white-space-nowrap">
-{#				<a href="{{ path ('admin_mevent_show', {'id': mevent.id }) }}"><i class="fa fa-eye prefix" title="{{"icon.show" | trans | capitalize }}"></i></a>
-				    &nbsp;<a href="{{ path ('admin_mevent_edit', {'id': mevent.id }) }}"><i class="fa fa-edit prefix" title="{{"icon.edit" | trans | capitalize}}"></i></a>
-				    &nbsp;<a class="js-ezabatu_botoia" data-url="{{ path ('admin_mevent_delete', {'id': mevent.id }) }}" href="#"><i class="fa fa-trash prefix" title="{{"icon.delete" | trans | capitalize}}"></i></a>
-				    &nbsp;<a class="js-bilatu_botoia" href="{{ path ('admin_mevent_search', {'id': mevent.id }) }}"><i class="fa fa-search prefix" title="{{"icon.search" | trans | capitalize}}"></i></a>
-#}				    &nbsp;<a id="tr{{loop.index}}" class="trigger" onclick="showDialog('ov{{loop.index}}');" href="#"><i class="fa fa-file-text-o prefix" title="{{"icon.details" | trans | capitalize}}"></i></a>
+				    &nbsp;
+					<a class="js-showDetails trigger" 
+					   id="tr{{loop.index}}" 
+					   href="#"
+					   ><i class="fa fa-file-text-o prefix" title="{{"icon.details" | trans | capitalize}}"></i></a>
+					
 				    &nbsp;<a href="{{ path('admin_event_new_mevent', {'event': event.id }) }}"><i class="fa fa-plus" title="{{"icon.monitor" | trans | capitalize}}"></i></a>
 			    </td>
 			</tr>
@@ -81,54 +84,3 @@
 	</div>
     </main>
 {% endblock %}
-
-{% block javascripts %}
-    {{  parent() }}
-    <script type="text/javascript" src="{{ asset('bower_components/bootstrap-table/dist/bootstrap-table.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bower_components/bootstrap-table/dist/extensions/export/bootstrap-table-export.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bower_components/bootstrap-table/dist/locale/bootstrap-table-es-ES.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bower_components/bootstrap-table/dist/locale/bootstrap-table-eu-EU.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bower_components/tableexport.jquery.plugin/tableExport.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bower_components/gijgo/dist/combined/js/gijgo.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bower_components/gijgo/dist/combined/js/messages/messages.es-es.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/event_list.js') }}"></script>
-    <script type="text/javascript">
-    $(document).ready(function(){
-	$('#taula').bootstrapTable({
-	        cache : false,
-		showExport: false,
-		exportTypes: {exportTypes:['excel']},
-		exportDataType: 'all',
-		exportOptions: {
-{#		    fileName: "alertak",
-		    worksheetName: "test1",
-		    ignoreColumn: ['aukerak']
-#}		},
-		showColumns: false,
-		pagination: true,
-		search: true,
-		striped: true,
-		sortStable: true,
-		pageSize: 10,
-		pageList: [10,25,50,100],
-		sortable: true,
-		locale: 'es_{{ app.request.getLocale() | upper }}'
-	});
-	$('.overlay').hide();
-	$('.close').click(function(e) {
-	    hideDialog(e);
-	    $('.bootstrap-table').show();
-	    console.log("Closed!!!");
-	});
-	var $table = $('#taula');
-	$(function () {
-	    $('#toolbar').find('select').change(function () {
-		$table.bootstrapTable('destroy').bootstrapTable({
-		    exportDataType: $(this).val(),
-		});
-	    });
-	});
-    });
-    </script>
-    
-{% endblock javascripts %}

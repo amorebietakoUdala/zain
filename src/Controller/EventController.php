@@ -65,10 +65,9 @@ class EventController extends Controller
         $from = date_sub(new \DateTime(), date_interval_create_from_date_string('15 day'));
 
         $events = $em->getRepository(Event::class)->findAllFromTo([], $from, $to);
-        //	dump($from,$to,$events);die;
+
         return $this->render('event/list.html.twig', [
-//	    'form' => $form->createView(),
-        'events' => $events,
+            'events' => $events,
     ]);
     }
 
@@ -83,9 +82,8 @@ class EventController extends Controller
         $from = date_sub(new \DateTime(), date_interval_create_from_date_string('15 day'));
 
         $events = $em->getRepository(Event::class)->findUnmatchedEventsFromTo([], $from, $to);
-        //	dump($from,$to,$events);die;
+
         return $this->render('event/list.html.twig', [
-//	    'form' => $form->createView(),
         'events' => $events,
     ]);
     }

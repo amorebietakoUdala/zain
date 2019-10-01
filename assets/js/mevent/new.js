@@ -1,3 +1,7 @@
+import '../../css/mevent/new.scss';
+
+import $ from 'jquery';
+
 function View() {
   var dom = {
     form: $('form[name="monitorizable_event_form"]'),
@@ -13,3 +17,8 @@ function View() {
     onBtnCancelClick: onBtnCancelClick,
   };
 }
+
+$(document).ready(function(){
+	var view = View();
+view.onBtnCancelClick();
+});

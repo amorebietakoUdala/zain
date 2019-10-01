@@ -3,17 +3,15 @@
 {% block title %}{{'mevent.list.izenburua' | trans }}{% endblock %}
 
 {% block stylesheets %}
-    {{ parent() }}
-    <link href="{{ asset('bower_components/bootstrap-table/dist/bootstrap-table.min.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('bower_components/jquery-ui/themes/base/jquery-ui.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('bower_components/fontawesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
+	{{  parent() }}
+	{{ encore_entry_link_tags('dashboard_list') }}
 {% endblock %}
 
-{#
-{% block message %}
-     {{ include('common/messages.html.twig') }}
+{% block javascripts %}
+	{{ parent() }}
+	{{ encore_entry_script_tags('dashboard_list') }}
 {% endblock %}
-#}
+
 {% block body %}
     <main>
 	<div class="container">
@@ -71,12 +69,10 @@
 			    </td>
 			    <td class="white-space-nowrap">
 				    {% if (mevent.lastEvent != null ) %}
-					<a id="tr{{loop.index}}" class="trigger" onclick="showDialog('ov{{loop.index}}');" href="#"><i class="fa fa-eye prefix" title="{{"icon.show" | trans | capitalize }}"></i></a>
+					<a id="tr{{loop.index}}" class="js-showDetails trigger" href="#"><i class="fa fa-eye prefix" title="{{"icon.show" | trans | capitalize }}"></i></a>
 					&nbsp;<a href="{{ path ('admin_mevent_try', {'id': mevent.id, event: mevent.lastEvent.id }) }}"><i class="fa fa-edit prefix" title="{{"icon.edit" | trans | capitalize}}"></i></a>
 				    {% endif %}
-{#				    &nbsp;<a class="js-ezabatu_botoia" data-url="{{ path ('admin_mevent_delete', {'id': mevent.id }) }}" href="#"><i class="fa fa-trash prefix" title="{{"icon.delete" | trans | capitalize}}"></i></a>
-				    &nbsp;<a class="js-bilatu_botoia" href="{{ path ('admin_mevent_search', {'id': mevent.id }) }}"><i class="fa fa-search prefix" title="{{"icon.search" | trans | capitalize}}"></i></a>
-#}			    </td>
+			    </td>
 			</tr>
 			{% endfor %}
 		    {% else %}
@@ -118,64 +114,3 @@
 #}	</div>
     </main>
 {% endblock %}
-
-{% block javascripts %}
-    {{  parent() }}
-    <script type="text/javascript" src="{{ asset('bower_components/bootstrap-table/dist/bootstrap-table.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bower_components/bootstrap-table/dist/extensions/export/bootstrap-table-export.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bower_components/bootstrap-table/dist/locale/bootstrap-table-es-ES.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bower_components/bootstrap-table/dist/locale/bootstrap-table-eu-EU.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bower_components/tableexport.jquery.plugin/tableExport.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/dashboard.js') }}"></script>
-    <script type="text/javascript">
-    $(document).ready(function(){
-	$('#taula').bootstrapTable({
-	        cache : false,
-		showExport: false,
-		exportTypes: {exportTypes:['excel']},
-		exportDataType: 'all',
-		exportOptions: {
-{#		    fileName: "eskakizunak",
-		    worksheetName: "test1",
-		    ignoreColumn: ['aukerak']
-#}		},
-		showColumns: false,
-		pagination: true,
-		search: true,
-		striped: true,
-		sortStable: true,
-		pageSize: 100,
-		pageList: [10,25,50,100],
-		sortable: true,
-		locale: 'es_{{ app.request.getLocale() | upper }}'
-	});
-	var $table = $('#taula');
-	$(function () {
-	    $('#toolbar').find('select').change(function () {
-		$table.bootstrapTable('destroy').bootstrapTable({
-		    exportDataType: $(this).val(),
-		});
-	    });
-	});
-	$('.overlay').hide();
-	$('.close').click(function(e) {
-	    hideDialog(e);
-	});
-	var view = View();
-	view.btnStatusSelectionClick();
-	view.btnResetFilterClick();
-    });
-    function showDialog (id) {
-	$('#'+id).fadeIn(300);
-	$('.bootstrap-table').hide();
-    }
-    function hideDialog (e) {
-	e.preventDefault();
-	number = e.target.id.slice(2);
-	$('#ov'+number).fadeOut(300);
-	$('.bootstrap-table').show();
-    }
-    
-    </script>
-    
-{% endblock javascripts %}

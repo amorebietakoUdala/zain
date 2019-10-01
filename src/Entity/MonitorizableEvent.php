@@ -23,19 +23,19 @@ use DateTime;
         const STATUS_EXPIRED = 3;
 
         const STATUS_MESSAGES = [
-        'status.success',
-        'status.failure',
-        'status.undefined',
-        'status.expired',
-    ];
+            'status.success',
+            'status.failure',
+            'status.undefined',
+            'status.expired',
+        ];
 
         const UNITS = [
-        1 => 'label.hours',
-        2 => 'label.days',
-        3 => 'label.weeks',
-        4 => 'label.months',
-        5 => 'label.years',
-    ];
+            1 => 'label.hours',
+            2 => 'label.days',
+            3 => 'label.weeks',
+            4 => 'label.months',
+            5 => 'label.years',
+        ];
 
         /**
          * @var string
@@ -74,14 +74,14 @@ use DateTime;
         private $filterCondition;
 
         /**
-         * @var integer
+         * @var int
          * @Expose
          * @ORM\Column(name="frecuency", type="integer", nullable=true)
          */
         private $frecuency;
 
         /**
-         * @var integer
+         * @var int
          * @Expose
          * @ORM\Column(name="unit", type="integer", nullable=true, options={"comment":"1-Hours,2-Days,3-Weeks,4-Months,5-Years"})
          */
@@ -285,12 +285,12 @@ use DateTime;
         public function getUnitString()
         {
             $units = [
-        1 => 'hours',
-        2 => 'days',
-        3 => 'weeks',
-        4 => 'months',
-        5 => 'years',
-        ];
+                1 => 'hours',
+                2 => 'days',
+                3 => 'weeks',
+                4 => 'months',
+                5 => 'years',
+            ];
 
             return $units[$this->unit];
         }

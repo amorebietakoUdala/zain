@@ -3,13 +3,23 @@
 {% block title %}{{'mevent.search.izenburua' | trans }}{% endblock %}
 
 {% block stylesheets %}
+	{{  parent() }}
+	{{ encore_entry_link_tags('mevent_search') }}
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{{ encore_entry_script_tags('mevent_search') }}
+{% endblock %}
+
+{#{% block stylesheets %}
     {{ parent() }}
     <link href="{{ asset('bower_components/bootstrap-table/dist/bootstrap-table.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('bower_components/jquery-ui/themes/base/jquery-ui.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('bower_components/fontawesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('bower_components/gijgo/dist/combined/css/gijgo.min.css') }}" rel="stylesheet" type="text/css">
 {% endblock %}
-
+#}
 {% block message %}
        {{ include('common/messages.html.twig') }}
 {% endblock %}
@@ -31,19 +41,19 @@
 	{{ include('mevent/_searchEvents_form.html.twig',{
 			    }) }}
 	<div class="container">
+		{% if events is defined and events | length > 0 %}
 	    <table id="taula" class="bootstrap-table mt-3">
 		<thead>
 		    <tr>
-			<th data-sortable="true">{{"label.date" | trans | capitalize}}</th>
-			<th data-sortable="true">{{"label.origin" | trans | capitalize}}</th>
-			<th data-sortable="true">{{"label.fromAddress" | trans | capitalize}}</th>
-			<th data-sortable="true">{{"label.subject" | trans | capitalize}}</th>
-			<th data-sortable="true">{{"label.status" | trans | capitalize}}</th>
-			<th>{{ "tableheader.options" | trans | capitalize}}</th>
+				<th data-sortable="true">{{"label.date" | trans | capitalize}}</th>
+				<th data-sortable="true">{{"label.origin" | trans | capitalize}}</th>
+				<th data-sortable="true">{{"label.fromAddress" | trans | capitalize}}</th>
+				<th data-sortable="true">{{"label.subject" | trans | capitalize}}</th>
+				<th data-sortable="true">{{"label.status" | trans | capitalize}}</th>
+				<th>{{ "tableheader.options" | trans | capitalize}}</th>
 		    </tr>
 		</thead>
 		<tbody>
-		    {% if events is defined and events | length > 0 %}
 			{% for event in events %}
 			<tr>
 			    <td>{{ event.date | date('Y-m-d H:i:s') }}</td>
@@ -52,22 +62,17 @@
 			    <td>{{ event.subject }}</td>
 			    <td>{{ event.mailId }}</td>
 			    <td class="white-space-nowrap col-1">
-{#				<a href="{{ path ('admin_mevent_show', {'id': mevent.id }) }}"><i class="fa fa-eye prefix" title="{{"icon.show" | trans | capitalize }}"></i></a>
-				    &nbsp;<a href="{{ path ('admin_mevent_edit', {'id': mevent.id }) }}"><i class="fa fa-edit prefix" title="{{"icon.edit" | trans | capitalize}}"></i></a>
-				    &nbsp;<a class="js-ezabatu_botoia" data-url="{{ path ('admin_mevent_delete', {'id': mevent.id }) }}" href="#"><i class="fa fa-trash prefix" title="{{"icon.delete" | trans | capitalize}}"></i></a>
-				    &nbsp;<a class="js-bilatu_botoia" href="{{ path ('admin_mevent_search', {'id': mevent.id }) }}"><i class="fa fa-search prefix" title="{{"icon.search" | trans | capitalize}}"></i></a>
-#}				    &nbsp;<a id="tr{{loop.index}}" class="trigger" onclick="showDialog('ov{{loop.index}}');" href="#"><i class="fa fa-file-text-o prefix" title="{{"icon.details" | trans | capitalize}}"></i></a>
+				    &nbsp;<a id="tr{{loop.index}}" class="js-showDetails trigger" href="#"><i class="fa fa-file-text-o prefix" title="{{"icon.details" | trans | capitalize}}"></i></a>
 				    &nbsp;<a href="{{ path ('admin_mevent_try', {'id': mevent.id, 'event': event.id }) }}"><i class="fa fa-edit prefix" title="{{"icon.try" | trans | capitalize}}"></i></a>
 				    &nbsp;<a href="{{ path ('admin_mevent_match', {'id': mevent.id, 'event': event.id }) }}"><i class="fa fa-check prefix" title="{{"icon.match" | trans | capitalize}}"></i></a>
-{#				    &nbsp;<a href="{{ path('admin_event_new_mevent', {'event': event.id }) }}"><i class="fa fa-plus"></i></a>
-#}			    </td>
+			    </td>
 			</tr>
 			{% endfor %}
-		    {% else %}
-			<tr><td class="text-center" colspan="7">{{"messages.results0" | trans }}</td></tr>
-		    {% endif %}
 		</tbody>
 	    </table>
+		    {% else %}
+				<div class="col text-center border p-2">{{"messages.results0" | trans }}</div>
+		    {% endif %}
 	    {% if events is defined and events | length > 0 %}
 		    {% for event in events %}
 		    <div id="ov{{loop.index}}" class="overlay" style="display:none">
@@ -82,13 +87,13 @@
 		    </div>
 		    {% endfor %}
 	    {% endif %}
-	    <button id="btnCancel" class="btn btn-secondary" type="button" data-url="{{ path("admin_mevent_list")}}">{{'button.cancel' | trans | capitalize }}</button>
-	    {#	    <span id="btn-berria" class="pull-right"><a href="{{ path('admin_mevent_new') }}" class="btn btn-primary fixed-bottom-right rounded-circle"><i class="fa fa-plus"></i></a></span>
-#}	</div>
+	    <button id="btnCancel" class="btn btn-secondary mt-2" type="button" data-url="{{ path("admin_mevent_list")}}">{{'button.cancel' | trans | capitalize }}</button>
+	    
+	</div>
     </main>
 {% endblock %}
 
-{% block javascripts %}
+{#{% block javascripts %}
     {{  parent() }}
     <script type="text/javascript" src="{{ asset('bower_components/bootstrap-table/dist/bootstrap-table.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bower_components/bootstrap-table/dist/extensions/export/bootstrap-table-export.min.js') }}"></script>
@@ -125,11 +130,6 @@
 		showExport: false,
 		exportTypes: {exportTypes:['excel']},
 		exportDataType: 'all',
-		exportOptions: {
-{#		    fileName: "eskakizunak",
-		    worksheetName: "test1",
-		    ignoreColumn: ['aukerak']
-#}		},
 		showColumns: false,
 		pagination: true,
 		search: true,
@@ -166,4 +166,4 @@
     }
     </script>
 
-{% endblock javascripts %}
+{% endblock javascripts %}#}

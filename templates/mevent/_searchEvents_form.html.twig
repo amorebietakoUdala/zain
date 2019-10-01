@@ -7,14 +7,14 @@
 	    <div class="col-lg-4 col-md-2">
 		{{ form_label(form.dateFrom) }}
 		<div class="flex-row-nowrap flex-align-items-baseline">
-		    {{ form_widget(form.dateFrom, { 'attr': { 'class' : 'js-datepicker1' } }) }}
+		    {{ form_widget(form.dateFrom, { 'attr': { 'class' : 'js-datetimepicker' } }) }}
 		</div>
 		{{ form_errors(form.dateFrom) }}
 	    </div>
 	    <div class="col-lg-4 col-md-2">
 		{{ form_label(form.dateTo) }}
 		<div class="flex-row-nowrap flex-align-items-baseline">
-		    {{ form_widget(form.dateTo, { 'attr': { 'class' : 'js-datepicker2' } }) }}
+		    {{ form_widget(form.dateTo, { 'attr': { 'class' : 'js-datetimepicker' } }) }}
 		</div>
 		{{ form_errors(form.dateTo) }}
 	    </div>

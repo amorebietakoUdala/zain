@@ -9,6 +9,7 @@ messages.saved: "Elementua ondo gorde da"
 messages.nodetails: "Ez gertaeran ez dago zehaztasun gehiagorik"
 messages.only_last_5_days: "Azkenengo 5 egunak baino ez dira agertzen"
 messages.deleted: "Elementua ondo borratu da"
+messages.eventMatched: "Gertaera behar bezala ezarri da"
 link.logout: "Irten"
 
 label.from: "Noiztik"
@@ -61,7 +62,7 @@ icon.search: "Bilatu"
 icon.details: "Zehaztasunak"
 icon.match: "Esleitu"
 icon.try: "Saiatu"
-icon.monitor: "Gertaera monitorizatu"
+icon.monitor: "Gertaera monitorizatua"
 
 label.contadores: "Egoeraren araberako zenbatekoak"
 
@@ -74,3 +75,6 @@ status.success.color: "green"
 status.failure.color: "red"
 status.undefined.color: "blue"
 status.expired.color: "yellow"
+
+Find Success: "Arrakasta baldintza"
+Find Failure: "Porrot baldintza"

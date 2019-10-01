@@ -1,3 +1,8 @@
+import '../../css/mevent/try.scss';
+
+import $ from 'jquery';
+
+
 function View() {
   var dom = {
     form: $('form[name="event_try_form"]'),
@@ -9,13 +14,11 @@ function View() {
     dom.btnSave.on('click', function (e) {
 	e.preventDefault();
 	$(dom.form).attr("action",document.location.href+"/save");
-	console.log(dom.form);
 	dom.form.submit();
     });
   }
   function onBtnCancelClick() { 
     dom.btnCancel.on('click', function (e) {
-	console.log("Cancel Clicked!!!");
 	e.preventDefault();
 	var url = $(e.currentTarget).data('url');
 	document.location.href= url;
@@ -24,8 +27,6 @@ function View() {
   function onBtnTestClick() { 
     dom.btnTest.on('click', function (e) {
 	e.preventDefault();
-	console.log('Test Clicked!!!');
-	console.log(dom.form);
 	dom.form.submit();
     });
   }
@@ -35,3 +36,10 @@ function View() {
     onBtnCancelClick: onBtnCancelClick
   };
 }
+
+$(document).ready(function(){
+	var view = View();
+	view.onBtnSaveClick();
+	view.onBtnTestClick();
+	view.onBtnCancelClick();
+});

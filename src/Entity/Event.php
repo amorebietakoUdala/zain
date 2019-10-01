@@ -165,11 +165,7 @@ use PhpImap\IncomingMail;
             $event->setOrigin('mail');
             $event->setSubject($mail->subject);
             if (null != $mail->textHtml) {
-                //		if (mb_detect_encoding($mail->textHtml) === 'UTF-8' ) {
                 $html = mb_convert_encoding($mail->textHtml, 'UTF-8');
-                //		} else {
-                //		    $html = $mail->textHtml;
-                //		}
                 $event->setDetails($html);
                 $event->setType('html');
             } else {

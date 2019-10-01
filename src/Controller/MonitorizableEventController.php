@@ -37,7 +37,7 @@ class MonitorizableEventController extends Controller
         $mevents = $em->getRepository('App:MonitorizableEvent')->findAll();
 
         return $this->render('/mevent/list.html.twig', [
-        'mevents' => $mevents,
+            'mevents' => $mevents,
     ]);
     }
 
@@ -48,15 +48,11 @@ class MonitorizableEventController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $mevents = $em->getRepository('App:MonitorizableEvent')->findAll();
-        //	foreach ($mevents as $mevent) {
-        //	    dump($mevent->getLastEvent());
-        //	}
-        //	die;
         $counters = $this->__countStatusTypes($mevents);
-        //	dump($mevents);die;
+
         return $this->render('/mevent/dashboard.html.twig', [
-        'mevents' => $mevents,
-        'counters' => $counters,
+            'mevents' => $mevents,
+            'counters' => $counters,
     ]);
     }
 
@@ -81,7 +77,7 @@ class MonitorizableEventController extends Controller
         }
 
         return $this->render('mevent/new.html.twig', [
-        'form' => $form->createView(),
+            'form' => $form->createView(),
     ]);
     }
 
@@ -143,16 +139,16 @@ class MonitorizableEventController extends Controller
             $this->addFlash('success', 'messages.saved');
 
             return $this->redirectToRoute('admin_mevent_try', [
-        'id' => $mevent->getId(),
-        'event' => $event->getId(),
-        ]);
+                'id' => $mevent->getId(),
+                'event' => $event->getId(),
+            ]);
         }
 
         return $this->render('mevent/_tryEvent.html.twig', [
-        'form' => $form->createView(),
-        'mevent' => $mevent,
-        'event' => $event,
-    ]);
+            'form' => $form->createView(),
+            'mevent' => $mevent,
+            'event' => $event,
+        ]);
     }
 
     /**
@@ -169,14 +165,6 @@ class MonitorizableEventController extends Controller
             $patternSuccess = $this->__buildRexEpr($criteria->getSuccessCondition());
             $patternFailure = $this->__buildRexEpr($criteria->getFailureCondition());
             $target = $event->getSubject().$event->getDetails();
-            //	    $findSuccess = false;
-            //	    if ( $criteria->getSuccessCondition() != null ) {
-            //		$findSuccess = strpos($target,$criteria->getSuccessCondition()) > 0;
-            //	    }
-            //	    $findFailure = false;
-            //	    if ( $criteria->getFailureCondition() != null ) {
-            //		$findFailure = strpos($target,$criteria->getFailureCondition()) > 0;
-            //	    }
             $findSuccess = 0;
             if (null != $criteria->getSuccessCondition()) {
                 $findSuccess = preg_match($patternSuccess, $target, $matchSuccess);
@@ -185,22 +173,21 @@ class MonitorizableEventController extends Controller
             if (null != $criteria->getFailureCondition()) {
                 $findFailure = preg_match($patternFailure, $target, $matchFailure);
             }
-            //	    dump($target,$patternSuccess,$findSuccess,$matchSuccess,$patternFailure,$findFailure,$matchFailure);die;
-            //	    dump($mevent,$event,$findSuccess, $findFailure);die;
+
             return $this->render('mevent/_tryEvent.html.twig', [
-        'form' => $form->createView(),
-        'mevent' => $criteria,
-        'event' => $event,
-        'findSuccess' => $findSuccess,
-        'findFailure' => $findFailure,
-        ]);
+                'form' => $form->createView(),
+                'mevent' => $criteria,
+                'event' => $event,
+                'findSuccess' => $findSuccess,
+                'findFailure' => $findFailure,
+            ]);
         }
 
         return $this->render('mevent/_tryEvent.html.twig', [
-        'form' => $form->createView(),
-        'mevent' => $mevent,
-        'event' => $event,
-    ]);
+            'form' => $form->createView(),
+            'mevent' => $mevent,
+            'event' => $event,
+        ]);
     }
 
     /**
@@ -264,10 +251,10 @@ class MonitorizableEventController extends Controller
             $events = $em->getRepository(Event::class)->findAllFromTo($criteria_without_blanks, $from, $to);
 
             return $this->render('mevent/_searchEvents.html.twig', [
-        'form' => $form->createView(),
-        'events' => $events,
-        'mevent' => $mevent,
-        ]);
+                'form' => $form->createView(),
+                'events' => $events,
+                'mevent' => $mevent,
+            ]);
         }
 
         parse_str($mevent->getFilterCondition(), $criteria);

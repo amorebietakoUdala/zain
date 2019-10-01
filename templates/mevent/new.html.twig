@@ -3,9 +3,13 @@
 {% block title %}{{"mevent.new.izenburua" | trans | capitalize}}{% endblock %}
 
 {% block stylesheets %}
-    {{ parent() }}
-    <link href="{{ asset('bower_components/jquery-ui/themes/base/jquery-ui.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('bower_components/fontawesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
+	{{  parent() }}
+	{{ encore_entry_link_tags('mevent_new') }}
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{{ encore_entry_script_tags('mevent_new') }}
 {% endblock %}
 
 {% block body %}
@@ -27,7 +31,7 @@
     </div>
 {% endblock %}
 
-{% block javascripts %}
+{#{% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('js/mevent_new.js') }}"></script>
     <script>
@@ -37,3 +41,4 @@
     });
     </script>
 {% endblock%}
+#}

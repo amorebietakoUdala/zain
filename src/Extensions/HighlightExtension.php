@@ -16,14 +16,16 @@ class HighlightExtension extends AbstractExtension
 
     public function highlightText($text, $array)
     {
-	$highlighted = $text;
-	foreach ($array as $string => $class) {
-	    $highlighted = str_replace($string, '<span class="'.$class.'">'.$string.'</span>',$highlighted);
-	}
-	return $highlighted;
+        $highlighted = $text;
+        foreach ($array as $string => $class) {
+            $highlighted = str_replace($string, '<span class="'.$class.'">'.$string.'</span>', $highlighted);
+        }
+
+        return $highlighted;
     }
 
-    public function getName () {
-	return HighlightExtension::class;
+    public function getName()
+    {
+        return self::class;
     }
 }

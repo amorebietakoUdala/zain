@@ -111,30 +111,6 @@
     "fr3d/ldap-bundle": {
         "version": "v4.0.0"
     },
-    "friendsofsymfony/jsrouting-bundle": {
-        "version": "2.3",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
-            "version": "2.3",
-            "ref": "a9f2e49180f75cdc71ae279a929c4b2e0638de84"
-        },
-        "files": [
-            "config/routes/fos_js_routing.yaml"
-        ]
-    },
-    "friendsofsymfony/rest-bundle": {
-        "version": "2.2",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
-            "version": "2.2",
-            "ref": "cad41ef93d6150067ae2bb3c7fd729492dff6f0a"
-        },
-        "files": [
-            "config/packages/fos_rest.yaml"
-        ]
-    },
     "friendsofsymfony/user-bundle": {
         "version": "v2.1.2"
     },
@@ -184,9 +160,6 @@
             "config/packages/prod/jms_serializer.yaml"
         ]
     },
-    "michelf/php-markdown": {
-        "version": "1.8.0"
-    },
     "monolog/monolog": {
         "version": "1.25.1"
     },
@@ -206,19 +179,6 @@
             "config/packages/test/nelmio_alice.yaml"
         ]
     },
-    "nelmio/api-doc-bundle": {
-        "version": "2.13",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
-            "version": "2.13",
-            "ref": "d13bb99357ebcd2ffb6fe808a64961f5bc1c7546"
-        },
-        "files": [
-            "config/packages/nelmio_api_doc.yaml",
-            "config/routes/nelmio_api_doc.yaml"
-        ]
-    },
     "nikic/php-parser": {
         "version": "v4.2.4"
     },
@@ -230,6 +190,15 @@
     },
     "phpcollection/phpcollection": {
         "version": "0.5.0"
+    },
+    "phpdocumentor/reflection-common": {
+        "version": "2.0.0"
+    },
+    "phpdocumentor/reflection-docblock": {
+        "version": "4.3.2"
+    },
+    "phpdocumentor/type-resolver": {
+        "version": "1.0.1"
     },
     "phpoption/phpoption": {
         "version": "1.5.0"
@@ -479,6 +448,9 @@
     "symfony/property-access": {
         "version": "v4.3.4"
     },
+    "symfony/property-info": {
+        "version": "v4.3.4"
+    },
     "symfony/routing": {
         "version": "4.2",
         "recipe": {
@@ -511,6 +483,9 @@
     },
     "symfony/serializer": {
         "version": "v4.3.4"
+    },
+    "symfony/serializer-pack": {
+        "version": "v1.0.2"
     },
     "symfony/service-contracts": {
         "version": "v1.1.6"
@@ -613,11 +588,26 @@
             "ref": "dae9b39fd6717970be7601101ce5aa960bf53d9a"
         }
     },
+    "symfony/webpack-encore-bundle": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "d3b160b9799c91cbfc3df6f018c795f3bf88698a"
+        },
+        "files": [
+            "assets/css/app.css",
+            "assets/js/app.js",
+            "config/packages/assets.yaml",
+            "config/packages/prod/webpack_encore.yaml",
+            "config/packages/webpack_encore.yaml",
+            "package.json",
+            "webpack.config.js"
+        ]
+    },
     "symfony/yaml": {
         "version": "v4.3.4"
-    },
-    "tecnickcom/tcpdf": {
-        "version": "6.3.2"
     },
     "theofidry/alice-data-fixtures": {
         "version": "1.0",
@@ -646,17 +636,8 @@
     "twig/twig": {
         "version": "v2.11.3"
     },
-    "whiteoctober/tcpdf-bundle": {
-        "version": "dev-master"
-    },
-    "willdurand/jsonp-callback-validator": {
-        "version": "v1.1.0"
-    },
-    "willdurand/negotiation": {
-        "version": "v2.3.1"
-    },
-    "wiz/pdodblib-bundle": {
-        "version": "dev-master"
+    "webmozart/assert": {
+        "version": "1.5.0"
     },
     "zendframework/zend-code": {
         "version": "3.3.2"
