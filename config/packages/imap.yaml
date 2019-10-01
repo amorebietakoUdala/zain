@@ -1,0 +1,8 @@
+imap:
+  connections:
+    office365:
+      mailbox: "%env(IMAP_MAILBOX)%"
+      username: "%env(MAILER_USER)%"
+      password: "%env(MAILER_PASSWORD)%"
+      attachments_dir: "%kernel.root_dir%/../var/attachments"
+      server_encoding: "UTF-8"

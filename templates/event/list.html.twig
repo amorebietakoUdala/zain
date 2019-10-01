@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{'event.list.title' | trans }}{% endblock %}
+
+{% block message %}
+    {{ include('common/messages.html.twig') }}
+{% endblock %}
+
+{% block stylesheets %}
+	{{  parent() }}
+	{{ encore_entry_link_tags('event_list') }}
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{{ encore_entry_script_tags('event_list') }}
+{% endblock %}
+
+{% block body %}
+    <main>
+	<div class="container">
+	    <table id="taula" class="bootstrap-table mt-3">
+		<thead>
+		    <tr>
+			<th data-sortable="true">{{"label.date" | trans | capitalize}}</th>
+			<th data-sortable="true">{{"label.origin" | trans | capitalize}}</th>
+			<th data-sortable="true">{{"label.fromAddress" | trans | capitalize}}</th>
+			<th data-sortable="true">{{"label.subject" | trans | capitalize}}</th>
+			<th data-sortable="true">{{"label.mailId" | trans | capitalize}}</th>
+			<th data-sortable="true">{{"label.monitorized" | trans | capitalize}}</th>
+			<th>{{ "tableheader.options" | trans | capitalize}}</th>
+		    </tr>
+		</thead>
+		<tbody>
+		    {% if events is defined and events | length > 0 %}
+			{% for event in events %}
+			<tr>
+			    <td>{{ event.date | date('Y-m-d H:i:s') }}</td>
+			    <td>{{ event.origin }}</td>
+			    <td>{{ event.fromAddress }}</td>
+			    <td>{{ event.subject }}</td>
+			    <td>{{ event.mailId }}</td>
+			    <td>
+				{% if event.monitorizableEvent is not null %}
+				    <i class="fa fa-check color-green" title="{{"icon.monitor" | trans | capitalize}}"></i>
+				{% endif %}
+			    </td>
+			    <td class="white-space-nowrap">
+				    &nbsp;
+					<a class="js-showDetails trigger" 
+					   id="tr{{loop.index}}" 
+					   href="#"
+					   ><i class="fa fa-file-text-o prefix" title="{{"icon.details" | trans | capitalize}}"></i></a>
+					
+				    &nbsp;<a href="{{ path('admin_event_new_mevent', {'event': event.id }) }}"><i class="fa fa-plus" title="{{"icon.monitor" | trans | capitalize}}"></i></a>
+			    </td>
+			</tr>
+			{% endfor %}
+		    {% else %}
+			<tr><td class="text-center" colspan="7">{{"messages.results0" | trans }}</td></tr>
+		    {% endif %}
+		</tbody>
+	    </table>
+	    {% if events is defined and events | length > 0 %}
+		    {% for event in events %}
+		    <div id="ov{{loop.index}}" class="overlay" style="display:none">
+			<div id="pp{{loop.index}}" class="popup">
+			     <div id="cl{{loop.index}}" class="close">X</div>
+			     {% if event.details != null %}
+				{% if ( event.type == "text") %}
+				    <pre>
+					{{ event.details | raw }}
+				    </pre>
+				{% else %}
+				    {{ event.details | striptags('<table><th><tr><td><p><b><span><a><br><blockguote>') | raw }}
+				{% endif %}
+			     {% else %}
+				 <p style="text-align: center">{{ 'messages.nodetails' | trans }}</p>
+			    {% endif%}
+			</div>
+		    </div>
+		    {% endfor %}
+	    {% endif %}
+	</div>
+    </main>
+{% endblock %}
