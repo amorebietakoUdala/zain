@@ -29,9 +29,6 @@ Encore
 	.addEntry('mevent_try', './assets/js/mevent/try.js')
 	.addEntry('mevent_search', './assets/js/mevent/search.js')
 	.addEntry('mevent_new', './assets/js/mevent/new.js')
-	
-    //.addEntry('page1', './assets/js/page1.js')
-    //.addEntry('page2', './assets/js/page2.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
@@ -39,6 +36,7 @@ Encore
     // will require an extra script tag for runtime.js
     // but, you probably want this, unless you're building a single-page app
     .enableSingleRuntimeChunk()
+	// .disableSingleRuntimeChunk()
 
     /*
      * FEATURE CONFIG
@@ -56,25 +54,34 @@ Encore
     // enables @babel/preset-env polyfills
     .configureBabel(() => {}, {
         useBuiltIns: 'usage',
-        corejs: 3
+        corejs: 3,
+		includeNodeModules: [
+//			"es.promise", "es.array.iterator"
+		]
     })
 
     // enables Sass/SCSS support
     .enableSassLoader()
+	.enablePostCssLoader()
 
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()
 
     // uncomment to get integrity="..." attributes on your script & link tags
     // requires WebpackEncoreBundle 1.4 or higher
-    //.enableIntegrityHashes(Encore.isProduction())
+    //.enableIntegrityHashes()
 
     // uncomment if you're having problems with a jQuery plugin
-    .autoProvidejQuery()
+     .autoProvidejQuery()
 
     // uncomment if you use API Platform Admin (composer req api-admin)
     //.enableReactPreset()
     //.addEntry('admin', './assets/js/admin.js')
+	
+	.copyFiles({
+		from: './assets/images', to: 'images/[path][name].[hash:8].[ext]'
+	})
+
 ;
 
 module.exports = Encore.getWebpackConfig();
