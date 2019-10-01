@@ -39,6 +39,9 @@ function View() {
 
 $(document).ready(function() {
 	console.log("List view!!!");
+	var view = View();
+	view.btnStatusSelectionClick();
+	view.btnResetFilterClick();
 	$('#taula').bootstrapTable({
 	    cache : false,
 		showExport: false,
@@ -75,6 +78,4 @@ $(document).ready(function() {
 	    $('.bootstrap-table').show();
 	});
 	$('.overlay').hide();
-    var view = View();
-	view.onBtnCancelClick();
 });
