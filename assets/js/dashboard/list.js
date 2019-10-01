@@ -38,49 +38,42 @@ function View() {
 }
 
 $(document).ready(function() {
-	console.log("Dashboard list view!!!!");
-//	$('#taula').bootstrapTable({
-//	    cache : false,
-//		showExport: false,
-//		exportTypes: {exportTypes:['excel']},
-//		exportDataType: 'all',
-//		exportOptions: {
-//		showColumns: false,
-//		pagination: true,
-//		search: true,
-//		striped: true,
-//		sortStable: true,
-//		pageSize: 100,
-//		pageList: [10,25,50,100],
-//		sortable: true,
-//		locale: $('html').attr('lang')+'-'+$('html').attr('lang').toUpperCase()
-//	});
+	console.log("List view!!!");
+	$('#taula').bootstrapTable({
+	    cache : false,
+		showExport: false,
+		exportDataType: 'all',
+		showColumns: false,
+		pagination: true,
+		search: true,
+		striped: true,
+		sortStable: true,
+		pageSize: 100,
+		pageList: [10,25,50,100],
+		sortable: true,
+		locale: $('html').attr('lang')+'-'+$('html').attr('lang').toUpperCase()
+	});
 	
-//	var $table = $('#taula');
-//	$(function () {
-//	    $('#toolbar').find('select').change(function () {
-//		$table.bootstrapTable('destroy').bootstrapTable({
-//		    exportDataType: $(this).val(),
-//		});
-//	    });
-//	});
-//	$('.overlay').hide();
-//	$('.close').click(function(e) {
-//	    hideDialog(e);
-//	});
-//	var view = View();
-//	view.btnStatusSelectionClick();
-//	view.btnResetFilterClick();
-//    });
-//    function showDialog (id) {
-//	$('#'+id).fadeIn(300);
-//	$('.bootstrap-table').hide();
-//    }
-//    function hideDialog (e) {
-//	e.preventDefault();
-//	number = e.target.id.slice(2);
-//	$('#ov'+number).fadeOut(300);
-//	$('.bootstrap-table').show();
-//    }
+	var $table = $('#taula');
+	$(function () {
+	    $('#toolbar').find('select').change(function () {
+		$table.bootstrapTable('destroy').bootstrapTable({
+		    exportDataType: $(this).val(),
+		});
+	    });
+	});
+	$('.js-showDetails').on('click',function(e){
+		e.preventDefault();
+		var id = e.currentTarget.id;
+		var overlay = id.replace('tr','ov');
+		$('#'+overlay).fadeIn(300);
+		$('.bootstrap-table').hide();
+	});
+	$('.close').click(function(e) {
+		var number = e.target.id.slice(2);
+		$('#ov'+number).fadeOut(300);
+	    $('.bootstrap-table').show();
+	});
+	$('.overlay').hide();
     
 });
