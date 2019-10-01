@@ -75,5 +75,6 @@ $(document).ready(function() {
 	    $('.bootstrap-table').show();
 	});
 	$('.overlay').hide();
-    
+    var view = View();
+	view.onBtnCancelClick();
 });
