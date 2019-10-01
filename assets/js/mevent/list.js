@@ -15,6 +15,7 @@ import URI from 'urijs';
 // import Swal from 'sweetalert2';
 
 $(document).ready(function(){
+	console.log('Berria');
 	$('#taula').bootstrapTable({
 		cache : false,
 		showExport: false,
