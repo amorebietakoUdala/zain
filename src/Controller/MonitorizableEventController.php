@@ -8,7 +8,7 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Forms\MonitorizableEventForm;
@@ -26,7 +26,7 @@ use App\Forms\EventForm;
  /**
  * @Route("/{_locale}/admin/mevent")
  */
-class MonitorizableEventController extends Controller
+class MonitorizableEventController extends AbstractController
 {
     /**
      * @Route("/", name="admin_mevent_list", options={"expose" = true})

@@ -11,7 +11,9 @@ use Symfony\Component\Console\Command\Command;
 use App\Entity\Event;
 use App\Services\MatchEventsService;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use SecIT\ImapBundle\Service\Imap;
+use PhpImap\Mailbox;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 class MailDaemonCommand extends Command
@@ -19,13 +21,15 @@ class MailDaemonCommand extends Command
     private $em = null;
     private $imap = null;
     private $doctrine;
+    private $params = null;
 
-    public function __construct(EntityManagerInterface $em, Imap $imap, ManagerRegistry $doctrine)
+    public function __construct(EntityManagerInterface $em, Imap $imap, ManagerRegistry $doctrine, ParameterBagInterface $params)
     {
         parent::__construct();
         $this->em = $em;
         $this->imap = $imap;
         $this->doctrine = $doctrine;
+        $this->params = $params;
     }
 
     protected function configure()
@@ -110,7 +114,10 @@ class MailDaemonCommand extends Command
                 $output->writeln('New Events:'.$eventsAdded);
                 $output->writeln('Matching Events...');
                 $matchEventsService = new MatchEventsService($this->em, $output);
-                $matchEventsService->execute();
+                $matchedEvents = $matchEventsService->execute();
+
+                $this->__moveMails($matchedEvents, $mailbox, $output);
+
                 $output->writeln('Events Matched.');
                 $output->writeln('Going To Sleep...');
 
@@ -127,5 +134,20 @@ class MailDaemonCommand extends Command
             }
         }
         $output->writeln("Daemon's End");
+    }
+
+    private function __moveMails(array $matchedEvents, Mailbox $mailbox, OutputInterface $output)
+    {
+        $archive_folder = $this->params->get('imap_archive_folder');
+        foreach ($matchedEvents as $event) {
+            if (null !== $event->getMailId()) {
+                try {
+                    dump($event->getMailId());
+                    $mailbox->moveMail($event->getMailId(), $archive_folder);
+                } catch (Exception $e) {
+                    $output->writeln($e->getMessage());
+                }
+            }
+        }
     }
 }

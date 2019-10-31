@@ -28,6 +28,7 @@ class MatchEventsService
         $output->writeln('Matching start');
         $em = $this->em;
         $mevents = $em->getRepository(MonitorizableEvent::class)->findAll([], ['date' => 'ASC']);
+        $matchedEvents = [];
         foreach ($mevents as $mevent) {
             $output->writeln('Monitorizable Event: '.$mevent->getId());
             $lastEvent = $em->getRepository(Event::class)->findLastMatchedEvent($mevent);
@@ -56,9 +57,12 @@ class MatchEventsService
                 $output->writeln('Test Success: '.$mevent->testSuccess($event));
                 $output->writeln('Test Failure: '.$mevent->testFailure($event));
                 $em->persist($event);
+                $matchedEvents[] = $event;
             }
         }
         $em->flush();
         $output->writeln('Matching end');
+
+        return $matchedEvents;
     }
 }

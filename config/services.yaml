@@ -6,6 +6,7 @@
 
 parameters:
   locale: es
+  imap_archive_folder: '%env(IMAP_ARCHIVE)%'
 
 services:
     # default configuration for services in *this* file
