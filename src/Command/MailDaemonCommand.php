@@ -87,6 +87,8 @@ class MailDaemonCommand extends Command
             $output->writeln('Test Connection Successfull.');
             try {
                 $mailbox = $this->imap->get('office365');
+                $mailbox->switchMailbox($this->params->get('imap_inbox_folder'));
+                $output->writeln('Mailbox: '.$mailbox->getImapPath());
                 $output->writeln('Connected.');
                 $mailsIds = $mailbox->searchMailbox('ALL');
                 $eventsAdded = 0;
