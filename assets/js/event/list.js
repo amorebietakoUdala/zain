@@ -23,7 +23,7 @@ $(document).ready(function(){
 		sortable: true,
 		locale: $('html').attr('lang')+'-'+$('html').attr('lang').toUpperCase(),
 	});
-	$('.js-showDetails').on('click',function(e){
+	$(document).on('click','.js-showDetails' ,function (e) {
 		e.preventDefault();
 		var id = e.currentTarget.id;
 		var overlay = id.replace('tr','ov');

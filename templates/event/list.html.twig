@@ -47,10 +47,9 @@
 			    </td>
 			    <td class="white-space-nowrap">
 				    &nbsp;
-					<a class="js-showDetails trigger" 
-					   id="tr{{loop.index}}" 
-					   href="#"
-					   ><i class="fa fa-file-text-o prefix" title="{{"icon.details" | trans | capitalize}}"></i></a>
+					<a id="tr{{loop.index}}" class="js-showDetails trigger" href="#">
+						<i class="fa fa-file-text-o prefix" title="{{"icon.details" | trans | capitalize}}"></i>
+					</a>
 					
 				    &nbsp;<a href="{{ path('admin_event_new_mevent', {'event': event.id }) }}"><i class="fa fa-plus" title="{{"icon.monitor" | trans | capitalize}}"></i></a>
 			    </td>
