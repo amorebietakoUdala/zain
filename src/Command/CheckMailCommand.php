@@ -43,22 +43,9 @@ class CheckMailCommand extends Command
     {
         $mailId = $input->getArgument('mailId');
         $mailbox = $this->imap->get('office365');
-//        $mail = $mailbox->getMail($mailId);
-//        dump($mail);
-//        $mailbox->switchMailbox('Artxibatzeko/Artzain');
-        $folders = $mailbox->getListingFolders();
-        $headers = $mailbox->getMailboxHeaders();
-        dump($mailbox->getMailboxes('INBOX'));
-        $mailbox->switchMailbox($mailbox->getMailboxes('INBOX')[0]['fullpath']);
-        $mails = $mailbox->searchMailbox();
-        dump($mails);
+        $mail = $mailbox->getMail($mailId);
+        dump($mail);
         die;
-        dump($headers);
-        die;
-        dump($folders);
-        die;
-//        $mailbox->moveMail($mailId, 'INBOX/Artzain');
-//        $output->writeln(mb_detect_encoding($mail->textHtml));
         $event = Event::__parseEvent($mail);
 //        $this->em = $this->getContainer()->get('doctrine.orm.entity_manager');
 //        $this->em->persist($event);
