@@ -30,12 +30,14 @@ $(document).ready(function(){
 		$('#'+overlay).fadeIn(300);
 		$('.bootstrap-table').hide();
 	});
-	$('.close').click(function(e) {
+    $(document).on('click','.close' ,function (e) {
 		var number = e.target.id.slice(2);
 		$('#ov'+number).fadeOut(300);
 	    $('.bootstrap-table').show();
 	});
-	$('.overlay').hide();
+    $(document).on('click','.overlay' ,function (e) {
+        e.currentTarget.hide();
+    });
 	var $table = $('#taula');
 	$(function () {
 	    $('#toolbar').find('select').change(function () {

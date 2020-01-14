@@ -65,14 +65,14 @@ $(document).ready(function() {
 		});
 	    });
 	});
-	$('.js-showDetails').on('click',function(e){
+    $(document).on('click','.js-showDetails' ,function (e) {
 		e.preventDefault();
 		var id = e.currentTarget.id;
 		var overlay = id.replace('tr','ov');
 		$('#'+overlay).fadeIn(300);
 		$('.bootstrap-table').hide();
 	});
-	$('.close').click(function(e) {
+    $(document).on('click','.close' ,function (e) {
 		var number = e.target.id.slice(2);
 		$('#ov'+number).fadeOut(300);
 	    $('.bootstrap-table').show();
