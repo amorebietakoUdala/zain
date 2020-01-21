@@ -16,11 +16,12 @@ function createHtml(json) {
     var html = '';
     var event = json;
     var details = event.details;
+	var subject = event.subject !== null ? event.subject : '';
     if ( null !== details ) {
         if (event.type === 'text')
-            html = '<pre>' + event.details + '</pre>'
+            html = '<b>' + subject + '</b>' + '<br/>' + '<pre>' + details + '</pre>'
         else {
-            html = striptags(details, '<table><th><tr><td><p><b><span><a><br><blockguote>');
+            html = striptags('<b>' + subject + '</b>' + details, '<table><th><tr><td><p><b><span><a><br><blockguote>');
         }
     }
     return html;
