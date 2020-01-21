@@ -47,7 +47,7 @@
 			    </td>
 			    <td class="white-space-nowrap">
 				    &nbsp;
-					<a id="tr{{loop.index}}" class="js-showDetails trigger" href="#">
+					<a id="tr{{loop.index}}" class="js-showDetails trigger" href="#" data-url="{{ path('admin_event_get', {'event': event.id }) }}">
 						<i class="fa fa-file-text-o prefix" title="{{"icon.details" | trans | capitalize}}"></i>
 					</a>
 					
@@ -60,7 +60,7 @@
 		    {% endif %}
 		</tbody>
 	    </table>
-	    {% if events is defined and events | length > 0 %}
+{#	    {% if events is defined and events | length > 0 %}
 		    {% for event in events %}
 		    <div id="ov{{loop.index}}" class="overlay" style="display:none">
 			<div id="pp{{loop.index}}" class="popup">
@@ -80,6 +80,6 @@
 		    </div>
 		    {% endfor %}
 	    {% endif %}
-	</div>
+#}	</div>
     </main>
 {% endblock %}

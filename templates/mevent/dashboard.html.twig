@@ -69,7 +69,16 @@
 			    </td>
 			    <td class="white-space-nowrap">
 				    {% if (mevent.lastEvent != null ) %}
-					<a id="tr{{loop.index}}" class="js-showDetails trigger" href="#"><i class="fa fa-eye prefix" title="{{"icon.show" | trans | capitalize }}"></i></a>
+					<a id="tr{{loop.index}}" class="js-showDetails trigger" href="#" 
+					   data-url="{{ path('admin_event_get', {'event': mevent.lastEvent.id }) }}"
+					   data-successCondition="{{ mevent.successCondition }}"
+					   data-failureCondition="{{ mevent.failureCondition }}"
+					   >
+						<i class="fa fa-file-text-o prefix" title="{{"icon.details" | trans | capitalize}}"></i>
+					</a>					
+						
+{#					<a id="tr{{loop.index}}" class="js-showDetails trigger" href="#"><i class="fa fa-eye prefix" title="{{"icon.show" | trans | capitalize }}"></i></a>
+#}
 					&nbsp;<a href="{{ path ('admin_mevent_try', {'id': mevent.id, event: mevent.lastEvent.id }) }}"><i class="fa fa-edit prefix" title="{{"icon.edit" | trans | capitalize}}"></i></a>
 				    {% endif %}
 			    </td>

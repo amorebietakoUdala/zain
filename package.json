@@ -28,7 +28,8 @@
         "pc-bootstrap4-datetimepicker": "4.17.50",
         "popper.js": "^1.14.7",
         "serialize-javascript": "^2.1.1",
-        "sweetalert2": "8.11.6",
+        "striptags": "^3.1.1",
+        "sweetalert2": "^9.6.0",
         "tableexport.jquery.plugin": "1.10.4",
         "urijs": "^1.19.1"
     }

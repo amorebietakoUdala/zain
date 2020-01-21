@@ -52,7 +52,7 @@
 			    <td>{{ mevent.frecuency }}</td>
 			    <td>{{ (constant('App\\Entity\\MonitorizableEvent::UNITS')[mevent.unit]) | trans }}</td>
 			    <td class="white-space-nowrap">
-				<a href="{{ path ('admin_mevent_show', {'id': mevent.id }) }}"><i class="fa fa-eye prefix" title="{{'icon.show' | trans | capitalize }}"></i></a>
+ 				<a href="{{ path ('admin_mevent_show', {'id': mevent.id }) }}"><i class="fa fa-eye prefix" title="{{'icon.show' | trans | capitalize }}"></i></a>
 				    &nbsp;<a href="{{ path ('admin_mevent_edit', {'id': mevent.id }) }}"><i class="fa fa-edit prefix" title="{{'icon.edit' | trans | capitalize}}"></i></a>
 				    &nbsp;<a class="js-ezabatu_botoia" data-url="{{ path ('admin_mevent_delete', {'id': mevent.id }) }}" href="#"><i class="fa fa-trash prefix" title="{{'icon.delete' | trans | capitalize}}"></i></a>
 				    &nbsp;<a class="js-bilatu_botoia" href="{{ path ('admin_mevent_search', {'id': mevent.id }) }}"><i class="fa fa-search prefix" title="{{'icon.search' | trans | capitalize}}"></i></a>

@@ -7,6 +7,24 @@ import 'bootstrap-table/dist/locale/bootstrap-table-es-ES';
 import 'bootstrap-table/dist/locale/bootstrap-table-eu-EU';
 import 'tableexport.jquery.plugin/tableExport';
 import 'jquery-ui';
+import striptags from 'striptags';
+
+// Dynamically imported
+// import Swal from 'sweetalert2';
+
+function createHtml(json) {
+    var html = '';
+    var event = json;
+    var details = event.details;
+    if ( null !== details ) {
+        if (event.type === 'text')
+            html = '<pre>' + event.details + '</pre>'
+        else {
+            html = striptags(details, '<table><th><tr><td><p><b><span><a><br><blockguote>');
+        }
+    }
+    return html;
+}
 
 $(document).ready(function(){
 	$('#taula').bootstrapTable({
@@ -25,11 +43,24 @@ $(document).ready(function(){
 	});
 	$(document).on('click','.js-showDetails' ,function (e) {
 		e.preventDefault();
-		var id = e.currentTarget.id;
-		var overlay = id.replace('tr','ov');
-		$('#'+overlay).fadeIn(300);
-		$('.bootstrap-table').hide();
+		var url = e.currentTarget.dataset.url;
+		var title = e.currentTarget.dataset.title;
+		$.ajax({
+			url: url,
+			type: 'GET',
+			dataType: 'json',
+			success: function (json) {
+				var html = createHtml(json);
+				import('sweetalert2').then((Swal) => {
+					Swal.default.fire({
+                        title: '',
+						html: html
+					});
+				});
+			}
+		});
 	});
+    
     $(document).on('click','.close' ,function (e) {
 		var number = e.target.id.slice(2);
 		$('#ov'+number).fadeOut(300);
