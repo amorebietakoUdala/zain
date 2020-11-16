@@ -3,9 +3,9 @@ jms_serializer:
         serialization:
             serialize_null: false
 
-    visitors:
-        xml:
-            format_output: '%kernel.debug%'
+#    visitors:
+#        xml:
+#            format_output: '%kernel.debug%'
 #    metadata:
 #        auto_detection: false
 #        directories:
