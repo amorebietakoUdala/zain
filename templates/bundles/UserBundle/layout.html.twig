@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block message %}
-    {{ parent() }}
+       {{ include('common/messages.html.twig') }}
 {% endblock %}
 
 {% block body %}
-    {% block fos_user_content %}{% endblock %}
+    {% block user_content %}{% endblock %}
 {% endblock %}

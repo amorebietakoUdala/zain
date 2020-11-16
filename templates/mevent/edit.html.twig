@@ -18,15 +18,3 @@
        {{ include('mevent/_form.html.twig',{'showSaveButton': true }) }}
     </div>
 {% endblock %}
-
-{#{% block javascripts %}
-    {{ parent() }}
-    <script type="text/javascript" src="{{ asset('js/mevent_new.js') }}"></script>
-    <script>
-    $(document).ready(function(){
-    	var view = View();
-	view.onBtnCancelClick();
-    });
-    </script>
-{% endblock%}
-#}

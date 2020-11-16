@@ -1,4 +1,7 @@
 {
+    "amorebietakoudala/user-bundle": {
+        "version": "dev-main"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -95,12 +98,6 @@
     },
     "egulias/email-validator": {
         "version": "2.1.11"
-    },
-    "fr3d/ldap-bundle": {
-        "version": "v4.0.0"
-    },
-    "friendsofsymfony/user-bundle": {
-        "version": "v2.1.2"
     },
     "fzaninotto/faker": {
         "version": "v1.8.0"
@@ -355,6 +352,9 @@
             "src/Kernel.php"
         ]
     },
+    "symfony/http-client-contracts": {
+        "version": "v2.3.1"
+    },
     "symfony/http-foundation": {
         "version": "v4.3.4"
     },
@@ -366,6 +366,9 @@
     },
     "symfony/intl": {
         "version": "v4.3.4"
+    },
+    "symfony/ldap": {
+        "version": "v4.4.16"
     },
     "symfony/maker-bundle": {
         "version": "1.0",
@@ -508,7 +511,7 @@
         ]
     },
     "symfony/templating": {
-        "version": "v4.3.4"
+        "version": "v4.4.16"
     },
     "symfony/test-pack": {
         "version": "v1.0.6"
@@ -644,8 +647,5 @@
     },
     "zendframework/zend-eventmanager": {
         "version": "3.2.1"
-    },
-    "zendframework/zend-ldap": {
-        "version": "2.10.0"
     }
 }
