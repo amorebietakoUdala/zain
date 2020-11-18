@@ -1,4 +1,4 @@
-routes_loading:
-    # loads routes from the YAML or XML files found in that directory
-    resource: './routes/'
-    type:     directory
+#routes_loading:
+#    # loads routes from the YAML or XML files found in that directory
+#    resource: 'routes'
+#    type:     directory
