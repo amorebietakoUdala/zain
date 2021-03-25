@@ -78,3 +78,5 @@ status.expired.color: "yellow"
 
 Find Success: "Condición de éxito"
 Find Failure: "Condición de fracaso"
+
+No last event: "No hay último evento"

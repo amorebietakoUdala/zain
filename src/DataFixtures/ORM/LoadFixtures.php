@@ -9,7 +9,7 @@
 namespace App\DataFixtures\ORM;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Nelmio\Alice\Loader\NativeLoader;
 
 /**
@@ -22,7 +22,7 @@ class LoadFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $loader = new NativeLoader();
-        $objectSet = $loader->loadFile(__DIR__.'/fixtures.yml')->getObjects();
+        $objectSet = $loader->loadFile(__DIR__ . '/fixtures.yml')->getObjects();
         foreach ($objectSet as $object) {
             $manager->persist($object);
         }
@@ -32,18 +32,18 @@ class LoadFixtures extends Fixture
     public function izenak()
     {
         $izenak = [
-        'Mikel',
-        'Aitor',
-        'Jon',
-        'Unai',
-        'Maider',
-        'Saioa',
-        'Nahia',
-        'Nahiara',
-        'Uxue',
-        'Lander',
-        'Erlantz',
-    ];
+            'Mikel',
+            'Aitor',
+            'Jon',
+            'Unai',
+            'Maider',
+            'Saioa',
+            'Nahia',
+            'Nahiara',
+            'Uxue',
+            'Lander',
+            'Erlantz',
+        ];
 
         $key = array_rand($izenak);
 
