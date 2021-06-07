@@ -5,6 +5,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 
 parameters:
+  app_name: zain
   locale: es
   imap_archive_folder: '%env(IMAP_ARCHIVE)%'
   imap_inbox_folder: '%env(IMAP_INBOX)%'
