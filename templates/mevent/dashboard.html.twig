@@ -32,11 +32,11 @@
             <table id="taula" class="bootstrap-table mt-3">
             <thead>
                 <tr>
-                <th data-sortable="true">{{"label.name" | trans | capitalize}}</th>
-                <th data-sortable="true">{{"label.lastEventDate" | trans | capitalize}}</th>
-                <th data-sortable="true">{{"label.nextExpectedDate" | trans | capitalize}}</th>
-                <th data-sortable="true">{{"label.status" | trans | capitalize}}</th>
-                <th class="col-1">{{ "tableheader.options" | trans | capitalize}}</th>
+                <th data-sortable="true" data-field="name">{{"label.name" | trans | capitalize}}</th>
+                <th data-sortable="true" data-field="lastEventDate">{{"label.lastEventDate" | trans | capitalize}}</th>
+                <th data-sortable="true" data-field="nextExpectedDate">{{"label.nextExpectedDate" | trans | capitalize}}</th>
+                <th data-sortable="true" data-field="status">{{"label.status" | trans | capitalize}}</th>
+                <th data-sortable="false" data-field="options" class="col-1">{{ "tableheader.options" | trans | capitalize}}</th>
                 </tr>
             </thead>
             <tbody>
