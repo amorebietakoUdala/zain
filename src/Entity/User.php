@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use AMREU\UserBundle\Model\User as BaseUser;
-use AMREU\UserBundle\Model\UserInterface as AMREUserInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+
+use AMREU\UserBundle\Model\User as BaseUser;
+use AMREU\UserBundle\Model\UserInterface as AMREUserInterface;
 
 /**
  * @ORM\Entity
