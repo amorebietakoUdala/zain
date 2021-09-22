@@ -18,7 +18,7 @@
         "php": "^7.2.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "amorebietakoudala/user-bundle": "0.9.*",
+        "amorebietakoudala/user-bundle": "^1.1.8",
         "doctrine/doctrine-bundle": "^2.1",
         "doctrine/doctrine-migrations-bundle": "^3.0",
         "doctrine/orm": "^2.5",
@@ -40,10 +40,14 @@
         "symfony/security-csrf": "5.*",
         "symfony/security-bundle": "5.*",
         "symfony/webpack-encore-bundle": "^1.6",
-        "symfony/serializer-pack": "^1.0",
         "symfony/proxy-manager-bridge": "5.*",
         "symfony/validator": "5.*",
-        "symfony/twig-bundle": "5.*"
+        "symfony/twig-bundle": "5.*",
+        "doctrine/annotations": "^1.0",
+        "phpdocumentor/reflection-docblock": "^5.2",
+        "symfony/property-access": "5.*",
+        "symfony/property-info": "5.*",
+        "symfony/serializer": "5.*"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.0",
@@ -51,11 +55,13 @@
         "nelmio/alice": "^3.1",
         "symfony/phpunit-bridge": "^4.1",
         "symfony/maker-bundle": "^1.0",
-        "symfony/test-pack": "*",
         "symfony/var-dumper": "^4.0",
         "symfony/web-profiler-bundle": "5.*",
         "symfony/stopwatch": "^5.1",
-        "symfony/debug-bundle": "^5.1"
+        "symfony/debug-bundle": "^5.1",
+        "phpunit/phpunit": "^9.5",
+        "symfony/browser-kit": "^5.3",
+        "symfony/css-selector": "^5.3"
     },
     "replace": {
         "paragonie/random_compat": "2.*",
