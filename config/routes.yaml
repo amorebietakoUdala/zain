@@ -1,4 +1,3 @@
-#routes_loading:
-#    # loads routes from the YAML or XML files found in that directory
-#    resource: 'routes'
-#    type:     directory
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
