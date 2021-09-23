@@ -1,4 +1,4 @@
-import '../../css/event/list.scss';
+import '../../css/event/list.css';
 
 import $ from 'jquery';
 import 'bootstrap-table';
