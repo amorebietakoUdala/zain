@@ -1,7 +1,7 @@
 import '../../css/mevent/search.css';
 
 import $ from 'jquery';
-global.jQuery = $;
+
 import 'bootstrap-table';
 import 'bootstrap-table/dist/locale/bootstrap-table-es-ES';
 import 'bootstrap-table/dist/locale/bootstrap-table-eu-EU';

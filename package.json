@@ -4,7 +4,6 @@
         "core-js": "^3.0.0",
         "file-loader": "^6.0.0",
         "regenerator-runtime": "^0.13.2",
-        "webpack-dev-server": "^3.11.0",
         "webpack-notifier": "^1.6.0",
         "y18n": "^4.0.1"
     },
