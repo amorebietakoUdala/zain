@@ -1,4 +1,4 @@
-import '../../css/mevent/new.scss';
+import '../../css/mevent/new.css';
 
 import $ from 'jquery';
 

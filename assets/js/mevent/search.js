@@ -1,4 +1,4 @@
-import '../../css/mevent/search.scss';
+import '../../css/mevent/search.css';
 
 import $ from 'jquery';
 import 'bootstrap-table';

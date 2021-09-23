@@ -1,4 +1,4 @@
-import '../../css/dashboard/list.scss';
+import '../../css/dashboard/list.css';
 
 import $ from 'jquery';
 import 'bootstrap-table';
