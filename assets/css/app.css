@@ -16,10 +16,6 @@ header {
     align-items: center;
 }
 
-main {
-    width: 100vw;
-}
-
 .logo {
     height: 100px;
     width: auto;
