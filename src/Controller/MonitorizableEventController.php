@@ -22,8 +22,9 @@ use App\Forms\EventForm;
  * Description of MonitorizableEventController.
  *
  * @author ibilbao
+ */
 
- /**
+/**
  * @Route("/{_locale}/admin/mevent")
  */
 class MonitorizableEventController extends AbstractController
@@ -38,7 +39,7 @@ class MonitorizableEventController extends AbstractController
 
         return $this->render('/mevent/list.html.twig', [
             'mevents' => $mevents,
-    ]);
+        ]);
     }
 
     /**
@@ -53,7 +54,7 @@ class MonitorizableEventController extends AbstractController
         return $this->render('/mevent/dashboard.html.twig', [
             'mevents' => $mevents,
             'counters' => $counters,
-    ]);
+        ]);
     }
 
     /**
@@ -78,7 +79,7 @@ class MonitorizableEventController extends AbstractController
 
         return $this->render('mevent/new.html.twig', [
             'form' => $form->createView(),
-    ]);
+        ]);
     }
 
     /**
@@ -102,8 +103,8 @@ class MonitorizableEventController extends AbstractController
         }
 
         return $this->render('mevent/edit.html.twig', [
-        'form' => $form->createView(),
-    ]);
+            'form' => $form->createView(),
+        ]);
     }
 
     /**
@@ -164,7 +165,7 @@ class MonitorizableEventController extends AbstractController
             $criteria = $form->getData();
             $patternSuccess = $this->__buildRexEpr($criteria->getSuccessCondition());
             $patternFailure = $this->__buildRexEpr($criteria->getFailureCondition());
-            $target = $event->getSubject().$event->getDetails();
+            $target = $event->getSubject() . $event->getDetails();
             $findSuccess = 0;
             if (null != $criteria->getSuccessCondition()) {
                 $findSuccess = preg_match($patternSuccess, $target, $matchSuccess);
@@ -203,8 +204,8 @@ class MonitorizableEventController extends AbstractController
         $this->addFlash('success', 'messages.eventMatched');
 
         return $this->redirectToRoute('admin_mevent_search', [
-        'id' => $mevent->getId(),
-    ]);
+            'id' => $mevent->getId(),
+        ]);
     }
 
     /**
@@ -229,9 +230,9 @@ class MonitorizableEventController extends AbstractController
         }
 
         return $this->render('mevent/_searchEvents.html.twig', [
-        'form' => $form->createView(),
-        'mevent' => $mevent,
-    ]);
+            'form' => $form->createView(),
+            'mevent' => $mevent,
+        ]);
     }
 
     /**
@@ -270,10 +271,10 @@ class MonitorizableEventController extends AbstractController
         $this->addFlash('success', 'messages.only_last_5_days');
 
         return $this->render('mevent/_searchEvents.html.twig', [
-        'form' => $form->createView(),
-        'mevent' => $mevent,
-        'events' => $events,
-    ]);
+            'form' => $form->createView(),
+            'mevent' => $mevent,
+            'events' => $events,
+        ]);
     }
 
     /**
@@ -286,8 +287,8 @@ class MonitorizableEventController extends AbstractController
         $form = $this->createForm(EventForm::class, $event);
 
         return $this->render('event/show.html.twig', [
-        'form' => $form->createView(),
-    ]);
+            'form' => $form->createView(),
+        ]);
     }
 
     /**
@@ -298,8 +299,8 @@ class MonitorizableEventController extends AbstractController
         $form = $this->createForm(MonitorizableEventForm::class, $mevent);
 
         return $this->render('mevent/show.html.twig', [
-        'form' => $form->createView(),
-    ]);
+            'form' => $form->createView(),
+        ]);
     }
 
     private function _remove_from_to($criteria)
@@ -336,7 +337,7 @@ class MonitorizableEventController extends AbstractController
         $reg_exp = '/^(.*)';
         $string_space = preg_replace("/\ /", "\s", preg_quote($string));
 
-        return $reg_exp.$string_space.'(.*)/iAs';
+        return $reg_exp . $string_space . '(.*)/iAs';
     }
 
     /**
@@ -347,11 +348,11 @@ class MonitorizableEventController extends AbstractController
     private function __countStatusTypes(array $mevents)
     {
         $counters = [
-        MonitorizableEvent::STATUS_MESSAGES[MonitorizableEvent::STATUS_SUCCESS] => 0,
-        MonitorizableEvent::STATUS_MESSAGES[MonitorizableEvent::STATUS_FAILURE] => 0,
-        MonitorizableEvent::STATUS_MESSAGES[MonitorizableEvent::STATUS_UNDEFINED] => 0,
-        MonitorizableEvent::STATUS_MESSAGES[MonitorizableEvent::STATUS_EXPIRED] => 0,
-    ];
+            MonitorizableEvent::STATUS_MESSAGES[MonitorizableEvent::STATUS_SUCCESS] => 0,
+            MonitorizableEvent::STATUS_MESSAGES[MonitorizableEvent::STATUS_FAILURE] => 0,
+            MonitorizableEvent::STATUS_MESSAGES[MonitorizableEvent::STATUS_UNDEFINED] => 0,
+            MonitorizableEvent::STATUS_MESSAGES[MonitorizableEvent::STATUS_EXPIRED] => 0,
+        ];
         foreach ($mevents as $mevent) {
             $lastStatus = $mevent->testLastStatus();
             if (MonitorizableEvent::STATUS_SUCCESS == $lastStatus) {
