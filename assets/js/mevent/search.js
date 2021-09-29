@@ -1,11 +1,10 @@
 import '../../css/mevent/search.css';
 
 import $ from 'jquery';
+
 import 'bootstrap-table';
-import 'bootstrap-table/dist/extensions/export/bootstrap-table-export'
 import 'bootstrap-table/dist/locale/bootstrap-table-es-ES';
 import 'bootstrap-table/dist/locale/bootstrap-table-eu-EU';
-import 'tableexport.jquery.plugin/tableExport';
 import 'bootstrap-datepicker';
 import 'bootstrap-datepicker/js/locales/bootstrap-datepicker.es';
 import 'bootstrap-datepicker/js/locales/bootstrap-datepicker.eu';
