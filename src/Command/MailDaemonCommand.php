@@ -41,19 +41,20 @@ class MailDaemonCommand extends Command
             ->setDescription('Daemon that reads emails.')
             // the full command description shown when running the command with
             // the "--help" option
-            ->setHelp('This command starts the daemon that reads emails and writes them into the database.')
-        ;
+            ->setHelp('This command starts the daemon that reads emails and writes them into the database.');
     }
 
-    private static function getEntityManager()
-    {
-        if (!self::$entityManager->isOpen()) {
-            self::$entityManager = self::$entityManager->create(
-      self::$entityManager->getConnection(), self::$entityManager->getConfiguration());
-        }
+    // private static function getEntityManager()
+    // {
+    //     if (!self::$entityManager->isOpen()) {
+    //         self::$entityManager = self::$entityManager->create(
+    //             self::$entityManager->getConnection(),
+    //             self::$entityManager->getConfiguration()
+    //         );
+    //     }
 
-        return self::$entityManager;
-    }
+    //     return self::$entityManager;
+    // }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -70,7 +71,7 @@ class MailDaemonCommand extends Command
                 $isConnectable = $this->imap->testConnection('office365', true);
             } catch (\Exception $exception) {
                 $output->writeln("EXCEPTION: Can't connect to Mail server!!!");
-                $output->writeln('EXCEPTION: '.$exception->getMessage());
+                $output->writeln('EXCEPTION: ' . $exception->getMessage());
                 $output->writeln('Retrying in one minute...');
                 sleep(1 * 60); // Itxoin minutu bat eta berriro saiatu.
             }
@@ -79,7 +80,7 @@ class MailDaemonCommand extends Command
                     $isConnectable = $this->imap->testConnection('office365', true);
                 } catch (\Exception $exception) {
                     $output->writeln("EXCEPTION: Can't connect to Mail server!!!");
-                    $output->writeln('EXCEPTION: '.$exception->getMessage());
+                    $output->writeln('EXCEPTION: ' . $exception->getMessage());
                     $output->writeln('Retrying in one minute...');
                     sleep(1 * 60); // Itxoin minutu bat eta berriro saiatu.
                 }
@@ -88,12 +89,12 @@ class MailDaemonCommand extends Command
             try {
                 $mailbox = $this->imap->get('office365');
                 $mailbox->switchMailbox($this->params->get('imap_inbox_folder'));
-                $output->writeln('Mailbox: '.$mailbox->getImapPath());
+                $output->writeln('Mailbox: ' . $mailbox->getImapPath());
                 $output->writeln('Connected.');
                 $mailsIds = $mailbox->searchMailbox('ALL');
                 $eventsAdded = 0;
                 foreach ($mailsIds as $mailId) {
-                    $output->writeln('MailId: '.$mailId.' LastMaxMailId: '.$lastMaxMailId);
+                    $output->writeln('MailId: ' . $mailId . ' LastMaxMailId: ' . $lastMaxMailId);
                     if ($mailId > $lastMaxMailId) {
                         $mail = $mailbox->getMail($mailId);
                         $mailbox->markMailAsUnread($mailId);
@@ -104,8 +105,8 @@ class MailDaemonCommand extends Command
                             $this->em->persist($event);
                             ++$eventsAdded;
                         } catch (\Exception $exception) {
-                            $output->writeln('EXCEPTION: '.$exception->getMessage());
-                            $output->writeln('Message: '.$mailId.' skipped.');
+                            $output->writeln('EXCEPTION: ' . $exception->getMessage());
+                            $output->writeln('Message: ' . $mailId . ' skipped.');
                         }
                     }
                 }
@@ -113,7 +114,7 @@ class MailDaemonCommand extends Command
                 if (count($mailsIds) > 0) {
                     $lastMaxMailId = max($mailsIds);
                 }
-                $output->writeln('New Events:'.$eventsAdded);
+                $output->writeln('New Events:' . $eventsAdded);
                 $output->writeln('Matching Events...');
                 $matchEventsService = new MatchEventsService($this->em, $output);
                 $matchedEvents = $matchEventsService->execute();
@@ -125,12 +126,12 @@ class MailDaemonCommand extends Command
 
                 sleep(5 * 60); // Bost minuturo
             } catch (\Exception $exception) {
-                $output->writeln('EXCEPTION: '.$exception->getMessage());
-//                $output->writeln('Resetting EntityManager...');
+                $output->writeln('EXCEPTION: ' . $exception->getMessage());
+                //                $output->writeln('Resetting EntityManager...');
                 // Birsortu EntityManager badaezpada,
-//                $this->doctrine->resetManager();
+                //                $this->doctrine->resetManager();
                 $this->em = $this->doctrine->getManager();
-//                $output->writeln('Reset Done...');
+                //                $output->writeln('Reset Done...');
                 $output->writeln('Retrying in one minute...');
                 sleep(1 * 60); // Itxoin minutu bat eta berriro saiatu.
             }
@@ -144,9 +145,8 @@ class MailDaemonCommand extends Command
         foreach ($matchedEvents as $event) {
             if (null !== $event->getMailId()) {
                 try {
-                    dump($event->getMailId());
                     $mailbox->moveMail($event->getMailId(), $archive_folder);
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     $output->writeln($e->getMessage());
                 }
             }

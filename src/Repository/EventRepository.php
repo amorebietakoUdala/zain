@@ -8,6 +8,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\User\User;
 
 use App\Entity\Event;
+use App\Entity\MonitorizableEvent;
 
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
