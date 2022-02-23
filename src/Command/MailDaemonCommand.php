@@ -10,6 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Command\Command;
 use App\Entity\Event;
 use App\Services\MatchEventsService;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use SecIT\ImapBundle\Service\Imap;
@@ -87,6 +88,8 @@ class MailDaemonCommand extends Command
             }
             $output->writeln('Test Connection Successfull.');
             try {
+                $start = new \DateTime();
+                $output->writeln('Start of add events:' . $start->format('Y-m-d H:i:s'));
                 $mailbox = $this->imap->get('office365');
                 $mailbox->switchMailbox($this->params->get('imap_inbox_folder'));
                 $output->writeln('Mailbox: ' . $mailbox->getImapPath());
@@ -115,13 +118,22 @@ class MailDaemonCommand extends Command
                     $lastMaxMailId = max($mailsIds);
                 }
                 $output->writeln('New Events:' . $eventsAdded);
+                $end = new \DateTime();
+                $elapsedTime = ($start->diff($end))->format('%H:%I:%S');
+                $output->writeln('End of add events:' . (new \DateTime())->format('Y-m-d H:i:s'));
+                $output->writeln('ElapsedTime:' . $elapsedTime);
                 $output->writeln('Matching Events...');
+                $start = new \DateTime();
+                $output->writeln('Start of match events:' . $start->format('Y-m-d H:i:s'));
                 $matchEventsService = new MatchEventsService($this->em, $output);
                 $matchedEvents = $matchEventsService->execute();
 
                 $this->__moveMails($matchedEvents, $mailbox, $output);
 
                 $output->writeln('Events Matched.');
+                $end = new \DateTime();
+                $elapsedTime = ($start->diff($end))->format('%H:%I:%S');
+                $output->writeln('End of match events:' . (new \DateTime())->format('Y-m-d H:i:s'));
                 $output->writeln('Going To Sleep...');
 
                 sleep(5 * 60); // Bost minuturo
