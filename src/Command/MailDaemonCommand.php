@@ -134,6 +134,7 @@ class MailDaemonCommand extends Command
                 $end = new \DateTime();
                 $elapsedTime = ($start->diff($end))->format('%H:%I:%S');
                 $output->writeln('End of match events:' . (new \DateTime())->format('Y-m-d H:i:s'));
+                $output->writeln('ElapsedTime:' . $elapsedTime);
                 $output->writeln('Going To Sleep...');
 
                 sleep(5 * 60); // Bost minuturo
