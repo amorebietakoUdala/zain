@@ -92,5 +92,11 @@
             "allow-contrib": false,
             "require": "5.*"
         }
+    },
+    "config": {
+        "allow-plugins": {
+            "symfony/flex": true,
+            "symfony/runtime": true
+        }
     }
 }
