@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Entity\MonitorizableEvent;
 use App\Entity\Event;
+use Symfony\Component\Console\Command\Command;
 
 /**
  * Description of MatchEventsService
@@ -22,42 +23,41 @@ class MatchEventsService
         $this->output = $output;
     }
 
-    public function execute()
+    public function execute($events): array
     {
         $output = $this->output;
         $output->writeln('Matching start');
         $em = $this->em;
-        $mevents = $em->getRepository(MonitorizableEvent::class)->findAll([], ['date' => 'ASC']);
         $matchedEvents = [];
-        foreach ($mevents as $mevent) {
-            $output->writeln('Monitorizable Event: '.$mevent->getId());
-            $lastEvent = $em->getRepository(Event::class)->findLastMatchedEvent($mevent);
-            $lastDate = null;
-            $from = null;
-            if (null !== $lastEvent) {
-                $output->writeln('LastEvent: '.$lastEvent->getMailId().': '.$lastEvent->getSubject().'on date '.$lastEvent->getDate()->format('Y-m-d H:i:s'));
-                $lastDate = $lastEvent->getDate();
-            }
-            parse_str($mevent->getFilterCondition(), $criteria);
-            if (null !== $lastDate) {
-                $interval = new \DateInterval('PT1S');
-                $from = date_add($lastDate, $interval);
-                $output->writeln('Fecha +1:'.$from->format('Y-m-d H:i:s'));
-            }
-            $events = $em->getRepository(Event::class)->findAllFromTo($criteria, $from, new \DateTime());
-            $output->writeln('Success Condition: '.$mevent->getSuccessCondition());
-            $output->writeln('Failure Condition: '.$mevent->getFailureCondition());
-            foreach ($events as $event) {
-                $output->writeln('Events found!!!!');
-                if (null !== $lastDate) {
-                    $output->writeln('Since Date: '.$lastDate->format('Y-m-d H:i:s'));
+        /** @var MonitorizableEvent[] $mevents */
+        $mevents = $em->getRepository(MonitorizableEvent::class)->findAll([], ['date' => 'ASC']);
+        foreach ($events as $event) {
+            foreach ($mevents as $mevent) {
+                /** If matches filter condition and success or failure condition add to matched events.
+                 *  Also add the monitorizableEvent object to the event object.
+                 */
+                /** @var Event $event */
+                if ( ($mevent->testSuccess($event) || $mevent->testFailure($event)) && $mevent->testFilterCondition($event) ) {
+                    $output->writeln('Monitorizable Event: '.$mevent->getId());     
+                    $output->writeln('Filter Condition: '.$mevent->getFilterCondition());
+                    $output->writeln('Success Condition: '.$mevent->getSuccessCondition());
+                    $output->writeln('Failure Condition: '.$mevent->getFailureCondition());
+                    $lastEvent = $em->getRepository(Event::class)->findLastMatchedEvent($mevent);
+                    if ( null !== $lastEvent ) {
+                        $output->writeln('LastEvent: '.$lastEvent->getMailId().': '.$lastEvent->getSubject().'on date '.$lastEvent->getDate()->format('Y-m-d H:i:s'));
+                        if (trim($lastEvent->getMailId()) !== trim($event->getMailId())) {
+                            $output->writeln('newEvent: '.$event->getMailId().': '.$event->getSubject().'on date '.$event->getDate()->format('Y-m-d H:i:s'));
+                            $output->writeln('newEvent success: '.$mevent->testSuccess($event));
+                            $output->writeln('newEvent failure: '.$mevent->testFailure($event));
+                            $event->setMonitorizableEvent($mevent);
+                            $em->persist($event);
+                            $matchedEvents[] = $event;
+                        } else {
+                            $output->writeln('Already matched: LastEventId '. $lastEvent->getMailId(). ' = NewEventId '.$event->getMailId());
+                        }
+                    }
+                    break;
                 }
-                $output->writeln($event->getMailId().': '.$event->getSubject().' on date '.$event->getDate()->format('Y-m-d H:i:s'));
-                $event->setMonitorizableEvent($mevent);
-                $output->writeln('Test Success: '.$mevent->testSuccess($event));
-                $output->writeln('Test Failure: '.$mevent->testFailure($event));
-                $em->persist($event);
-                $matchedEvents[] = $event;
             }
         }
         $em->flush();

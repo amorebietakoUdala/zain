@@ -200,6 +200,17 @@ use DateTime;
             }
         }
 
+        public function testFilterCondition(Event $event) {
+            parse_str($this->getFilterCondition(), $criteria);
+            $eventArray = $event->toArray();
+            foreach ($criteria as $key => $value) {
+                if ( strpos($eventArray[$key], $criteria[$key]) < 0 ) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         public function testSuccess(Event $event)
         {
             if (null === $this->getSuccessCondition() || '' === $this->getSuccessCondition()) {

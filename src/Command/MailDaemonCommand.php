@@ -45,18 +45,6 @@ class MailDaemonCommand extends Command
             ->setHelp('This command starts the daemon that reads emails and writes them into the database.');
     }
 
-    // private static function getEntityManager()
-    // {
-    //     if (!self::$entityManager->isOpen()) {
-    //         self::$entityManager = self::$entityManager->create(
-    //             self::$entityManager->getConnection(),
-    //             self::$entityManager->getConfiguration()
-    //         );
-    //     }
-
-    //     return self::$entityManager;
-    // }
-
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln("Daemon's Start");
@@ -66,36 +54,20 @@ class MailDaemonCommand extends Command
         } else {
             $lastMaxMailId = 0;
         }
+
         while (true) {
-            $isConnectable = false;
-            try {
-                $isConnectable = $this->imap->testConnection('office365', true);
-            } catch (\Exception $exception) {
-                $output->writeln("EXCEPTION: Can't connect to Mail server!!!");
-                $output->writeln('EXCEPTION: ' . $exception->getMessage());
-                $output->writeln('Retrying in one minute...');
-                sleep(1 * 60); // Itxoin minutu bat eta berriro saiatu.
-            }
-            while (!$isConnectable) {
-                try {
-                    $isConnectable = $this->imap->testConnection('office365', true);
-                } catch (\Exception $exception) {
-                    $output->writeln("EXCEPTION: Can't connect to Mail server!!!");
-                    $output->writeln('EXCEPTION: ' . $exception->getMessage());
-                    $output->writeln('Retrying in one minute...');
-                    sleep(1 * 60); // Itxoin minutu bat eta berriro saiatu.
-                }
-            }
+            $this->waitUntillConnectable($output);
             $output->writeln('Test Connection Successfull.');
             try {
                 $start = new \DateTime();
-                $output->writeln('Start of add events:' . $start->format('Y-m-d H:i:s'));
+                $output->writeln('Start of add events: ' . $start->format('Y-m-d H:i:s'));
                 $mailbox = $this->imap->get('office365');
                 $mailbox->switchMailbox($this->params->get('imap_inbox_folder'));
                 $output->writeln('Mailbox: ' . $mailbox->getImapPath());
                 $output->writeln('Connected.');
                 $mailsIds = $mailbox->searchMailbox('ALL');
                 $eventsAdded = 0;
+                $newEvents = [];
                 foreach ($mailsIds as $mailId) {
                     $output->writeln('MailId: ' . $mailId . ' LastMaxMailId: ' . $lastMaxMailId);
                     if ($mailId > $lastMaxMailId) {
@@ -107,6 +79,7 @@ class MailDaemonCommand extends Command
                         try {
                             $this->em->persist($event);
                             ++$eventsAdded;
+                            $newEvents[] = $event;
                         } catch (\Exception $exception) {
                             $output->writeln('EXCEPTION: ' . $exception->getMessage());
                             $output->writeln('Message: ' . $mailId . ' skipped.');
@@ -117,40 +90,58 @@ class MailDaemonCommand extends Command
                 if (count($mailsIds) > 0) {
                     $lastMaxMailId = max($mailsIds);
                 }
-                $output->writeln('New Events:' . $eventsAdded);
+                $output->writeln('New Events: ' . $eventsAdded);
                 $end = new \DateTime();
                 $elapsedTime = ($start->diff($end))->format('%H:%I:%S');
-                $output->writeln('End of add events:' . (new \DateTime())->format('Y-m-d H:i:s'));
-                $output->writeln('ElapsedTime:' . $elapsedTime);
+                $output->writeln('End of add events: ' . (new \DateTime())->format('Y-m-d H:i:s'));
+                $output->writeln('ElapsedTime: ' . $elapsedTime);
                 $output->writeln('Matching Events...');
                 $start = new \DateTime();
-                $output->writeln('Start of match events:' . $start->format('Y-m-d H:i:s'));
+                $output->writeln('Start of match events: ' . $start->format('Y-m-d H:i:s'));
                 $matchEventsService = new MatchEventsService($this->em, $output);
-                $matchedEvents = $matchEventsService->execute();
-
+                $matchedEvents = $matchEventsService->execute($newEvents);
                 $this->__moveMails($matchedEvents, $mailbox, $output);
-
+    
                 $output->writeln('Events Matched.');
                 $end = new \DateTime();
                 $elapsedTime = ($start->diff($end))->format('%H:%I:%S');
-                $output->writeln('End of match events:' . (new \DateTime())->format('Y-m-d H:i:s'));
-                $output->writeln('ElapsedTime:' . $elapsedTime);
+                $output->writeln('End of match events: ' . (new \DateTime())->format('Y-m-d H:i:s'));
+                $output->writeln('ElapsedTime: ' . $elapsedTime);
                 $output->writeln('Going To Sleep...');
-
+    
                 sleep(5 * 60); // Bost minuturo
             } catch (\Exception $exception) {
                 $output->writeln('EXCEPTION: ' . $exception->getMessage());
-                //                $output->writeln('Resetting EntityManager...');
-                // Birsortu EntityManager badaezpada,
-                //                $this->doctrine->resetManager();
                 $this->em = $this->doctrine->getManager();
-                //                $output->writeln('Reset Done...');
                 $output->writeln('Retrying in one minute...');
                 sleep(1 * 60); // Itxoin minutu bat eta berriro saiatu.
             }
         }
         $output->writeln("Daemon's End");
     }
+
+    private function waitUntillConnectable(OutputInterface $output) {
+        $isConnectable = false;
+        try {
+            $isConnectable = $this->imap->testConnection('office365', true);
+        } catch (\Exception $exception) {
+            $output->writeln("EXCEPTION: Can't connect to Mail server!!!");
+            $output->writeln('EXCEPTION: ' . $exception->getMessage());
+            $output->writeln('Retrying in one minute...');
+            sleep(1 * 60); // Itxoin minutu bat eta berriro saiatu.
+        }
+        while (!$isConnectable) {
+            try {
+                $isConnectable = $this->imap->testConnection('office365', true);
+            } catch (\Exception $exception) {
+                $output->writeln("EXCEPTION: Can't connect to Mail server!!!");
+                $output->writeln('EXCEPTION: ' . $exception->getMessage());
+                $output->writeln('Retrying in one minute...');
+                sleep(1 * 60); // Itxoin minutu bat eta berriro saiatu.
+            }
+        }
+        $output->writeln('Test Connection Successfull.');
+    }    
 
     private function __moveMails(array $matchedEvents, Mailbox $mailbox, OutputInterface $output)
     {
