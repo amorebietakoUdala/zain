@@ -22,6 +22,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * Description of MonitorizableEventController.
  *
  * @author ibilbao
+*/
 
  /**
  * @Route("/{_locale}/admin/event")
@@ -102,6 +103,7 @@ class EventController extends AbstractController
             $json,
             Response::HTTP_OK,
             ['content-type' => 'application/json']
-);
+        );
     }
+
 }

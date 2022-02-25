@@ -204,7 +204,7 @@ use DateTime;
             parse_str($this->getFilterCondition(), $criteria);
             $eventArray = $event->toArray();
             foreach ($criteria as $key => $value) {
-                if ( strpos($eventArray[$key], $criteria[$key]) < 0 ) {
+                if ( !$this->string_contains($eventArray[$key], $criteria[$key]) ) {
                     return false;
                 }
             }
@@ -312,5 +312,13 @@ use DateTime;
             $string_space = preg_replace("/\ /", "\s", preg_quote($string));
 
             return $reg_exp.$string_space.'(.*)/iAs';
+        }
+
+        private function string_contains($haystack, $needle): bool {
+            if (strpos($haystack, $needle) !== false) {
+                return true;
+            } else {
+                return false;
+            }
         }
     }
