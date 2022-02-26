@@ -47,7 +47,7 @@
         "tableexport.jquery.plugin": "^1.10.15",
         "trim-newlines": "^3.0.1",
         "urijs": "^1.19.7",
-        "url-parse": "^1.5.2",
+        "url-parse": "^1.5.8",
         "websocket-extensions": "0.1.4"
     }
 }
