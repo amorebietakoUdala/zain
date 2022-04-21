@@ -4,7 +4,6 @@ import $ from 'jquery';
 import 'bootstrap-table';
 import 'bootstrap-table/dist/locale/bootstrap-table-es-ES';
 import 'bootstrap-table/dist/locale/bootstrap-table-eu-EU';
-import 'jquery-ui';
 import striptags from 'striptags';
 
 // Dynamically imported

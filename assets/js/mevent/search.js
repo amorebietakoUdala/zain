@@ -10,7 +10,6 @@ import 'bootstrap-datepicker/js/locales/bootstrap-datepicker.es';
 import 'bootstrap-datepicker/js/locales/bootstrap-datepicker.eu';
 import 'eonasdan-bootstrap-datetimepicker';
 import 'pc-bootstrap4-datetimepicker';
-import 'jquery-ui';
 
 function View() {
   var dom = {
