@@ -28,7 +28,7 @@
         "ini": "^1.3.6",
         "is-svg": "^4.2.2",
         "jquery": "^3.5.0",
-        "jquery-ui": "1.12.1",
+        "jquery-ui": "1.13.0",
         "jspdf": "^2.3.1",
         "lodash": "^4.17.21",
         "node-notifier": "^8.0.1",
