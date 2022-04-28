@@ -100,8 +100,10 @@ class MailDaemonCommand extends Command
                 $output->writeln('Start of match events: ' . $start->format('Y-m-d H:i:s'));
                 $matchEventsService = new MatchEventsService($this->em, $output);
                 $matchedEvents = $matchEventsService->execute($newEvents);
+                $output->writeln('MatchedEvents: '.count($matchedEvents));
+                $output->writeln('Before moving mails.');
                 $this->__moveMails($matchedEvents, $mailbox, $output);
-    
+                $output->writeln('After moving mails.');
                 $output->writeln('Events Matched.');
                 $end = new \DateTime();
                 $elapsedTime = ($start->diff($end))->format('%H:%I:%S');
@@ -143,15 +145,16 @@ class MailDaemonCommand extends Command
         $output->writeln('Test Connection Successfull.');
     }    
 
-    private function __moveMails(array $matchedEvents, Mailbox $mailbox, OutputInterface $output)
-    {
+    private function __moveMails(array $matchedEvents, Mailbox $mailbox, OutputInterface $output) {
         $archive_folder = $this->params->get('imap_archive_folder');
         foreach ($matchedEvents as $event) {
             if (null !== $event->getMailId()) {
                 try {
                     $mailbox->moveMail($event->getMailId(), $archive_folder);
+                    $output->writeln("MailId ".$event->getMailId(). ' correctly moved.');
                 } catch (\Exception $e) {
-                    $output->writeln($e->getMessage());
+                    $output->writeln('ERROR:' .$e->getMessage());
+                    $output->writeln("MailId ".$event->getMailId(). ' could not be moved.');
                 }
             }
         }

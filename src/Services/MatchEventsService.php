@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Entity\MonitorizableEvent;
 use App\Entity\Event;
-use Symfony\Component\Console\Command\Command;
 
 /**
  * Description of MatchEventsService
@@ -42,6 +41,7 @@ class MatchEventsService
                     $output->writeln('Filter Condition: '.$mevent->getFilterCondition());
                     $output->writeln('Success Condition: '.$mevent->getSuccessCondition());
                     $output->writeln('Failure Condition: '.$mevent->getFailureCondition());
+                    /** @var Event $lastEvent */
                     $lastEvent = $em->getRepository(Event::class)->findLastMatchedEvent($mevent);
                     if ( null !== $lastEvent ) {
                         $output->writeln('LastEvent: '.$lastEvent->getMailId().': '.$lastEvent->getSubject().'on date '.$lastEvent->getDate()->format('Y-m-d H:i:s'));
@@ -55,6 +55,14 @@ class MatchEventsService
                         } else {
                             $output->writeln('Already matched: LastEventId '. $lastEvent->getMailId(). ' = NewEventId '.$event->getMailId());
                         }
+                    } else {
+                        $output->writeln('No last event found.');
+                        $output->writeln('newEvent: '.$event->getMailId().': '.$event->getSubject().'on date '.$event->getDate()->format('Y-m-d H:i:s'));
+                        $output->writeln('newEvent success: '.$mevent->testSuccess($event));
+                        $output->writeln('newEvent failure: '.$mevent->testFailure($event));
+                        $event->setMonitorizableEvent($mevent);
+                        $em->persist($event);
+                        $matchedEvents[] = $event;
                     }
                     break;
                 }

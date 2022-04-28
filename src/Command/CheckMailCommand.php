@@ -43,13 +43,11 @@ class CheckMailCommand extends Command
         $mailId = $input->getArgument('mailId');
         $mailbox = $this->imap->get('office365');
         $mail = $mailbox->getMail($mailId);
-        // dump($mail);
-        die;
         $event = Event::__parseEvent($mail);
         //        $this->em = $this->getContainer()->get('doctrine.orm.entity_manager');
         //        $this->em->persist($event);
         //        $this->em->flush();
-        // dump($event);
+        dump($event);
         $output->writeln($mailId);
     }
 }

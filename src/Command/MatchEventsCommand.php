@@ -76,7 +76,7 @@ class MatchEventsCommand extends Command
                     $output->writeln($mail->date);
                     $event = Event::__parseEvent($mail);
                     try {
-                        $this->em->persist($event);
+            //            $this->em->persist($event);
                         ++$eventsAdded;
                         $newEvents[] = $event;
                     } catch (\Exception $exception) {
@@ -85,7 +85,7 @@ class MatchEventsCommand extends Command
                     }
                 }
             }
-            $this->em->flush();
+            //$this->em->flush();
             if (count($mailsIds) > 0) {
                 $lastMaxMailId = max($mailsIds);
             }
@@ -99,6 +99,7 @@ class MatchEventsCommand extends Command
             $output->writeln('Start of match events: ' . $start->format('Y-m-d H:i:s'));
             $matchEventsService = new MatchEventsService($this->em, $output);
             $matchedEvents = $matchEventsService->execute($newEvents);
+            $output->writeln('MatchedEvents: '.count($matchedEvents));
             $this->__moveMails($matchedEvents, $mailbox, $output);
 
             $output->writeln('Events Matched.');
@@ -148,8 +149,10 @@ class MatchEventsCommand extends Command
             if (null !== $event->getMailId()) {
                 try {
                     $mailbox->moveMail($event->getMailId(), $archive_folder);
+                    $output->writeln("MailId ".$event->getMailId(). ' correctly moved.');
                 } catch (\Exception $e) {
-                    $output->writeln($e->getMessage());
+                    $output->writeln('ERROR:' .$e->getMessage());
+                    $output->writeln("MailId ".$event->getMailId(). ' could not be moved.');
                 }
             }
         }
