@@ -11,7 +11,9 @@ namespace App\Controller;
 use App\Entity\Event;
 use App\Entity\MonitorizableEvent;
 use App\Forms\MonitorizableEventForm;
+use App\Repository\EventRepository;
 use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,12 +31,21 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class EventController extends AbstractController
 {
+
+    private EntityManagerInterface $em;
+    private EventRepository $repo;
+
+    public function __construct(EntityManagerInterface $em, EventRepository $repo)
+    {
+        $this->em = $em;
+        $this->repo = $repo;
+    }
+
     /**
      * @Route("/{event}/mevent/new", name="admin_event_new_mevent", options={"expose" = true})
      */
     public function newAction(Request $request, Event $event)
     {
-        $em = $this->getDoctrine()->getManager();
         $mevent = new MonitorizableEvent();
         $mevent->setFilterFromEvent($event);
         $form = $this->createForm(MonitorizableEventForm::class, $mevent);
@@ -42,20 +53,20 @@ class EventController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $mevent = $form->getData();
-            $em->persist($mevent);
-            $em->flush();
+            $this->em->persist($mevent);
+            $this->em->flush();
             $this->addFlash('success', 'messages.saved');
 
             return $this->redirectToRoute('admin_mevent_try', [
-        'event' => $event->getId(),
-        'id' => $mevent->getId(),
-        ]);
+                'event' => $event->getId(),
+                'id' => $mevent->getId(),
+            ]);
         }
 
         return $this->render('mevent/new.html.twig', [
-        'form' => $form->createView(),
-        'event' => $event,
-    ]);
+            'form' => $form->createView(),
+            'event' => $event,
+        ]);
     }
 
     /**
@@ -63,16 +74,15 @@ class EventController extends AbstractController
      */
     public function listAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
         $date = new DateTime();
         $to = $date;
         $from = date_sub(new DateTime(), date_interval_create_from_date_string('15 day'));
 
-        $events = $em->getRepository(Event::class)->findAllFromTo([], $from, $to);
+        $events = $this->repo->findAllFromTo([], $from, $to);
 
         return $this->render('event/list.html.twig', [
             'events' => $events,
-    ]);
+        ]);
     }
 
     /**
@@ -80,12 +90,11 @@ class EventController extends AbstractController
      */
     public function listUnmatchedAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
         $date = new DateTime();
         $to = $date;
         $from = date_sub(new DateTime(), date_interval_create_from_date_string('15 day'));
 
-        $events = $em->getRepository(Event::class)->findUnmatchedEventsFromTo([], $from, $to);
+        $events = $this->repo->findUnmatchedEventsFromTo([], $from, $to);
 
         return $this->render('event/list.html.twig', [
         'events' => $events,

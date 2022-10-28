@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
 use PhpImap\IncomingMail;
+use Webklex\PHPIMAP\Message;
 
 /**
      * Monitorizable Event Tabble.
@@ -174,6 +175,26 @@ use PhpImap\IncomingMail;
             }
             $event->setMailId($mail->id);
             $event->setFromAddress($mail->fromAddress);
+
+            return $event;
+        }
+
+        public static function __parseEventFromIMAPMessage(Message $message): Event
+        {
+            $event = new self();
+            $event->setDate($message->getDate());
+            $event->setOrigin('mail');
+            $event->setSubject($message->getSubject()->first());
+            if (null != $message->getHTMLBody()) {
+                $html = mb_convert_encoding($message->getHTMLBody(), 'UTF-8');
+                $event->setDetails($html);
+                $event->setType('html');
+            } else {
+                $event->setDetails($message->getTextBody());
+                $event->setType('text');
+            }
+            $event->setMailId($message->getUid());
+            $event->setFromAddress($message->getFrom()->first()->mail);
 
             return $event;
         }

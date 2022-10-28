@@ -200,7 +200,7 @@ use DateTime;
             }
         }
 
-        public function testFilterCondition(Event $event) {
+        public function testFilterCondition(Event $event): bool {
             parse_str($this->getFilterCondition(), $criteria);
             $eventArray = $event->toArray();
             foreach ($criteria as $key => $value) {
@@ -315,7 +315,7 @@ use DateTime;
         }
 
         private function string_contains($haystack, $needle): bool {
-            if (strpos($haystack, $needle) !== false) {
+            if (strpos(strtolower($haystack), strtolower($needle)) !== false) {
                 return true;
             } else {
                 return false;

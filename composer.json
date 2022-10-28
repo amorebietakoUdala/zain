@@ -24,8 +24,6 @@
         "doctrine/orm": "^2.5",
         "incenteev/composer-parameter-handler": "^2.0",
         "jms/serializer-bundle": "^3.5",
-        "php-imap/php-imap": "3.0.6",
-        "secit-pl/imap-bundle": "^1.3",
         "sensio/framework-extra-bundle": "^5.4",
         "symfony/console": "5.*",
         "symfony/flex": "^1.4",
@@ -33,7 +31,6 @@
         "symfony/yaml": "5.*",
         "symfony/monolog-bundle": "^3.1.0",
         "symfony/polyfill-apcu": "^1.0",
-        "symfony/swiftmailer-bundle": "^3.0",
         "symfony/translation": "5.*",
         "symfony/asset": "5.*",
         "symfony/dotenv": "5.*",
@@ -48,7 +45,9 @@
         "symfony/property-access": "5.*",
         "symfony/property-info": "5.*",
         "symfony/serializer": "5.*",
-        "symfony/runtime": "5.*"
+        "symfony/runtime": "5.*",
+        "webklex/php-imap": "^4.1",
+        "symfony/http-client": "5.*"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.0",

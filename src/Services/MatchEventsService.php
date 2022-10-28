@@ -4,6 +4,11 @@ namespace App\Services;
 
 use App\Entity\MonitorizableEvent;
 use App\Entity\Event;
+use App\Repository\EventRepository;
+use App\Repository\MonitorizableEventRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Output\NullOutput;
 
 /**
  * Description of MatchEventsService
@@ -13,23 +18,25 @@ use App\Entity\Event;
  */
 class MatchEventsService
 {
-    private $em = null;
-    private $output = null;
+    private EntityManagerInterface $em;
+    private OutputInterface $output;
+    private EventRepository $eventRepo;
+    private MonitorizableEventRepository $meventRepo;
 
-    public function __construct($em, $output)
+    public function __construct(EntityManagerInterface $em, EventRepository $eventRepo, MonitorizableEventRepository $meventRepo)
     {
         $this->em = $em;
-        $this->output = $output;
+        $this->eventRepo = $eventRepo;
+        $this->meventRepo = $meventRepo;
+        $this->output = new NullOutput();
     }
 
     public function execute($events): array
     {
-        $output = $this->output;
-        $output->writeln('Matching start');
-        $em = $this->em;
+        $this->output->writeln('Matching start');
         $matchedEvents = [];
         /** @var MonitorizableEvent[] $mevents */
-        $mevents = $em->getRepository(MonitorizableEvent::class)->findAll([], ['date' => 'ASC']);
+        $mevents = $this->meventRepo->findAll([], ['date' => 'ASC']);
         foreach ($events as $event) {
             foreach ($mevents as $mevent) {
                 /** If matches filter condition and success or failure condition add to matched events.
@@ -37,40 +44,45 @@ class MatchEventsService
                  */
                 /** @var Event $event */
                 if ( ($mevent->testSuccess($event) || $mevent->testFailure($event)) && $mevent->testFilterCondition($event) ) {
-                    $output->writeln('Monitorizable Event: '.$mevent->getId());     
-                    $output->writeln('Filter Condition: '.$mevent->getFilterCondition());
-                    $output->writeln('Success Condition: '.$mevent->getSuccessCondition());
-                    $output->writeln('Failure Condition: '.$mevent->getFailureCondition());
+                    $this->output->writeln('Monitorizable Event: '.$mevent->getId());     
+                    $this->output->writeln('Filter Condition: '.$mevent->getFilterCondition());
+                    $this->output->writeln('Success Condition: '.$mevent->getSuccessCondition());
+                    $this->output->writeln('Failure Condition: '.$mevent->getFailureCondition());
                     /** @var Event $lastEvent */
-                    $lastEvent = $em->getRepository(Event::class)->findLastMatchedEvent($mevent);
+                    $lastEvent = $this->eventRepo->findLastMatchedEvent($mevent);
                     if ( null !== $lastEvent ) {
-                        $output->writeln('LastEvent: '.$lastEvent->getMailId().': '.$lastEvent->getSubject().'on date '.$lastEvent->getDate()->format('Y-m-d H:i:s'));
+                        $this->output->writeln('LastEvent: '.$lastEvent->getMailId().': '.$lastEvent->getSubject().'on date '.$lastEvent->getDate()->format('Y-m-d H:i:s'));
                         if (trim($lastEvent->getMailId()) !== trim($event->getMailId())) {
-                            $output->writeln('newEvent: '.$event->getMailId().': '.$event->getSubject().'on date '.$event->getDate()->format('Y-m-d H:i:s'));
-                            $output->writeln('newEvent success: '.$mevent->testSuccess($event));
-                            $output->writeln('newEvent failure: '.$mevent->testFailure($event));
+                            $this->output->writeln('newEvent: '.$event->getMailId().': '.$event->getSubject().'on date '.$event->getDate()->format('Y-m-d H:i:s'));
+                            $this->output->writeln('newEvent success: '.$mevent->testSuccess($event));
+                            $this->output->writeln('newEvent failure: '.$mevent->testFailure($event));
                             $event->setMonitorizableEvent($mevent);
-                            $em->persist($event);
+                            $this->em->persist($event);
                             $matchedEvents[] = $event;
                         } else {
-                            $output->writeln('Already matched: LastEventId '. $lastEvent->getMailId(). ' = NewEventId '.$event->getMailId());
+                            $this->output->writeln('Already matched: LastEventId '. $lastEvent->getMailId(). ' = NewEventId '.$event->getMailId());
                         }
                     } else {
-                        $output->writeln('No last event found.');
-                        $output->writeln('newEvent: '.$event->getMailId().': '.$event->getSubject().'on date '.$event->getDate()->format('Y-m-d H:i:s'));
-                        $output->writeln('newEvent success: '.$mevent->testSuccess($event));
-                        $output->writeln('newEvent failure: '.$mevent->testFailure($event));
+                        $this->output->writeln('No last event found.');
+                        $this->output->writeln('newEvent: '.$event->getMailId().': '.$event->getSubject().'on date '.$event->getDate()->format('Y-m-d H:i:s'));
+                        $this->output->writeln('newEvent success: '.$mevent->testSuccess($event));
+                        $this->output->writeln('newEvent failure: '.$mevent->testFailure($event));
                         $event->setMonitorizableEvent($mevent);
-                        $em->persist($event);
+                        $this->em->persist($event);
                         $matchedEvents[] = $event;
                     }
                     break;
                 }
             }
         }
-        $em->flush();
-        $output->writeln('Matching end');
+        $this->em->flush();
+        $this->output->writeln('Matching end');
 
         return $matchedEvents;
+    }
+
+    public function setOutput(OutputInterface $output) {
+        $this->output = $output;
+        return $this;
     }
 }
