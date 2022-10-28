@@ -17,6 +17,8 @@ use App\Forms\EventSearchForm;
 use App\Forms\EventTryForm;
 use App\Entity\Event;
 use App\Forms\EventForm;
+use App\Repository\EventRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Description of MonitorizableEventController.
@@ -29,13 +31,22 @@ use App\Forms\EventForm;
  */
 class MonitorizableEventController extends AbstractController
 {
+    private EntityManagerInterface $em;
+    private EventRepository $eventRepo;
+    
+
+    public function __construct(EntityManagerInterface $em, EventRepository $eventRepo)
+    {
+        $this->em = $em;
+        $this->eventRepo = $eventRepo;
+    }
+
     /**
      * @Route("/", name="admin_mevent_list", options={"expose" = true})
      */
     public function listAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-        $mevents = $em->getRepository('App:MonitorizableEvent')->findAll();
+        $mevents = $this->em->getRepository('App:MonitorizableEvent')->findAll();
 
         return $this->render('/mevent/list.html.twig', [
             'mevents' => $mevents,
@@ -47,8 +58,7 @@ class MonitorizableEventController extends AbstractController
      */
     public function dashBoardAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-        $mevents = $em->getRepository('App:MonitorizableEvent')->findAll();
+        $mevents = $this->em->getRepository('App:MonitorizableEvent')->findAll();
         $counters = $this->__countStatusTypes($mevents);
 
         return $this->render('/mevent/dashboard.html.twig', [
@@ -68,9 +78,8 @@ class MonitorizableEventController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $mevent = $form->getData();
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($mevent);
-            $em->flush();
+            $this->em->persist($mevent);
+            $this->em->flush();
 
             $this->addFlash('success', 'messages.saved');
 
@@ -92,13 +101,9 @@ class MonitorizableEventController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $mevent = $form->getData();
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($mevent);
-            $em->flush();
-
+            $this->em->persist($mevent);
+            $this->em->flush();
             $this->addFlash('success', 'messages.saved');
-
             return $this->redirectToRoute('admin_mevent_list');
         }
 
@@ -112,14 +117,13 @@ class MonitorizableEventController extends AbstractController
      */
     public function deleteAction(Request $request, MonitorizableEvent $mevent)
     {
-        $em = $this->getDoctrine()->getManager();
         $events = $mevent->getEvents();
         foreach ($events as $event) {
             $event->setMonitorizableEvent(null);
-            $em->persist($event);
+            $this->em->persist($event);
         }
-        $em->remove($mevent);
-        $em->flush();
+        $this->em->remove($mevent);
+        $this->em->flush();
         $this->addFlash('success', 'messages.deleted');
 
         return $this->redirectToRoute('admin_mevent_list');
@@ -133,9 +137,8 @@ class MonitorizableEventController extends AbstractController
         $form = $this->createForm(EventTryForm::class, $mevent);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($mevent);
-            $em->flush();
+            $this->em->persist($mevent);
+            $this->em->flush();
 
             $this->addFlash('success', 'messages.saved');
 
@@ -196,10 +199,9 @@ class MonitorizableEventController extends AbstractController
      */
     public function matchAction(Request $request, MonitorizableEvent $mevent, Event $event)
     {
-        $em = $this->getDoctrine()->getManager();
         $event->setMonitorizableEvent($mevent);
-        $em->persist($event);
-        $em->flush();
+        $this->em->persist($event);
+        $this->em->flush();
 
         $this->addFlash('success', 'messages.eventMatched');
 
@@ -218,14 +220,10 @@ class MonitorizableEventController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $criteria = $form->getData();
-
             $mevent->setFilterCondition(http_build_query($criteria));
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($mevent);
-            $em->flush();
-
+            $this->em->persist($mevent);
+            $this->em->flush();
             $this->addFlash('success', 'messages.saved');
-
             return $this->redirectToRoute('admin_mevent_list');
         }
 
@@ -245,11 +243,10 @@ class MonitorizableEventController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $criteria = $form->getData();
-            $em = $this->getDoctrine()->getManager();
             $from = array_key_exists('dateFrom', $criteria) ? $criteria['dateFrom'] : null;
             $to = array_key_exists('dateTo', $criteria) ? $criteria['dateTo'] : null;
             $criteria_without_blanks = $this->_remove_from_to($criteria);
-            $events = $em->getRepository(Event::class)->findAllFromTo($criteria_without_blanks, $from, $to);
+            $events = $this->eventRepo->findAllFromTo($criteria_without_blanks, $from, $to);
 
             return $this->render('mevent/_searchEvents.html.twig', [
                 'form' => $form->createView(),
@@ -260,13 +257,12 @@ class MonitorizableEventController extends AbstractController
 
         parse_str($mevent->getFilterCondition(), $criteria);
         $date = new \DateTime();
-        $em = $this->getDoctrine()->getManager();
         // Only last 5 days
         $from = array_key_exists('dateFrom', $criteria) ? $criteria['dateFrom'] : date_sub(new \DateTime(), date_interval_create_from_date_string('5 days'));
         $to = array_key_exists('dateTo', $criteria) ? $criteria['dateTo'] : $date;
         $criteria_without_blanks = $this->_remove_from_to($criteria);
 
-        $events = $em->getRepository(Event::class)->findAllFromTo($criteria_without_blanks, $from, $to);
+        $events = $this->eventRepo->findAllFromTo($criteria_without_blanks, $from, $to);
 
         $this->addFlash('success', 'messages.only_last_5_days');
 
@@ -282,8 +278,7 @@ class MonitorizableEventController extends AbstractController
      */
     public function lastMatchedEventAction(MonitorizableEvent $mevent)
     {
-        $em = $this->getDoctrine()->getManager();
-        $event = $em->getRepository(Event::class)->findLastMatchedEvent($mevent);
+        $event = $this->eventRepo->findLastMatchedEvent($mevent);
         $form = $this->createForm(EventForm::class, $event);
 
         return $this->render('event/show.html.twig', [
