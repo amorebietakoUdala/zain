@@ -184,7 +184,7 @@ use Webklex\PHPIMAP\Message;
             $event = new self();
             $event->setDate($message->getDate());
             $event->setOrigin('mail');
-            $event->setSubject($message->getSubject()->first());
+            $event->setSubject(mb_convert_encoding($message->getSubject()->first(), 'UTF-8'));
             if (null != $message->getHTMLBody()) {
                 $html = mb_convert_encoding($message->getHTMLBody(), 'UTF-8');
                 $event->setDetails($html);

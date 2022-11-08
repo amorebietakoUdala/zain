@@ -20,9 +20,9 @@ use Doctrine\ORM\EntityManagerInterface;
 
 
 
-class MailDaemonCommand extends Command
+class MailDaemonCronCommand extends Command
 {
-    protected static $defaultName = 'app:mail-daemon';
+    protected static $defaultName = 'app:mail-daemon-cron';
     protected static $defaultDescription = 'Daemon that reads emails.';
     protected HttpClientInterface $client;
     protected ?EntityManagerInterface $em;
@@ -61,9 +61,9 @@ class MailDaemonCommand extends Command
     {
         $this
             // the name of the command (the part after "bin/console")
-            ->setName(MailDaemonCommand::$defaultName)
+            ->setName(MailDaemonCronCommand::$defaultName)
             // the short description shown while running "php bin/console list"
-            ->setDescription(MailDaemonCommand::$defaultDescription)
+            ->setDescription(MailDaemonCronCommand::$defaultDescription)
             // the full command description shown when running the command with
             // the "--help" option
             ->setHelp('This command starts the daemon that reads emails and writes them into the database.');
@@ -73,7 +73,7 @@ class MailDaemonCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $output->writeln("Daemon's Start");
+        $output->writeln("Cron Start");
         /** @var Event $event */
         $event = $this->eventRepo->findOneBy([], ['mailId' => 'DESC']);
         if (null !== $event) {
@@ -84,7 +84,6 @@ class MailDaemonCommand extends Command
         if ($this->token === null) {
             $this->getToken($output);
         }
-        while (true) {
             $this->getIMAPClient($output);
             $output->writeln('Test Connection Successfull.');
             try {
@@ -135,21 +134,11 @@ class MailDaemonCommand extends Command
                 $output->writeln('ElapsedTime: ' . $elapsedTime);
                 $output->writeln('Going To Sleep...');
     
-                sleep(5 * 60); // Bost minuturo
             } catch (\Exception $exception) {
                 $output->writeln('EXCEPTION: ' . $exception->getMessage());
-                if (!$this->em->isOpen()) {
-                    $this->em = new EntityManager(
-                        $this->em->getConnection(),
-                        $this->em->getConfiguration()
-                    );
-                }                
-                $output->writeln('Retrying in one minute...');
-                sleep(1 * 60); // Itxoin minutu bat eta berriro saiatu.
             }
-        }
 
-        $output->writeln("Daemon's End");
+        $output->writeln("Cron End");
         return Command::SUCCESS;
     }
 
