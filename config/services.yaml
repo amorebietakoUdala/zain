@@ -24,7 +24,8 @@ services:
           $imapArchiveFolder: '%env(IMAP_ARCHIVE)%'
           $imapInboxFolder: '%env(IMAP_INBOX)%'
           $limitMailsPerRound: '%env(int:IMAP_LIMIT_MAIL_PER_ROUND)%'
-
+          $mailerFrom: "%env(MAILER_FROM)%"
+          $mailerTo: "%env(csv:MAILER_TO)%"
 
     Symfony\Component\Ldap\Ldap:
       arguments: ['@Symfony\Component\Ldap\Adapter\ExtLdap\Adapter']

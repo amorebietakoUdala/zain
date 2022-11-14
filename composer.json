@@ -47,7 +47,10 @@
         "symfony/serializer": "5.*",
         "symfony/runtime": "5.*",
         "webklex/php-imap": "^4.1",
-        "symfony/http-client": "5.*"
+        "symfony/http-client": "5.*",
+        "symfony/mailer": "5.*",
+        "twig/extra-bundle": "^3.4",
+        "twig/cssinliner-extra": "^3.4"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.0",

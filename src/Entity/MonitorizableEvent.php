@@ -192,11 +192,11 @@ use DateTime;
          */
         public function getLastEvent()
         {
-            $events = $this->getEvents()->getValues();
-            if (false == end($events)) {
+            $last = $this->getEvents()->last();
+            if ($last === false) {
                 return null;
             } else {
-                return end($events);
+                return $last;
             }
         }
 
