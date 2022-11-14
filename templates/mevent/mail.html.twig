@@ -1,0 +1,84 @@
+{% apply inline_css(source('@styles/mail.css')) %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+
+    </head>
+    <body>
+    {% block body %}
+        <main style="font-family: 'Roboto'">
+            <div class="container">
+                <table id="taula" class="bootstrap-table mt-3" style="table-layout: auto; width: 100%">
+                <thead>
+                    <tr>
+                        {% for key,value in counters %}
+                            {% set status = key~'.color' %}
+                            <th style="background-color: {{ status | trans }}; text-align: center">{{ key | trans }}</th>
+                        {% endfor %}                    
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        {% for key,value in counters %}
+                            {% set status = key~'.color' %}
+                            <td style="text-align: center">{{ value }}</td>
+                        {% endfor %}                    
+                    </tr>
+                </tbody>
+                </table>
+            </div>
+            <br>
+            <div class="container">
+                <table id="taula" class="bootstrap-table mt-3" style="table-layout: auto; width: 100%">
+                <thead>
+                    <tr>
+                        <th data-sortable="true" data-field="status" style="text-align: left">&nbsp;</th>
+                        <th data-sortable="true" data-field="name" style="text-align: left">{{"label.name" | trans | capitalize}}</th>
+                        <th data-sortable="true" data-field="lastEventDate" style="text-align: left">{{"label.lastEventDate" | trans | capitalize}}</th>
+                        <th data-sortable="true" data-field="nextExpectedDate" style="text-align: left">{{"label.nextExpectedDate" | trans | capitalize}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if mevents is defined and mevents | length > 0 %}
+                        {% for key, meventByStatus in mevents %}
+                            {% for mevent in meventByStatus %}
+                                <tr>
+                                    <td>
+                                        {% set status = key %}
+                                        {% set statusMessage = (constant('App\\Entity\\MonitorizableEvent::STATUS_MESSAGES')[status]) %}
+                                        {% if ( status == constant('App\\Entity\\MonitorizableEvent::STATUS_UNDEFINED') ) %}
+                                            <span style="background-color: blue; border-radius: 25px;" title="{{ statusMessage | trans }}">&nbsp;&nbsp;</span>
+                                        {% elseif ( status == constant('App\\Entity\\MonitorizableEvent::STATUS_EXPIRED') ) %}
+                                            <span style="background-color: yellow; border-radius: 25px;" title="{{ statusMessage | trans }}">&nbsp;&nbsp;</span>
+                                        {% elseif ( status == constant('App\\Entity\\MonitorizableEvent::STATUS_SUCCESS') ) %}
+                                            <span style="background-color: green; border-radius: 25px;" title="{{ statusMessage | trans }}">&nbsp;&nbsp;</span>
+                                        {% elseif ( status == constant('App\\Entity\\MonitorizableEvent::STATUS_FAILURE') ) %}
+                                            <span style="background-color: red; border-radius: 25px;" title="{{ statusMessage | trans }}">&nbsp;&nbsp;</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ mevent.name }}</td>
+                                    <td>
+                                        {% if mevent.lastEvent is defined and mevent.lastEvent != null %}
+                                            {{ mevent.lastEvent.date | date('Y-m-d H:i:s') }}
+                                        {% else %}
+                                            {{ 'No last event' | trans }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {{ mevent.expirationDate | date('Y-m-d H:i:s') }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% endfor %}
+                    {% else %}
+                        <tr><td class="text-center" colspan="7">{{"messages.results0" | trans }}</td></tr>
+                    {% endif %}
+                </tbody>
+                </table>
+            </div>
+        </main>
+    {% endblock %}
+    </body>
+</html>
+{% endapply %}

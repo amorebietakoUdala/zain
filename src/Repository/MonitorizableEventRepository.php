@@ -20,4 +20,5 @@ class MonitorizableEventRepository extends ServiceEntityRepository
    {
       parent::__construct($registry, MonitorizableEvent::class);
    }
+   
 }
