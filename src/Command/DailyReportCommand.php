@@ -92,10 +92,19 @@ class DailyReportCommand extends Command
     }
 
     private function orderMonitorizableEventsByStatus(array $mevents) {
-        $orderedMonitorizableEvents = [];
+        $clusteredMonitorizableEvents = [];
         /** @var MonitorizableEvent $mevent */
         foreach ($mevents as $mevent) {
-            $orderedMonitorizableEvents[$mevent->testLastStatus()][] = $mevent;  
+            $clusteredMonitorizableEvents[$mevent->testLastStatus()][] = $mevent;  
+        }
+        $keys = array_keys($clusteredMonitorizableEvents);
+        arsort($keys);
+        $orderedMonitorizableEvents = [];
+        foreach ($keys as $key) {
+            
+            if (array_key_exists($key,$clusteredMonitorizableEvents)) {
+                $orderedMonitorizableEvents[$key] = $clusteredMonitorizableEvents[$key]; 
+            }
         }
         return $orderedMonitorizableEvents;
     }
