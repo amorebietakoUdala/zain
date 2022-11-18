@@ -53,3 +53,6 @@ yarn-error.log
 
 composer.json.dev
 composer.json.prod
+/.yarn/cache
+/.yarn/unplugged
+/.yarn/install-state.gz
