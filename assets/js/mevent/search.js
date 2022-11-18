@@ -5,7 +5,7 @@ import $ from 'jquery';
 import 'bootstrap-table';
 import 'bootstrap-table/dist/locale/bootstrap-table-es-ES';
 import 'bootstrap-table/dist/locale/bootstrap-table-eu-EU';
-import tempusDominus from '@eonasdan/tempus-dominus';
+import { TempusDominus, extend } from '@eonasdan/tempus-dominus';
 import customDateFormat from '@eonasdan/tempus-dominus/dist/plugins/customDateFormat';
 
 
@@ -47,7 +47,7 @@ function View() {
 
 $(document).ready(function(){
 	let current_locale = $('html').attr('lang') + '-' + $('html').attr('lang').toUpperCase();
-	tempusDominus.extend(customDateFormat);
+	extend(customDateFormat);
 	const options = {
 		display: {
 			buttons: {
@@ -68,8 +68,8 @@ $(document).ready(function(){
 			format: 'yyyy-MM-dd HH:mm',
 		},
 	};
-	let datepicker1 = new tempusDominus.TempusDominus(document.getElementById('event_search_form_dateFrom'), options);
-	let datepicker2 = new tempusDominus.TempusDominus(document.getElementById('event_search_form_dateTo'), options);
+	const datepicker1 = new TempusDominus(document.getElementById('event_search_form_dateFrom'), options);
+	const datepicker2 = new TempusDominus(document.getElementById('event_search_form_dateTo'), options);
 	$('.js-showDetails').on('click',function(e){
 		e.preventDefault();
 		var id = e.currentTarget.id;

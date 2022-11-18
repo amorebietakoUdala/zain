@@ -1267,12 +1267,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eonasdan/tempus-dominus@npm:6.0.1":
-  version: 6.0.1
-  resolution: "@eonasdan/tempus-dominus@npm:6.0.1"
-  peerDependencies:
+"@eonasdan/tempus-dominus@npm:^6.0.1":
+  version: 6.2.7
+  resolution: "@eonasdan/tempus-dominus@npm:6.2.7"
+  dependencies:
     "@popperjs/core": ^2.10.1
-  checksum: 88bc12bca585c916cc32cc24bc29cf8f050840c1874bf8ae8f44ae96a6a149cb419adf496532a1a68053a058095e5857c7eabd865fb41161d3b0ddbda348ac9b
+  dependenciesMeta:
+    "@popperjs/core":
+      optional: true
+  checksum: 20be49aed85893c1fba5ef14d44c84940b61857ba8b03e5be603f285791b8eb5b23c227d67acf7f429af0436be0f6c58ea626568e5b3af9056c8b2242d87bea7
   languageName: node
   linkType: hard
 
@@ -1426,7 +1429,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@popperjs/core@npm:^2.11.6":
+"@popperjs/core@npm:^2.10.1, @popperjs/core@npm:^2.11.6":
   version: 2.11.6
   resolution: "@popperjs/core@npm:2.11.6"
   checksum: 47fb328cec1924559d759b48235c78574f2d71a8a6c4c03edb6de5d7074078371633b91e39bbf3f901b32aa8af9b9d8f82834856d2f5737a23475036b16817f0
@@ -4178,7 +4181,7 @@ __metadata:
 
 "fsevents@patch:fsevents@~2.3.2#~builtin<compat/fsevents>":
   version: 2.3.2
-  resolution: "fsevents@patch:fsevents@npm%3A2.3.2#~builtin<compat/fsevents>::version=2.3.2&hash=18f3a7"
+  resolution: "fsevents@patch:fsevents@npm%3A2.3.2#~builtin<compat/fsevents>::version=2.3.2&hash=df0bf1"
   dependencies:
     node-gyp: latest
   conditions: os=darwin
@@ -6695,14 +6698,14 @@ __metadata:
 
 "resolve@patch:resolve@1.1.7#~builtin<compat/resolve>":
   version: 1.1.7
-  resolution: "resolve@patch:resolve@npm%3A1.1.7#~builtin<compat/resolve>::version=1.1.7&hash=07638b"
+  resolution: "resolve@patch:resolve@npm%3A1.1.7#~builtin<compat/resolve>::version=1.1.7&hash=3bafbf"
   checksum: e9dbca78600ae56835c43a09f1276876c883e4b4bbd43e2683fa140671519d2bdebeb1c1576ca87c8c508ae2987b3ec481645ac5d3054b0f23254cfc1ce49942
   languageName: node
   linkType: hard
 
 "resolve@patch:resolve@^1.1.5#~builtin<compat/resolve>":
   version: 1.22.0
-  resolution: "resolve@patch:resolve@npm%3A1.22.0#~builtin<compat/resolve>::version=1.22.0&hash=07638b"
+  resolution: "resolve@patch:resolve@npm%3A1.22.0#~builtin<compat/resolve>::version=1.22.0&hash=c3c19d"
   dependencies:
     is-core-module: ^2.8.1
     path-parse: ^1.0.7
@@ -6715,7 +6718,7 @@ __metadata:
 
 "resolve@patch:resolve@^1.14.2#~builtin<compat/resolve>, resolve@patch:resolve@^1.9.0#~builtin<compat/resolve>":
   version: 1.22.1
-  resolution: "resolve@patch:resolve@npm%3A1.22.1#~builtin<compat/resolve>::version=1.22.1&hash=07638b"
+  resolution: "resolve@patch:resolve@npm%3A1.22.1#~builtin<compat/resolve>::version=1.22.1&hash=c3c19d"
   dependencies:
     is-core-module: ^2.9.0
     path-parse: ^1.0.7
@@ -6784,7 +6787,7 @@ __metadata:
   dependencies:
     "@babel/core": ^7.20.2
     "@babel/preset-env": ^7.20.2
-    "@eonasdan/tempus-dominus": 6.0.1
+    "@eonasdan/tempus-dominus": ^6.0.1
     "@fortawesome/fontawesome-free": ^6.2.1
     "@popperjs/core": ^2.11.6
     "@symfony/webpack-encore": 4.1.1

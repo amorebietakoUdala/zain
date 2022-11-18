@@ -243,8 +243,8 @@ class MonitorizableEventController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $criteria = $form->getData();
-            $from = array_key_exists('dateFrom', $criteria) ? $criteria['dateFrom'] : null;
-            $to = array_key_exists('dateTo', $criteria) ? $criteria['dateTo'] : null;
+            $from = array_key_exists('dateFrom', $criteria) && !empty($criteria['dateFrom']) ? $criteria['dateFrom'] : null;
+            $to = array_key_exists('dateFrom', $criteria) && !empty($criteria['dateFrom']) ? $criteria['dateTo'] : null;
             $criteria_without_blanks = $this->_remove_from_to($criteria);
             $events = $this->eventRepo->findAllFromTo($criteria_without_blanks, $from, $to);
 
@@ -258,10 +258,9 @@ class MonitorizableEventController extends AbstractController
         parse_str($mevent->getFilterCondition(), $criteria);
         $date = new \DateTime();
         // Only last 5 days
-        $from = array_key_exists('dateFrom', $criteria) ? $criteria['dateFrom'] : date_sub(new \DateTime(), date_interval_create_from_date_string('5 days'));
-        $to = array_key_exists('dateTo', $criteria) ? $criteria['dateTo'] : $date;
+        $from = array_key_exists('dateFrom', $criteria) && !empty($criteria['dateFrom']) ? $criteria['dateFrom'] : date_sub(new \DateTime(), date_interval_create_from_date_string('5 days'));
+        $to = array_key_exists('dateTo', $criteria) && !empty($criteria['dateTo']) ? $criteria['dateTo'] : $date;
         $criteria_without_blanks = $this->_remove_from_to($criteria);
-
         $events = $this->eventRepo->findAllFromTo($criteria_without_blanks, $from, $to);
 
         $this->addFlash('success', 'messages.only_last_5_days');
