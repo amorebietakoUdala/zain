@@ -414,12 +414,6 @@
             "src/Kernel.php"
         ]
     },
-    "symfony/http-client": {
-        "version": "v5.4.14"
-    },
-    "symfony/http-client-contracts": {
-        "version": "v2.5.2"
-    },
     "symfony/http-foundation": {
         "version": "v4.3.4"
     },
@@ -680,16 +674,13 @@
         "version": "1.2.1"
     },
     "twig/extra-bundle": {
-        "version": "v3.4.0"
+        "version": "3.x-dev"
     },
     "twig/twig": {
         "version": "v2.11.3"
     },
     "voku/portable-ascii": {
         "version": "1.6.1"
-    },
-    "webklex/php-imap": {
-        "version": "4.1.0"
     },
     "webmozart/assert": {
         "version": "1.5.0"
