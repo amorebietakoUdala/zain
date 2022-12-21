@@ -6,8 +6,7 @@
     "autoload": {
         "psr-4": {
             "App\\": "src/",
-            "AMREU\\UserBundle\\": "src/",
-            "Webklex\\PHPIMAP\\": "src/"
+            "AMREU\\UserBundle\\": "src/"
         }
     },
     "autoload-dev": {
@@ -15,7 +14,6 @@
             "App\\Tests\\": "tests/"
         }
     },
-    "minimum-stability": "dev",
     "require": {
         "php": "^7.2.5",
         "ext-ctype": "*",
@@ -52,7 +50,7 @@
         "symfony/runtime": "5.*",
         "twig/extra-bundle": "^3.4",
         "twig/cssinliner-extra": "^3.4",
-        "amorebietakoudala/php-imap": "1.0.x-dev"
+        "webklex/php-imap": "^4.1.2"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.0",
@@ -97,12 +95,6 @@
             "require": "5.*"
         }
     },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../../bundles/php-imap"
-        }
-    ],
     "config": {
         "allow-plugins": {
             "symfony/flex": true,
