@@ -18,6 +18,7 @@ use App\Forms\EventTryForm;
 use App\Entity\Event;
 use App\Forms\EventForm;
 use App\Repository\EventRepository;
+use App\Repository\MonitorizableEventRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
@@ -33,12 +34,13 @@ class MonitorizableEventController extends AbstractController
 {
     private EntityManagerInterface $em;
     private EventRepository $eventRepo;
-    
+    private MonitorizableEventRepository $meventsRepo;
 
-    public function __construct(EntityManagerInterface $em, EventRepository $eventRepo)
+    public function __construct(EntityManagerInterface $em, EventRepository $eventRepo, MonitorizableEventRepository $meventsRepo)
     {
         $this->em = $em;
         $this->eventRepo = $eventRepo;
+        $this->meventsRepo = $meventsRepo;
     }
 
     /**
@@ -46,7 +48,7 @@ class MonitorizableEventController extends AbstractController
      */
     public function listAction(Request $request)
     {
-        $mevents = $this->em->getRepository('App:MonitorizableEvent')->findAll();
+        $mevents = $this->meventsRepo->findAll();
 
         return $this->render('/mevent/list.html.twig', [
             'mevents' => $mevents,
@@ -58,7 +60,7 @@ class MonitorizableEventController extends AbstractController
      */
     public function dashBoardAction(Request $request)
     {
-        $mevents = $this->em->getRepository('App:MonitorizableEvent')->findAll();
+        $mevents = $this->meventsRepo->findAll();
         $counters = $this->__countStatusTypes($mevents);
 
         return $this->render('/mevent/dashboard.html.twig', [
