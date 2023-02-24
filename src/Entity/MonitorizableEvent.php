@@ -315,7 +315,7 @@ use DateTime;
         }
 
         private function string_contains($haystack, $needle): bool {
-            if (strpos(strtolower($haystack), strtolower($needle)) !== false) {
+            if (strpos($haystack, $needle) !== false) {
                 return true;
             } else {
                 return false;
