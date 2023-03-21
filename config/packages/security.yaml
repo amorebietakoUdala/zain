@@ -1,8 +1,7 @@
 security:
     role_hierarchy:
-        ROLE_API:         ROLE_API
-        ROLE_ADMIN:       ROLE_ADMIN
-        ROLE_SUPER_ADMIN: [ROLE_API, ROLE_USER, ROLE_ADMIN]
+        ROLE_ADMIN: [ROLE_ZAIN]
+
     # https://symfony.com/doc/current/security/authenticator_manager.html
     enable_authenticator_manager: true
     # https://symfony.com/doc/current/security.html#c-hashing-passwords
@@ -47,5 +46,5 @@ security:
     access_control:
         - { path: /login$, role: PUBLIC_ACCESS }
         - { path: ^/resetting, role: PUBLIC_ACCESS }
-        - { path: ^/[es|eu], role: ROLE_USER }
+        - { path: ^/[es|eu], role: ROLE_ZAIN }
         - { path: ^/[es|eu]/admin, role: ROLE_ADMIN }

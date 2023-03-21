@@ -1,7 +1,7 @@
 <header class="mb-2">
     <div><img class="logo" alt="Erantzunen logoa" src="{{ asset('build/images/udal-marka-betikala.jpg') }}"></div>
     <div><h1>{{ "messages.aplikazioa" | trans }}</h1></div>
-	{% if is_granted('ROLE_USER') %}
+	{% if is_granted('ROLE_ZAIN') %}
 	<div id="span-erabiltzailea">
 	    <div class="dropdown">
 		<a class="dropdown-toggle" id="perfil_menua" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
