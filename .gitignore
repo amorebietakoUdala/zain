@@ -56,3 +56,7 @@ composer.json.prod
 /.yarn/cache
 /.yarn/unplugged
 /.yarn/install-state.gz
+
+###> phpstan/phpstan ###
+phpstan.neon
+###< phpstan/phpstan ###

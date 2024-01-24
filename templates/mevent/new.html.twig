@@ -13,20 +13,20 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container">
-	<div class="row">
-	    <div class="border border-l rounded col">
-		<div class="col">
-			<div class="text-center">
-			    <h2 class="text-primary">{{"mevent.new.title" | trans | capitalize}}</h2>
-			    <hr class="mt-1 mb-1">
+	<div class="container">
+		<div class="row">
+			<div class="border border-l rounded col">
+				<div class="col">
+					<div class="text-center">
+						<h2 class="text-primary">{{"mevent.new.title" | trans | capitalize}}</h2>
+						<hr class="mt-1 mb-1">
+					</div>
+					<div>
+						{{ include('mevent/_form.html.twig',{'showSaveButton': true }) }}
+					</div>
+				</div>
 			</div>
-			<div>
-			    {{ include('mevent/_form.html.twig',{'showSaveButton': true }) }}
-    			</div>
-			
 		</div>
-	    </div>
 	</div>
-    </div>
 {% endblock %}
+

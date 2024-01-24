@@ -8,7 +8,6 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -17,20 +16,16 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author ibilbao
  **/
-class DefaultController extends AbstractController
+class DefaultController extends BaseController
 {
-    /**
-     * @Route("/", name="homepage", options={"expose" = true})
-     */
-    public function homeAction(Request $request)
+    #[Route(path: '/', name: 'homepage', options: ['expose' => true])]
+    public function home()
     {
         return $this->redirectToRoute('admin_mevent_dashboard', ['_locale' => 'eu']);
     }
 
-    /**
-     * @Route("/{_locale}", name="languageHome", options={"expose" = true})
-     */
-    public function languageHomeAction(Request $request)
+    #[Route(path: '/{_locale}', name: 'languageHome', options: ['expose' => true])]
+    public function languageHome(Request $request)
     {
         return $this->redirectToRoute('admin_mevent_dashboard', ['_locale' => $request->getLocale()]);
     }

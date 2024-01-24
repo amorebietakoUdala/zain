@@ -93,28 +93,28 @@
             {% for mevent in mevents %}
             <div id="ov{{loop.index}}" class="overlay" style="display:none">
             <div id="pp{{loop.index}}" class="popup">
-                 <div id="cl{{loop.index}}" class="close">X</div>
-                 {% if mevent.lastEvent != null %}
-                {% if mevent.lastEvent.details != null %}
-                    <div id="event-subject" class="container mt-5">
-                    <b>{{ "label.subject" | trans }}:</b> {{mevent.lastEvent.subject | highlight ({(mevent.successCondition): 'highlight',(mevent.failureCondition): 'highlight-danger'}) | raw }}
-                    </div>
-                    <div id="event-details" class="container">
-                    {% set event = mevent.lastEvent %}
-                    {% set body = ( event.details ) | striptags('<table><th><tr><td><p><b><span><a><br><blockguote>') | raw %}
-                    {% set highlighted = body | highlight ({(mevent.successCondition): 'highlight',(mevent.failureCondition): 'highlight-danger'}) %}
-                    {% if ( event.type == "text") %}
-                        <pre>
-                        {{ highlighted | raw }}
-                        </pre>
+                <div id="cl{{loop.index}}" class="close">X</div>
+                {% if mevent.lastEvent != null %}
+                    {% if mevent.lastEvent.details != null %}
+                        <div id="event-subject" class="container mt-5">
+                            <b>{{ "label.subject" | trans }}:</b> {{mevent.lastEvent.subject | highlight ({(mevent.successCondition): 'highlight',(mevent.failureCondition): 'highlight-danger'}) | raw }}
+                        </div>
+                        <div id="event-details" class="container">
+                        {% set event = mevent.lastEvent %}
+                        {% set body = ( event.details ) | striptags('<table><th><tr><td><p><b><span><a><br><blockguote>') | raw %}
+                        {% set highlighted = body | highlight ({(mevent.successCondition): 'highlight',(mevent.failureCondition): 'highlight-danger'}) %}
+                        {% if ( event.type == "text") %}
+                            <pre>
+                            {{ highlighted | raw }}
+                            </pre>
+                        {% else %}
+                            {{ highlighted | raw }}
+                        {% endif %}
+                        </div>
                     {% else %}
-                        {{ highlighted | raw }}
+                        <p style="text-align: center">{{ 'messages.nodetails' | trans }}</p>
                     {% endif %}
-                    </div>
-                {% else %}
-                    <p style="text-align: center">{{ 'messages.nodetails' | trans }}</p>
-                   {% endif%}
-                {% endif%}
+                {% endif %}
             </div>
             </div>
             {% endfor %}

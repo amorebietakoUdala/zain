@@ -42,24 +42,24 @@ $(document).ready(function(){
 	    var url = $(e.currentTarget).data('url');
 		import('sweetalert2').then((Swal) => {
 			Swal.default.fire({
-			title: locale === 'eu' ? 'Ezabatu?' : 'Borrar?',
-			text: locale === 'eu' ? 'Konfirmatu mesedez' : 'Confirme por favor',
-			confirmButtonText: locale === 'eu' ? 'Bai' : 'Sí',
-			cancelButtonText: locale === 'eu' ? 'Ez' : 'No',
-			showCancelButton: true,
-			showLoaderOnConfirm: true,
-			preConfirm: function () {
-				var table = $('#taula');
-				if ( ( typeof table.bootstrapTable ) != 'undefined' ) {
-				var options = table.bootstrapTable('getOptions');
-				var pageNumber = options.pageNumber;
-				uri = new URI(url);
-				var uri = new URI(url);
-				uri.addQuery("returnPage",pageNumber);
-				url = uri.toString();
+				title: locale === 'eu' ? 'Ezabatu?' : 'Borrar?',
+				text: locale === 'eu' ? 'Konfirmatu mesedez' : 'Confirme por favor',
+				confirmButtonText: locale === 'eu' ? 'Bai' : 'Sí',
+				cancelButtonText: locale === 'eu' ? 'Ez' : 'No',
+				showCancelButton: true,
+				showLoaderOnConfirm: true,
+				preConfirm: function () {
+					var table = $('#taula');
+					if ( ( typeof table.bootstrapTable ) != 'undefined' ) {
+						var options = table.bootstrapTable('getOptions');
+						var pageNumber = options.pageNumber;
+						uri = new URI(url);
+						var uri = new URI(url);
+						uri.addQuery("returnPage",pageNumber);
+						url = uri.toString();
+					}
+					window.location.href=url;
 				}
-				window.location.href=url;
-			}
 			});
 		});
 		

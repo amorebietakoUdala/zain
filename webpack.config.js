@@ -30,6 +30,9 @@ Encore
 	.addEntry('mevent_search', './assets/js/mevent/search.js')
 	.addEntry('mevent_new', './assets/js/mevent/new.js')
 
+    // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
+    .enableStimulusBridge('./assets/controllers.json')
+
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
 

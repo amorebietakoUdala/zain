@@ -8,7 +8,6 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Forms\MonitorizableEventForm;
@@ -20,60 +19,44 @@ use App\Forms\EventForm;
 use App\Repository\EventRepository;
 use App\Repository\MonitorizableEventRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Illuminate\Support\Facades\Redis;
 
-/**
- * Description of MonitorizableEventController.
- *
- * @author ibilbao
- */
-
-/**
- * @Route("/{_locale}/admin/mevent")
- */
-class MonitorizableEventController extends AbstractController
+#[Route(path: '/{_locale}/admin/mevent')]
+class MonitorizableEventController extends BaseController
 {
-    private EntityManagerInterface $em;
-    private EventRepository $eventRepo;
-    private MonitorizableEventRepository $meventsRepo;
-
-    public function __construct(EntityManagerInterface $em, EventRepository $eventRepo, MonitorizableEventRepository $meventsRepo)
+    public function __construct(
+        private readonly EntityManagerInterface $em, 
+        private readonly EventRepository $eventRepo, 
+        private readonly MonitorizableEventRepository $meventsRepo
+    )
     {
-        $this->em = $em;
-        $this->eventRepo = $eventRepo;
-        $this->meventsRepo = $meventsRepo;
     }
 
-    /**
-     * @Route("/", name="admin_mevent_list", options={"expose" = true})
-     */
-    public function listAction(Request $request)
+    #[Route(path: '/', name: 'admin_mevent_list', options: ['expose' => true])]
+    public function list(Request $request)
     {
+        $this->loadQueryParameters($request);
         $mevents = $this->meventsRepo->findAll();
-
         return $this->render('/mevent/list.html.twig', [
             'mevents' => $mevents,
         ]);
     }
 
-    /**
-     * @Route("/dashboard", name="admin_mevent_dashboard", options={"expose" = true})
-     */
-    public function dashBoardAction(Request $request)
+    #[Route(path: '/dashboard', name: 'admin_mevent_dashboard', options: ['expose' => true])]
+    public function dashBoard()
     {
         $mevents = $this->meventsRepo->findAll();
         $counters = $this->__countStatusTypes($mevents);
-
         return $this->render('/mevent/dashboard.html.twig', [
             'mevents' => $mevents,
             'counters' => $counters,
         ]);
     }
 
-    /**
-     * @Route("/new", name="admin_mevent_new", options={"expose" = true})
-     */
-    public function newAction(Request $request)
+    #[Route(path: '/new', name: 'admin_mevent_new', options: ['expose' => true])]
+    public function new(Request $request)
     {
+        $this->loadQueryParameters($request);
         $form = $this->createForm(MonitorizableEventForm::class);
 
         $form->handleRequest($request);
@@ -93,12 +76,13 @@ class MonitorizableEventController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}/edit", name="admin_mevent_edit", options={"expose" = true})
-     */
-    public function editAction(Request $request, MonitorizableEvent $mevent)
+    #[Route(path: '/{id}/edit', name: 'admin_mevent_edit', options: ['expose' => true])]
+    public function edit(Request $request, MonitorizableEvent $mevent)
     {
-        $form = $this->createForm(MonitorizableEventForm::class, $mevent);
+        $this->loadQueryParameters($request);
+        $form = $this->createForm(MonitorizableEventForm::class, $mevent, [
+            'readonly' => false,
+        ]);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -114,11 +98,10 @@ class MonitorizableEventController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}/delete", name="admin_mevent_delete", options={"expose" = true})
-     */
-    public function deleteAction(Request $request, MonitorizableEvent $mevent)
+    #[Route(path: '/{id}/delete', name: 'admin_mevent_delete', options: ['expose' => true])]
+    public function delete(MonitorizableEvent $mevent, Request $request)
     {
+        $this->loadQueryParameters($request);
         $events = $mevent->getEvents();
         foreach ($events as $event) {
             $event->setMonitorizableEvent(null);
@@ -131,11 +114,10 @@ class MonitorizableEventController extends AbstractController
         return $this->redirectToRoute('admin_mevent_list');
     }
 
-    /**
-     * @Route("/{id}/try/{event}/save", name="admin_mevent_try_save", options={"expose" = true})
-     */
-    public function tryEventSaveAction(Request $request, MonitorizableEvent $mevent, Event $event)
+    #[Route(path: '/{id}/try/{event}/save', name: 'admin_mevent_try_save', options: ['expose' => true])]
+    public function tryEventSave(Request $request, MonitorizableEvent $mevent, Event $event)
     {
+        $this->loadQueryParameters($request);
         $form = $this->createForm(EventTryForm::class, $mevent);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -157,11 +139,10 @@ class MonitorizableEventController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}/try/{event}", name="admin_mevent_try", options={"expose" = true})
-     */
-    public function tryEventAction(Request $request, MonitorizableEvent $mevent, Event $event)
+    #[Route(path: '/{id}/try/{event}', name: 'admin_mevent_try', options: ['expose' => true])]
+    public function tryEvent(Request $request, MonitorizableEvent $mevent, Event $event)
     {
+        $this->loadQueryParameters($request);
         // TODO try Monitorizable Events and Events
         $form = $this->createForm(EventTryForm::class, $mevent);
         //	dump($mevent, $event);die;
@@ -196,11 +177,10 @@ class MonitorizableEventController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}/match/{event}", name="admin_mevent_match", options={"expose" = true})
-     */
-    public function matchAction(Request $request, MonitorizableEvent $mevent, Event $event)
+    #[Route(path: '/{id}/match/{event}', name: 'admin_mevent_match', options: ['expose' => true])]
+    public function match(MonitorizableEvent $mevent, Event $event, Request $request)
     {
+        $this->loadQueryParameters($request);
         $event->setMonitorizableEvent($mevent);
         $this->em->persist($event);
         $this->em->flush();
@@ -212,11 +192,10 @@ class MonitorizableEventController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}/search/save", name="admin_mevent_save_filter", options={"expose" = true})
-     */
-    public function saveFilterAction(Request $request, MonitorizableEvent $mevent)
+    #[Route(path: '/{id}/search/save', name: 'admin_mevent_save_filter', options: ['expose' => true])]
+    public function saveFilter(Request $request, MonitorizableEvent $mevent)
     {
+        $this->loadQueryParameters($request);
         $form = $this->createForm(EventSearchForm::class);
 
         $form->handleRequest($request);
@@ -235,12 +214,11 @@ class MonitorizableEventController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}/search", name="admin_mevent_search", options={"expose" = true})
-     */
-    public function searchAction(Request $request, MonitorizableEvent $mevent)
+    #[Route(path: '/{id}/search', name: 'admin_mevent_search', options: ['expose' => true])]
+    public function search(Request $request, MonitorizableEvent $mevent)
     {
-        parse_str($mevent->getFilterCondition(), $criteria);
+        $this->loadQueryParameters($request);
+        parse_str((string) $mevent->getFilterCondition(), $criteria);
         $form = $this->createForm(EventSearchForm::class, $criteria);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -257,7 +235,7 @@ class MonitorizableEventController extends AbstractController
             ]);
         }
 
-        parse_str($mevent->getFilterCondition(), $criteria);
+        parse_str((string) $mevent->getFilterCondition(), $criteria);
         $date = new \DateTime();
         // Only last 5 days
         $from = array_key_exists('dateFrom', $criteria) && !empty($criteria['dateFrom']) ? $criteria['dateFrom'] : date_sub(new \DateTime(), date_interval_create_from_date_string('5 days'));
@@ -274,10 +252,8 @@ class MonitorizableEventController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}/lastMatchedEvent", name="admin_mevent_lastMatchedEvent", options={"expose" = true})
-     */
-    public function lastMatchedEventAction(MonitorizableEvent $mevent)
+    #[Route(path: '/{id}/lastMatchedEvent', name: 'admin_mevent_lastMatchedEvent', options: ['expose' => true])]
+    public function lastMatchedEvent(MonitorizableEvent $mevent)
     {
         $event = $this->eventRepo->findLastMatchedEvent($mevent);
         $form = $this->createForm(EventForm::class, $event);
@@ -287,12 +263,13 @@ class MonitorizableEventController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="admin_mevent_show", options={"expose" = true})
-     */
-    public function showAction(MonitorizableEvent $mevent)
+    #[Route(path: '/{id}', name: 'admin_mevent_show', options: ['expose' => true])]
+    public function show(MonitorizableEvent $mevent, Request $request)
     {
-        $form = $this->createForm(MonitorizableEventForm::class, $mevent);
+        $this->loadQueryParameters($request);
+        $form = $this->createForm(MonitorizableEventForm::class, $mevent, [
+            'readonly' => true,
+        ]);
 
         return $this->render('mevent/show.html.twig', [
             'form' => $form->createView(),
@@ -331,14 +308,12 @@ class MonitorizableEventController extends AbstractController
     private function __buildRexEpr($string)
     {
         $reg_exp = '/^(.*)';
-        $string_space = preg_replace("/\ /", "\s", preg_quote($string));
+        $string_space = preg_replace("/\ /", "\s", preg_quote((string) $string));
 
         return $reg_exp . $string_space . '(.*)/iAs';
     }
 
     /**
-     * @param array $mevents
-     *
      * @return array $counters
      */
     private function __countStatusTypes(array $mevents)

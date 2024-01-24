@@ -3,9 +3,8 @@
 namespace App\Command;
 
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Webklex\PHPIMAP\ClientManager;
@@ -15,56 +14,36 @@ use App\Entity\Event;
 use App\Repository\EventRepository;
 use App\Services\MatchEventsService;
 use DateTime;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 
-
-
+#[AsCommand('app:mail-daemon-cron', 'Daemon that reads emails.')]
 class MailDaemonCronCommand extends Command
 {
-    protected static $defaultName = 'app:mail-daemon-cron';
-    protected static $defaultDescription = 'Daemon that reads emails.';
-    protected HttpClientInterface $client;
-    protected ?EntityManagerInterface $em;
-    protected EventRepository $eventRepo;    
-    protected ?string $tenantId = null;
-    protected ?string $clientId = null;
-    protected ?string $clientSecret = null; 
-    protected ?string $mailbox = null;
     protected ?ClientManager $cm = null;
     protected ?array $token = null;
     protected ?\DateTime $tokenExpirationDate = null;
     protected ?\Webklex\PHPIMAP\Client $IMAPClient = null;
-    protected ?MatchEventsService $mEventService = null;
-    protected string $imapArchiveFolder;
-    protected string $imapInboxFolder;
-    protected int $limitMailsPerRound;
 
-    public function __construct(HttpClientInterface $client, string $tenantId, string $clientId, string $clientSecret, string $mailbox, EntityManagerInterface $em, EventRepository $eventRepo, MatchEventsService $mEventService, $imapArchiveFolder, $imapInboxFolder, int $limitMailsPerRound=10)
+    public function __construct(
+        protected HttpClientInterface $client, 
+        protected ?string $tenantId, 
+        protected ?string $clientId, 
+        protected ?string $clientSecret, 
+        protected ?string $mailbox, 
+        protected ?EntityManagerInterface $em, 
+        protected EventRepository $eventRepo, 
+        protected ?MatchEventsService $mEventService, 
+        protected string $imapArchiveFolder, 
+        protected string $imapInboxFolder, 
+        protected int $limitMailsPerRound=10)
     {
         parent::__construct();
-        $this->client = $client;
-        $this->tenantId = $tenantId;
-        $this->clientId = $clientId;
-        $this->clientSecret = $clientSecret;
-        $this->mailbox = $mailbox;
         $this->cm = new ClientManager();
-        $this->em = $em;
-        $this->eventRepo = $eventRepo;
-        $this->mEventService = $mEventService;
-        $this->imapArchiveFolder = $imapArchiveFolder;
-        $this->imapInboxFolder = $imapInboxFolder;
-        $this->limitMailsPerRound = $limitMailsPerRound;
     }
 
     protected function configure(): void
     {
         $this
-            // the name of the command (the part after "bin/console")
-            ->setName(MailDaemonCronCommand::$defaultName)
-            // the short description shown while running "php bin/console list"
-            ->setDescription(MailDaemonCronCommand::$defaultDescription)
-            // the full command description shown when running the command with
             // the "--help" option
             ->setHelp('This command starts the daemon that reads emails and writes them into the database.');
         ;

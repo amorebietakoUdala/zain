@@ -7,30 +7,23 @@ use App\Repository\MonitorizableEventRepository;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Twig\Environment;
 
+#[AsCommand('app:daily-report-command', 'Send an email with the Monitorizable event status')]
 class DailyReportCommand extends Command
 {
-    protected static $defaultName = 'app:daily-report-command';
-    protected static $defaultDescription = 'Send an email with the Monitorizable event status';
-    private MonitorizableEventRepository $meventRepo;
-    private MailerInterface $mailer;
-    private string $mailerFrom;
-    private array $mailerTo;
-
-    public function __construct(MonitorizableEventRepository $meventRepo, MailerInterface $mailer, Environment $twig, string $mailerFrom, array $mailerTo)
+    public function __construct(
+        private readonly MonitorizableEventRepository $meventRepo, 
+        private readonly MailerInterface $mailer, 
+        private Environment $twig, 
+        private readonly string $mailerFrom, 
+        private readonly array $mailerTo)
     {
-        parent::__construct();
-        $this->meventRepo = $meventRepo;
-        $this->mailer = $mailer;   
-        $this->twig = $twig;
-        $this->mailerFrom = $mailerFrom;
-        $this->mailerTo = $mailerTo;
+        parent::__construct();   
     }
 
     protected function configure(): void
@@ -45,8 +38,6 @@ class DailyReportCommand extends Command
     }
 
     /**
-     * @param array $mevents
-     *
      * @return array $counters
      */
     private function __countStatusTypes(array $mevents)

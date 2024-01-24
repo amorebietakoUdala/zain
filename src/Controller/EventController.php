@@ -15,37 +15,25 @@ use App\Repository\EventRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\SerializerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Description of MonitorizableEventController.
- *
- * @author ibilbao
-*/
-
- /**
- * @Route("/{_locale}/admin/event")
- */
-class EventController extends AbstractController
+#[Route(path: '/{_locale}/admin/event')]
+class EventController extends BaseController
 {
 
-    private EntityManagerInterface $em;
-    private EventRepository $repo;
-
-    public function __construct(EntityManagerInterface $em, EventRepository $repo)
+    public function __construct(
+        private readonly EntityManagerInterface $em, 
+        private readonly EventRepository $repo
+    )
     {
-        $this->em = $em;
-        $this->repo = $repo;
     }
 
-    /**
-     * @Route("/{event}/mevent/new", name="admin_event_new_mevent", options={"expose" = true})
-     */
-    public function newAction(Request $request, Event $event)
+    #[Route(path: '/{event}/mevent/new', name: 'admin_event_new_mevent', options: ['expose' => true])]
+    public function new(Request $request, Event $event)
     {
+        $this->loadQueryParameters($request);
         $mevent = new MonitorizableEvent();
         $mevent->setFilterFromEvent($event);
         $form = $this->createForm(MonitorizableEventForm::class, $mevent);
@@ -69,41 +57,34 @@ class EventController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/", name="admin_event_list", options={"expose" = true})
-     */
-    public function listAction(Request $request)
+    #[Route(path: '/', name: 'admin_event_list', options: ['expose' => true])]
+    public function list(Request $request)
     {
+        $this->loadQueryParameters($request);
         $date = new DateTime();
         $to = $date;
         $from = date_sub(new DateTime(), date_interval_create_from_date_string('15 day'));
-
         $events = $this->repo->findAllFromTo([], $from, $to);
-
+        $this->addFlash('warning', 'messages.onlyEventsOfLast15Days');
         return $this->render('event/list.html.twig', [
             'events' => $events,
         ]);
     }
 
-    /**
-     * @Route("/unmatched", name="admin_event_list_unmatched", options={"expose" = true})
-     */
-    public function listUnmatchedAction(Request $request)
+    #[Route(path: '/unmatched', name: 'admin_event_list_unmatched', options: ['expose' => true])]
+    public function listUnmatched(Request $request)
     {
+        $this->loadQueryParameters($request);
         $date = new DateTime();
         $to = $date;
         $from = date_sub(new DateTime(), date_interval_create_from_date_string('15 day'));
-
         $events = $this->repo->findUnmatchedEventsFromTo([], $from, $to);
-
         return $this->render('event/list.html.twig', [
-        'events' => $events,
-    ]);
+            'events' => $events,
+        ]);
     }
 
-    /**
-     * @Route("/{event}" ,name="admin_event_get", options={"expose" = true} )
-     */
+    #[Route(path: '/{event}', name: 'admin_event_get', options: ['expose' => true])]
     public function getEvent(Event $event, SerializerInterface $serializer)
     {
         $json = $serializer->serialize($event, 'json');

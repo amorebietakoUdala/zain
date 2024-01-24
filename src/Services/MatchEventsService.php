@@ -18,16 +18,10 @@ use Symfony\Component\Console\Output\NullOutput;
  */
 class MatchEventsService
 {
-    private EntityManagerInterface $em;
     private OutputInterface $output;
-    private EventRepository $eventRepo;
-    private MonitorizableEventRepository $meventRepo;
 
-    public function __construct(EntityManagerInterface $em, EventRepository $eventRepo, MonitorizableEventRepository $meventRepo)
+    public function __construct(private readonly EntityManagerInterface $em, private readonly EventRepository $eventRepo, private readonly MonitorizableEventRepository $meventRepo)
     {
-        $this->em = $em;
-        $this->eventRepo = $eventRepo;
-        $this->meventRepo = $meventRepo;
         $this->output = new NullOutput();
     }
 
@@ -36,7 +30,7 @@ class MatchEventsService
         $this->output->writeln('Matching start');
         $matchedEvents = [];
         /** @var MonitorizableEvent[] $mevents */
-        $mevents = $this->meventRepo->findAll([], ['date' => 'ASC']);
+        $mevents = $this->meventRepo->findAll();
         foreach ($events as $event) {
             foreach ($mevents as $mevent) {
                 /** If matches filter condition and success or failure condition add to matched events.
@@ -52,7 +46,7 @@ class MatchEventsService
                     $lastEvent = $this->eventRepo->findLastMatchedEvent($mevent);
                     if ( null !== $lastEvent ) {
                         $this->output->writeln('LastEvent: '.$lastEvent->getMailId().': '.$lastEvent->getSubject().'on date '.$lastEvent->getDate()->format('Y-m-d H:i:s'));
-                        if (trim($lastEvent->getMailId()) !== trim($event->getMailId())) {
+                        if (trim((string) $lastEvent->getMailId()) !== trim((string) $event->getMailId())) {
                             $this->output->writeln('newEvent: '.$event->getMailId().': '.$event->getSubject().'on date '.$event->getDate()->format('Y-m-d H:i:s'));
                             $this->output->writeln('newEvent success: '.$mevent->testSuccess($event));
                             $this->output->writeln('newEvent failure: '.$mevent->testFailure($event));

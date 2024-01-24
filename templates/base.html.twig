@@ -11,20 +11,16 @@
     </head>
     <body>
 	{% block header %}
-	    {{ include('common/header.html.twig') }}
+	    {{ include('common/_header.html.twig') }}
 	{% endblock %}
 	{% block menu %}
-	    {{ include('common/menu.html.twig') }}
+	    {{ include('common/_menu.html.twig') }}
 	{% endblock %}
 
 	{% block message %}{% endblock %}
-        {% block body %}{% endblock %}
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-
-	    <!-- FOSRouting Symfony Bundle -->
-{#	    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-	    <script src="{{ asset('js/fos_js_routes.js') }}"></script>
-#}	{% endblock %}
+    {% block body %}{% endblock %}
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
 </body>
 </html>

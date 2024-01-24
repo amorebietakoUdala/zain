@@ -9,16 +9,14 @@ class HighlightExtension extends AbstractExtension
 {
     public function getFilters()
     {
-        return array(
-            new TwigFilter('highlight', array($this, 'highlightText')),
-        );
+        return [new TwigFilter('highlight', $this->highlightText(...))];
     }
 
     public function highlightText($text, $array)
     {
         $highlighted = $text;
         foreach ($array as $string => $class) {
-            $highlighted = str_replace($string, '<span class="'.$class.'">'.$string.'</span>', $highlighted);
+            $highlighted = str_replace($string, '<span class="'.$class.'">'.$string.'</span>', (string) $highlighted);
         }
 
         return $highlighted;
