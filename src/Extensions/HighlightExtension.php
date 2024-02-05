@@ -7,7 +7,7 @@ use Twig\TwigFilter;
 
 class HighlightExtension extends AbstractExtension
 {
-    public function getFilters()
+    public function getFilters(): array
     {
         return [new TwigFilter('highlight', $this->highlightText(...))];
     }
@@ -22,7 +22,7 @@ class HighlightExtension extends AbstractExtension
         return $highlighted;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return self::class;
     }

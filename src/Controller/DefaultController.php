@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
  **/
 class DefaultController extends BaseController
 {
-    #[Route(path: '/', name: 'homepage', options: ['expose' => true])]
+    #[Route(path: '/', name: 'app_home', options: ['expose' => true])]
     public function home()
     {
         return $this->redirectToRoute('admin_mevent_dashboard', ['_locale' => 'eu']);

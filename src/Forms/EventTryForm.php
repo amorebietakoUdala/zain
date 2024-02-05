@@ -25,7 +25,7 @@ use App\Entity\MonitorizableEvent;
 
 class EventTryForm extends AbstractType {
 
-    public function buildForm(FormBuilderInterface $builder, array $options) {
+    public function buildForm(FormBuilderInterface $builder, array $options): void {
 	$builder
 	    ->add('successCondition', null, [
 		'label' => 'label.successCondition',
@@ -46,7 +46,7 @@ class EventTryForm extends AbstractType {
 	;
     }
 
-    public function configureOptions(OptionsResolver $resolver) {
+    public function configureOptions(OptionsResolver $resolver): void {
 	$resolver->setDefaults([
 	    'csrf_protection' => true,
 	    'data_class' => MonitorizableEvent::class,

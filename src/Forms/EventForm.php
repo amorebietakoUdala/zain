@@ -26,7 +26,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
  */
 class EventForm extends AbstractType {
 
-    public function buildForm(FormBuilderInterface $builder, array $options) {
+    public function buildForm(FormBuilderInterface $builder, array $options): void {
 	$builder
 	    ->add('date', DateTimeType::class, [
 		'widget' => 'single_text',
@@ -65,7 +65,7 @@ class EventForm extends AbstractType {
 	;
     }
 
-    public function configureOptions(OptionsResolver $resolver) {
+    public function configureOptions(OptionsResolver $resolver): void {
 	$resolver->setDefaults([
 	    'csrf_protection' => true,
 	    'data_class' => Event::class,
