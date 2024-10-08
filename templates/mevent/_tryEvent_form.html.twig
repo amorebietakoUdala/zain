@@ -4,21 +4,25 @@
 				       }) }}
 	{{ form_errors(form) }}
 		<div class="row">
-		    <div class="col-lg-4 col-md-2 flex-row-nowrap flex-align-items-baseline">
-			{{ form_label(form.successCondition) }}
-			{{ form_widget(form.successCondition, { 'attr': { 'class' : 'form-control-sm' } }) }}
-			{{ form_errors(form.successCondition) }}
-		    </div>
-		    <div class="col-lg-4 col-md-2 flex-row-nowrap flex-align-items-baseline">
-			{{ form_label(form.failureCondition) }}
-			{{ form_widget(form.failureCondition, { 'attr': { 'class' : 'form-control-sm' } }) }}
-			{{ form_errors(form.failureCondition) }}
-		    </div>
-		    <div class="col-lg-2 col-md-2 flex-row-nowrap flex-align-items-baseline">
-			{{ form_label(form.save) }}
-			{{ form_widget(form.save, { 'attr': { 'class' : 'form-control-sm' } }) }}&nbsp;
-			{{ form_label(form.test) }}
-			{{ form_widget(form.test, { 'attr': { 'class' : 'form-control-sm' } }) }}
-		    </div>
+			<div class="col-lg-5 col-md-2 d-flex flex-nowrap align-items-baseline">
+				{{ form_label(form.successCondition) }}
+				{{ form_widget(form.successCondition, { 'attr': { 'class' : 'form-control-sm' } }) }}
+				{{ form_errors(form.successCondition) }}
+			</div>
+			<div class="col-lg-5 col-md-2 d-flex flex-nowrap align-items-baseline">
+				{{ form_label(form.failureCondition) }}
+				{{ form_widget(form.failureCondition, { 'attr': { 'class' : 'form-control-sm' } }) }}
+				{{ form_errors(form.failureCondition) }}
+			</div>
+			<div class="col-lg-2 col-md-2 d-flex flex-nowrap justify-content-end">
+				<div class="d-flex align-items-baseline justify-content-end">
+					{{ form_label(form.save) }}
+					{{ form_widget(form.save, { 'attr': { 'class' : 'btn btn-primary form-control-sm' } }) }}&nbsp;
+				</div>
+				<div class="d-flex align-items-baseline justify-content-end">
+					{{ form_label(form.test) }}
+					{{ form_widget(form.test, { 'attr': { 'class' : 'btn btn-success form-control-sm' } }) }}
+				</div>
+			</div>
 		</div>
 	{{ form_end(form) }}

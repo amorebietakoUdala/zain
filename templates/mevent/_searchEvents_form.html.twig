@@ -6,14 +6,14 @@
 	<div class="row">
 	    <div class="col-lg-4 col-md-2">
 		{{ form_label(form.dateFrom) }}
-		<div class="flex-row-nowrap flex-align-items-baseline">
+		<div class="flex-nowrap d-flex align-items-baseline">
 		    {{ form_widget(form.dateFrom, { 'attr': { 'class' : 'js-datetimepicker form-control-sm' } }) }}
 		</div>
 		{{ form_errors(form.dateFrom) }}
 	    </div>
 	    <div class="col-lg-4 col-md-2">
 		{{ form_label(form.dateTo) }}
-		<div class="flex-row-nowrap flex-align-items-baseline">
+		<div class="flex-nowrap d-flex align-items-baseline">
 		    {{ form_widget(form.dateTo, { 'attr': { 'class' : 'js-datetimepicker form-control-sm' } }) }}
 		</div>
 		{{ form_errors(form.dateTo) }}
@@ -45,11 +45,11 @@
 			{{ form_widget(form.mailId, { 'attr': { 'class' : 'form-control-sm' } }) }}
 			{{ form_errors(form.mailId) }}
 	    </div>
-	    <div class="col-lg-2 col-md-2 d-flex flex-row align-items-end">
+	    <div class="col-lg-2 col-md-2 d-flex align-items-end">
 			{{ form_widget(form.search, { 'attr': { 'class' : 'btn-secondary' } }) }}&nbsp;
 			{{ form_widget(form.reset, { 'attr': { 'class' : 'btn-secondary' } }) }}&nbsp;
 	    </div>
-	    <div class="col-lg-2 col-md-2 d-flex flex-row justify-content-end align-items-end">
+	    <div class="col-lg-2 col-md-2 d-flex justify-content-end align-items-end">
 			{{ form_widget(form.save, { 'attr': { 'class' : 'btn-primary' } }) }}&nbsp;
 	    </div>
 	</div>
