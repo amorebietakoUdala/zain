@@ -28,7 +28,7 @@
 						<a class="nav-link dropdown-toggle {{ ( app.request.attributes.get('_route') == 'admin_user_index' ) or
 							( app.request.attributes.get('_route') == 'admin_user_show' ) or
 							( app.request.attributes.get('_route') == 'admin_user_edit' )
-						 ? 'active': '' }}" href="#" id="navbarAdmin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						 ? 'active': '' }}" href="#" id="navbarAdmin" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							{{ 'menu.administration' | trans | capitalize }}
 						</a>
 						<div id="js-menu-administration" class="dropdown-menu" aria-labelledby="navbarAdmin">

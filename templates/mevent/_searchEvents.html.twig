@@ -40,39 +40,45 @@
 	
 	{{ include('mevent/_searchEvents_form.html.twig',{
 			    }) }}
-	<div class="container">
+	<div class="container mt-2">
 		{% if events is defined and events | length > 0 %}
-	    <table id="taula" class="bootstrap-table mt-3">
-		<thead>
-		    <tr>
-				<th data-sortable="true">{{"label.date" | trans | capitalize}}</th>
-				<th data-sortable="true">{{"label.origin" | trans | capitalize}}</th>
-				<th data-sortable="true">{{"label.fromAddress" | trans | capitalize}}</th>
-				<th data-sortable="true">{{"label.subject" | trans | capitalize}}</th>
-				<th data-sortable="true">{{"label.status" | trans | capitalize}}</th>
-				<th>{{ "tableheader.options" | trans | capitalize}}</th>
-		    </tr>
-		</thead>
-		<tbody>
-			{% for event in events %}
-			<tr>
-			    <td>{{ event.date | date('Y-m-d H:i:s') }}</td>
-			    <td>{{ event.origin }}</td>
-			    <td>{{ event.fromAddress }}</td>
-			    <td>{{ event.subject }}</td>
-			    <td>{{ event.mailId }}</td>
-			    <td class="white-space-nowrap col-1">
-				    &nbsp;<a id="tr{{loop.index}}" class="js-showDetails trigger" href="#"><i class="fa fa-file-text-o prefix" title="{{"icon.details" | trans | capitalize}}"></i></a>
-				    &nbsp;<a href="{{ path ('admin_mevent_try', {'id': mevent.id, 'event': event.id }) }}"><i class="fa fa-edit prefix" title="{{"icon.try" | trans | capitalize}}"></i></a>
-				    &nbsp;<a href="{{ path ('admin_mevent_match', {'id': mevent.id, 'event': event.id }) }}"><i class="fa fa-check prefix" title="{{"icon.match" | trans | capitalize}}"></i></a>
-			    </td>
-			</tr>
-			{% endfor %}
-		</tbody>
-	    </table>
-		    {% else %}
-				<div class="col text-center border p-2">{{"messages.results0" | trans }}</div>
-		    {% endif %}
+			<table id="taula" class="bootstrap-table mt-3">
+				<thead>
+					<tr>
+						<th data-sortable="true">{{"label.date" | trans | capitalize}}</th>
+						<th data-sortable="true">{{"label.origin" | trans | capitalize}}</th>
+						<th data-sortable="true">{{"label.fromAddress" | trans | capitalize}}</th>
+						<th data-sortable="true">{{"label.subject" | trans | capitalize}}</th>
+						<th data-sortable="true">{{"label.status" | trans | capitalize}}</th>
+						<th>{{ "tableheader.options" | trans | capitalize}}</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for event in events %}
+						<tr>
+							<td>{{ event.date | date('Y-m-d H:i:s') }}</td>
+							<td>{{ event.origin }}</td>
+							<td>{{ event.fromAddress }}</td>
+							<td>{{ event.subject }}</td>
+							<td>{{ event.mailId }}</td>
+							<td class="white-space-nowrap col-1">
+								&nbsp;<a id="tr{{loop.index}}" class="js-showDetails trigger" href="#">
+									<i class="fa fa-file-lines prefix" title="{{"icon.details" | trans | capitalize}}"></i>
+								</a>
+								&nbsp;<a href="{{ path ('admin_mevent_try', {'id': mevent.id, 'event': event.id }) }}">
+									<i class="fa fa-edit prefix" title="{{"icon.try" | trans | capitalize}}"></i>
+								</a>
+								&nbsp;<a href="{{ path ('admin_mevent_match', {'id': mevent.id, 'event': event.id }) }}">
+									<i class="fa fa-check prefix" title="{{"icon.match" | trans | capitalize}}"></i>
+								</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		{% else %}
+			<div class="alert alert-secondary mt-3" role="alert">{{"messages.results0" | trans }}</div>
+		{% endif %}
 	    {% if events is defined and events | length > 0 %}
 		    {% for event in events %}
 		    <div id="ov{{loop.index}}" class="overlay" style="display:none">

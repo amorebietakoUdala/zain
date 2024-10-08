@@ -47,17 +47,6 @@ header {
     font-size: 1.5rem;
 }
 
-.flex-align-items-center {
-    align-items: center;
-}
-.flex-align-items-end {
-    align-items: flex-end;
-}
-
-.margin-left-auto {
-    margin-left: auto;
-}
-
 .bootstrap-table {
     font-size: 0.8rem;
 }
@@ -147,4 +136,12 @@ header {
 
 #event-details pre {
     overflow-y: hidden;
+}
+
+table a {
+    text-decoration: none;
+}
+
+.btnStatusSelection, #btnResetFilter {
+    text-decoration: none;
 }
