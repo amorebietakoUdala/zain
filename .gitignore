@@ -1,29 +1,4 @@
-/.web-server-pid
-/app/config/parameters.yml
-/build/
-/phpunit.xml
-/var/*
-!/var/cache
-/var/cache/*
-!var/cache/.gitkeep
-!/var/logs
-/var/logs/*
-!var/logs/.gitkeep
-!/var/sessions
-/var/sessions/*
-!var/sessions/.gitkeep
-!var/SymfonyRequirements.php
-/vendor/
-/web/bundles/
-/var
-/nbproject/private/
-/app/var/
-/sh/zain.cnf
-/sh/backup-zain-garapenak.sh
-/sh/import-zain.sh
-/app/DoctrineMigrations/
-/sh/zain.sql.gz
-/sh/zain.20181106_105031.sql
+
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
@@ -34,11 +9,21 @@
 /vendor/
 ###< symfony/framework-bundle ###
 
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###
+
 ###> symfony/phpunit-bridge ###
-.phpunit
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
+
+###> symfony/asset-mapper ###
+/public/assets/
+/assets/vendor/
+###< symfony/asset-mapper ###
+
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
 /public/build/
@@ -46,17 +31,8 @@ npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
 
-###> phpunit/phpunit ###
-/phpunit.xml
-.phpunit.result.cache
-###< phpunit/phpunit ###
-
-composer.json.dev
-composer.json.prod
-/.yarn/cache
-/.yarn/unplugged
-/.yarn/install-state.gz
-
 ###> phpstan/phpstan ###
 phpstan.neon
 ###< phpstan/phpstan ###
+
+/.yarn/

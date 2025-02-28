@@ -17,20 +17,19 @@ services:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
         bind:
-          $mailbox: '%env(MAILBOX_USER)%'
-          $tenantId: '%env(OAUTH2_TENANTID)%'
-          $clientId: '%env(OAUTH2_CLIENTID)%'
-          $clientSecret: '%env(OAUTH2_CLIENTSECRET)%'
-          $imapArchiveFolder: '%env(IMAP_ARCHIVE)%'
-          $imapInboxFolder: '%env(IMAP_INBOX)%'
-          $limitMailsPerRound: '%env(int:IMAP_LIMIT_MAIL_PER_ROUND)%'
-          $mailerFrom: "%env(MAILER_FROM)%"
-          $mailerTo: "%env(csv:MAILER_TO)%"
-          $department: '%department%'
-          $contactEmail: '%contactEmail%'
-          $departmentDefault: '%departmentDefault%'
-          $contactEmailDefault: '%contactEmailDefault%'
-
+            $mailbox: '%env(MAILBOX_USER)%'
+            $tenantId: '%env(OAUTH2_TENANTID)%'
+            $clientId: '%env(OAUTH2_CLIENTID)%'
+            $clientSecret: '%env(OAUTH2_CLIENTSECRET)%'
+            $imapArchiveFolder: '%env(IMAP_ARCHIVE)%'
+            $imapInboxFolder: '%env(IMAP_INBOX)%'
+            $limitMailsPerRound: '%env(int:IMAP_LIMIT_MAIL_PER_ROUND)%'
+            $mailerFrom: "%env(MAILER_FROM)%"
+            $mailerTo: "%env(csv:MAILER_TO)%"
+            $department: '%department%'
+            $contactEmail: '%contactEmail%'
+            $departmentDefault: '%departmentDefault%'
+            $contactEmailDefault: '%contactEmailDefault%'
 
     Symfony\Component\Ldap\Ldap:
       arguments: ['@Symfony\Component\Ldap\Adapter\ExtLdap\Adapter']
