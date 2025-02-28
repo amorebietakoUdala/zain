@@ -19,7 +19,7 @@ use Nelmio\Alice\Loader\NativeLoader;
  */
 class LoadFixtures extends Fixture
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $loader = new NativeLoader();
         $objectSet = $loader->loadFile(__DIR__ . '/fixtures.yml')->getObjects();

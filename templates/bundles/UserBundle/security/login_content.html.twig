@@ -7,7 +7,7 @@
             <div class="container-fluid col-lg-5 col-md-5 p-3 border border-info rounded bg-light">
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />
                 {% if error %}
-                    <div class="alert alert-danger">{{ error.messageKey | trans }}</div>
+                    <div class="alert alert-danger">{{ error.messageKey | trans(error.messageData, 'user_bundle') }}</div>
                 {% endif %}
                 <div class="row">
                     <div class="col-lg mb-2">
