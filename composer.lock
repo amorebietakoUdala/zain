@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "265d5da6a0d95628fa3936489d1b15f9",
+    "content-hash": "e20bc7cd8e4a9b1c75368c3c71918dd4",
     "packages": [
         {
             "name": "amorebietakoudala/stimulus-controller-bundle",
